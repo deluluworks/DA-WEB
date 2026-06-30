@@ -1,9 +1,17 @@
+<?php
+if (!defined('DA_APP')) {
+    http_response_code(403);
+    exit('Forbidden');
+}
+$config = require __DIR__ . '/config.php';
+$pageTitle = $pageTitle ?? $config['site_title'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Design Asylum — Bold by design</title>
+<title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 
 <!-- React + Babel (pinned) -->
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -13,6 +21,18 @@
 <!-- Design Asylum design system -->
 <link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
 <script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+
+<!-- Server-rendered config, read by the React components instead of hardcoded values -->
+<script>
+  window.SITE_CONFIG = <?= json_encode([
+    'siteName'   => $config['site_name'],
+    'email'      => $config['contact_email'],
+    'phone'      => $config['contact_phone'],
+    'phoneHref'  => $config['contact_phone_href'],
+    'location'   => $config['studio_location'],
+    'contactApi' => 'api/contact.php',
+  ], JSON_UNESCAPED_SLASHES) ?>;
+</script>
 
 <style>
   /* ============================================================
@@ -206,12 +226,3 @@
 </head>
 <body>
 <div id="root"></div>
-
-<script type="text/babel" data-presets="react" src="da/sections-1.jsx"></script>
-<script type="text/babel" data-presets="react" src="da/sections-services.jsx"></script>
-<script type="text/babel" data-presets="react" src="da/sections-2.jsx"></script>
-<script type="text/babel" data-presets="react" src="da/sections-3.jsx"></script>
-<script type="text/babel" data-presets="react" src="da/sections-4.jsx"></script>
-<script type="text/babel" data-presets="react" src="da/app.jsx"></script>
-</body>
-</html>

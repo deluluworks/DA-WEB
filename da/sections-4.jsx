@@ -49,40 +49,76 @@ function DAFaq() {
 /* ============ SECTION 14 - CONTACT / BOOKING ============ */
 function DAContact() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
-  const days = ['Mon 16', 'Tue 17', 'Wed 18', 'Thu 19', 'Fri 20'];
+  const cfg = window.SITE_CONFIG || {};
   const slots = ['09:30', '11:00', '13:30', '15:00', '16:30'];
+  const inputStyle = { width: '100%', border: 'none', borderBottom: '1.5px solid var(--color-fog)', background: 'transparent', padding: '12px 2px', fontFamily: S, fontSize: 17, color: 'var(--color-obsidian-ink)', outline: 'none' };
+
+  const [form, setForm] = React.useState({ name: '', email: '', message: '', slot: slots[1], website: '' });
+  const [status, setStatus] = React.useState({ state: 'idle', message: '' }); // idle | sending | success | error
+
+  function update(field) {
+    return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus({ state: 'sending', message: '' });
+    try {
+      const res = await fetch(cfg.contactApi || 'api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setStatus({ state: 'success', message: data.message || 'Thanks — we’ll reply within a day.' });
+        setForm({ name: '', email: '', message: '', slot: slots[1], website: '' });
+      } else {
+        setStatus({ state: 'error', message: data.message || 'Something went wrong. Please try again.' });
+      }
+    } catch (err) {
+      setStatus({ state: 'error', message: 'Could not reach the server. Please email us directly.' });
+    }
+  }
+
   return (
     <section id="contact" style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
       <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '40fr 60fr', gap: 72, alignItems: 'start' }}>
         <div>
           <h2 style={{ margin: 0, fontFamily: D, fontWeight: 400, fontSize: 'var(--text-section)', lineHeight: 1.0, letterSpacing: '-0.02em', color: 'var(--color-obsidian-ink)' }}>Let&rsquo;s talk about your brand</h2>
           <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <a className="da-mail" href="mailto:hello@designasylum.in" style={{ fontFamily: S, fontSize: 24 }}>
-              <span className="da-mail-ul">hello@designasylum.in</span><span className="da-mail-arrow" aria-hidden>&#8599;</span>
+            <a className="da-mail" href={`mailto:${cfg.email || 'hello@designasylum.in'}`} style={{ fontFamily: S, fontSize: 24 }}>
+              <span className="da-mail-ul">{cfg.email || 'hello@designasylum.in'}</span><span className="da-mail-arrow" aria-hidden>&#8599;</span>
             </a>
-            <span style={{ fontFamily: S, fontSize: 24, color: 'var(--color-graphite)' }}>+91 85478 07934</span>
+            <span style={{ fontFamily: S, fontSize: 24, color: 'var(--color-graphite)' }}>{cfg.phone || '+91 85478 07934'}</span>
           </div>
           <p style={{ margin: '32px 0 0', maxWidth: 360, fontFamily: S, fontSize: 17, lineHeight: 1.55, color: 'var(--color-graphite)' }}>Tell us what you&rsquo;re building. We reply within a day, usually with questions, sometimes with opinions.</p>
         </div>
-        {/* booking placeholder */}
-        <div style={{ background: 'var(--color-paper-white)', border: '1px solid var(--color-obsidian-ink)', borderRadius: 'var(--radius-cards)', padding: 36 }}>
+        <form onSubmit={handleSubmit} style={{ background: 'var(--color-paper-white)', border: '1px solid var(--color-obsidian-ink)', borderRadius: 'var(--radius-cards)', padding: 36 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: 18, color: 'var(--color-obsidian-ink)', whiteSpace: 'nowrap' }}>Pick a slot</span>
-            <span style={{ fontFamily: S, fontStyle: 'normal', fontSize: 15, color: 'var(--color-ash)' }}>June 2026 &middot; 30 min intro</span>
+            <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: 18, color: 'var(--color-obsidian-ink)', whiteSpace: 'nowrap' }}>Send a brief</span>
+            <span style={{ fontFamily: S, fontStyle: 'normal', fontSize: 15, color: 'var(--color-ash)' }}>30 min intro call</span>
           </div>
-          <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 10 }}>
-            {days.map((d, i) => (
-              <div key={d} style={{ textAlign: 'center', padding: '14px 0', borderRadius: 16, border: '1px solid var(--color-fog)', background: i === 2 ? 'var(--color-obsidian-ink)' : 'transparent', color: i === 2 ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)', fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 12 }}>{d}</div>
-            ))}
+
+          {/* honeypot — hidden from real visitors, bots tend to fill every field */}
+          <input type="text" name="website" value={form.website} onChange={update('website')} tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} aria-hidden="true" />
+
+          <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <input type="text" required placeholder="Your name" value={form.name} onChange={update('name')} style={inputStyle} />
+            <input type="email" required placeholder="Email address" value={form.email} onChange={update('email')} style={inputStyle} />
+            <select value={form.slot} onChange={update('slot')} style={{ ...inputStyle, color: 'var(--color-graphite)' }}>
+              {slots.map((s) => <option key={s} value={s}>{`Preferred slot — ${s}`}</option>)}
+            </select>
+            <textarea required placeholder="What are you building?" value={form.message} onChange={update('message')} rows={4} style={{ ...inputStyle, resize: 'vertical', fontFamily: S }} />
           </div>
-          <hr className="da-rule" style={{ margin: '24px 0' }} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 10 }}>
-            {slots.map((s, i) => (
-              <div key={s} style={{ textAlign: 'center', padding: '14px 0', borderRadius: 999, border: `1.5px solid ${i === 1 ? 'var(--color-iris-voltage)' : 'var(--color-fog)'}`, color: i === 1 ? 'var(--color-iris-voltage)' : 'var(--color-graphite)', fontFamily: D, fontWeight: 400, fontSize: 13 }}>{s}</div>
-            ))}
-          </div>
-          <button style={{ marginTop: 28, width: '100%', border: 'none', cursor: 'pointer', background: 'var(--color-obsidian-ink)', color: 'var(--color-paper-white)', padding: '18px 0', borderRadius: 999, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 14 }}>Confirm, Wed 18, 11:00</button>
-        </div>
+
+          <button type="submit" disabled={status.state === 'sending'} style={{ marginTop: 28, width: '100%', border: 'none', cursor: status.state === 'sending' ? 'default' : 'pointer', opacity: status.state === 'sending' ? 0.6 : 1, background: 'var(--color-obsidian-ink)', color: 'var(--color-paper-white)', padding: '18px 0', borderRadius: 999, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 14 }}>
+            {status.state === 'sending' ? 'Sending…' : 'Send brief'}
+          </button>
+
+          {status.state === 'success' && <p role="status" style={{ marginTop: 16, fontFamily: S, fontSize: 15, color: 'var(--color-deep-teal)' }}>{status.message}</p>}
+          {status.state === 'error' && <p role="alert" style={{ marginTop: 16, fontFamily: S, fontSize: 15, color: 'var(--color-block-maroon)' }}>{status.message}</p>}
+        </form>
       </div>
     </section>
   );
@@ -164,6 +200,7 @@ function DAWhatWeDo() {
 /* ============ SECTION 17 - FOOTER ============ */
 function DAFooter() {
   const { ContactRow, FooterNav } = window.DesignAsylumDesignSystem_594314;
+  const cfg = window.SITE_CONFIG || {};
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const seo = {
     SOLUTIONS: ['B2B branding', 'Brand strategy', 'Rebrand', 'Naming', 'Positioning', 'Visual identity'],
@@ -185,9 +222,9 @@ function DAFooter() {
             secondary={[{ label: 'The no-brainer offer' }, { label: 'Why Design Asylum' }, { label: 'Recent updates' }]} />
           <div>
             <ContactRow label="Say hello" value="Book a call" href="#contact" />
-            <ContactRow label="Call" value="+91 85478 07934" href="tel:+918547807934" />
-            <ContactRow label="Email" value="hello@designasylum.in" href="mailto:hello@designasylum.in" />
-            <ContactRow label="Studio" value="Bengaluru, India" />
+            <ContactRow label="Call" value={cfg.phone || '+91 85478 07934'} href={`tel:${cfg.phoneHref || '+918547807934'}`} />
+            <ContactRow label="Email" value={cfg.email || 'hello@designasylum.in'} href={`mailto:${cfg.email || 'hello@designasylum.in'}`} />
+            <ContactRow label="Studio" value={cfg.location || 'Bengaluru, India'} />
             <div style={{ display: 'flex', gap: 20, marginTop: 24 }}>
               {['LinkedIn', 'Instagram', 'YouTube'].map((s) => (
                 <a key={s} href="#" style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 11, color: 'var(--color-obsidian-ink)', textDecoration: 'none', borderBottom: '1px solid var(--color-obsidian-ink)', paddingBottom: 2 }}>{s}</a>

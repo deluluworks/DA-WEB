@@ -1,0 +1,12 @@
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+</IfModule>
+
+# Never serve PHP includes or config directly
+<FilesMatch "\.(env|lock)$">
+  Require all denied
+</FilesMatch>
+
+Options -Indexes
