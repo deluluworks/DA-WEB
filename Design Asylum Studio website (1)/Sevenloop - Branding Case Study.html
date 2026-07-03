@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sevenloop | Branding</title>
+<meta name="description" content="Sevenloop — Branding and project brochure design" />
+<meta property="og:description" content="Sevenloop — Branding and project brochure design" />
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Design Asylum design system -->
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+
+<style>
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+    --cs-stack-gap: clamp(72px, 9vw, 168px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+
+  /* metadata sidebar */
+  .cs-meta-label { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; color: var(--color-ash); }
+  .cs-tag { display: inline-flex; align-items: center; white-space: nowrap; border: 1px solid var(--color-obsidian-ink); padding: 10px 18px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; color: var(--color-obsidian-ink); background: var(--color-paper-white); }
+  .cs-tag.tag { align-self: flex-start; }
+  .cs-investor { white-space: nowrap; }
+  .cs-investor { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-fog); height: 52px; padding: 0 22px; font-family: var(--font-display); font-weight: 400; letter-spacing: 0.01em; font-size: 15px; color: var(--color-graphite); background: var(--color-paper-white); }
+  .cs-empty-rule { height: 1px; width: 56px; background: var(--color-fog); margin-top: 6px; }
+
+  /* image cards */
+  .cs-figure { position: relative; width: 100%; overflow: hidden; }
+  .cs-figure .cs-cap { position: absolute; left: 20px; bottom: 18px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: rgba(255,255,255,0.62); }
+  .cs-figure .cs-idx { position: absolute; right: 20px; top: 18px; font-family: var(--font-display); font-weight: 400; font-size: 12px; color: rgba(255,255,255,0.42); letter-spacing: 0.04em; }
+
+  /* reveal */
+  .sl-reveal { opacity: 0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sl-reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  @media (min-width: 1728px) {
+    :root { --page-max-width: 1680px; --da-gutter: 56px; --gutter: clamp(40px, 3vw, 64px); }
+  }
+  @media (min-width: 2240px) {
+    :root {
+      --page-max-width: 2080px; --da-gutter: 80px; --gutter: clamp(56px, 3vw, 96px);
+      --text-mega: clamp(48px, 13vw, 220px);
+    }
+  }
+  @media (min-width: 3200px) {
+    :root { --page-max-width: 2880px; --da-gutter: 120px; --gutter: clamp(96px, 4vw, 160px); }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="casestudy/cs-page.jsx"></script>
+<script type="text/babel" data-presets="react" src="casestudy/cs-app.jsx"></script>
+</body>
+</html>

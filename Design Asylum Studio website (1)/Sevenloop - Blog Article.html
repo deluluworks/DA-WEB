@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sevenloop Rebrand &amp; Webflow Site: A 5-Month Case Study</title>
+<meta name="description" content="How Sevenloop went from B2B product company to enterprise-ready brand in 5 months — repositioning, identity, Webflow build, and the conversations it opened." />
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Design Asylum design system -->
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+
+<style>
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+  #root h2 { font-weight: 400 !important; }
+
+  /* ---- article body (Fraunces) ---- */
+  .bl-body { max-width: 760px; }
+  .bl-body p { font-family: var(--font-serif); font-size: clamp(18px,1.45vw,20px); line-height: 1.72; color: var(--color-graphite); margin: 0 0 22px; }
+  .bl-body p.bl-lead { font-size: clamp(21px,1.9vw,26px); line-height: 1.55; color: var(--color-obsidian-ink); margin-bottom: 40px; }
+  .bl-body strong { color: var(--color-obsidian-ink); font-weight: 600; }
+  .bl-h2 { font-family: var(--font-display); font-weight: 400; text-transform: none; letter-spacing: -0.015em; line-height: 1.06; font-size: clamp(28px,2.7vw,40px); color: var(--color-obsidian-ink); margin: 0 0 26px; scroll-margin-top: 120px; }
+  .bl-sub { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; font-size: 12px; color: var(--color-iris-voltage); margin: 30px 0 14px; }
+  .bl-sec { padding-top: 64px; }
+  .bl-sec:first-child { padding-top: 0; }
+
+  /* bullet list */
+  .bl-ul { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .bl-ul li { position: relative; padding-left: 26px; font-family: var(--font-serif); font-size: 18px; line-height: 1.6; color: var(--color-graphite); }
+  .bl-ul li::before { content: "\2192"; position: absolute; left: 0; top: 0; color: var(--color-iris-voltage); font-family: var(--font-display); font-weight: 400; }
+
+  /* pull quote */
+  .bl-pull { margin: 40px 0; padding: 0 0 0 32px; border-left: 3px solid var(--color-obsidian-ink); }
+  .bl-pull p { font-family: var(--font-serif); font-size: clamp(24px,2.4vw,34px); line-height: 1.36; color: var(--color-obsidian-ink); margin: 0; }
+  .bl-pull cite { display: block; margin-top: 20px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--color-ash); }
+
+  /* info / stat blocks */
+  .bl-block { border: 1px solid var(--color-fog); padding: 28px 30px; margin: 24px 0; background: var(--color-paper-off); }
+  .bl-block-head { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--color-obsidian-ink); margin-bottom: 12px; }
+
+  /* timeline */
+  .bl-time { display: grid; grid-template-columns: 120px 1fr; gap: 4px 24px; margin: 24px 0; }
+  .bl-time dt { font-family: var(--font-display); font-weight: 400; font-size: 16px; color: var(--color-iris-voltage); padding: 14px 0; border-top: 1px solid var(--color-fog); }
+  .bl-time dd { margin: 0; font-family: var(--font-serif); font-size: 17px; line-height: 1.5; color: var(--color-graphite); padding: 14px 0; border-top: 1px solid var(--color-fog); }
+
+  /* image placeholder inside article */
+  .bl-fig { position: relative; width: 100%; aspect-ratio: 16/9; margin: 32px 0; overflow: hidden; }
+  .bl-fig span { position: absolute; left: 18px; bottom: 16px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: rgba(255,255,255,0.6); }
+
+  /* ---- sticky ToC ---- */
+  .bl-toc { position: sticky; top: 110px; max-height: calc(100vh - 140px); overflow-y: auto; padding-right: 8px; }
+  .bl-toc::-webkit-scrollbar { width: 4px; }
+  .bl-toc::-webkit-scrollbar-thumb { background: var(--color-fog); }
+  .bl-toc-h { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; color: var(--color-ash); margin-bottom: 18px; }
+  .bl-toc-link { display: block; padding: 8px 0 8px 16px; border-left: 2px solid var(--color-fog); font-family: var(--font-serif); font-size: 14px; line-height: 1.4; color: var(--color-ash); text-decoration: none; transition: color .2s ease, border-color .2s ease; }
+  .bl-toc-link:hover { color: var(--color-obsidian-ink); }
+  .bl-toc-link.is-active { color: var(--color-obsidian-ink); border-left-color: var(--color-obsidian-ink); }
+
+  /* AI summary chips */
+  .bl-aichip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--color-fog); padding: 9px 14px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; color: var(--color-obsidian-ink); text-decoration: none; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .bl-aichip:hover { background: var(--color-obsidian-ink); color: var(--color-paper-white); border-color: var(--color-obsidian-ink); }
+
+  /* ---- FAQ accordion ---- */
+  .bl-faq-item { border-top: 1px solid var(--color-fog); }
+  .bl-faq-item:last-child { border-bottom: 1px solid var(--color-fog); }
+  .bl-faq-q { width: 100%; text-align: left; background: none; border: 0; cursor: pointer; padding: 28px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; font-family: var(--font-display); font-weight: 400; font-size: clamp(20px,1.8vw,26px); color: var(--color-obsidian-ink); }
+  .bl-faq-icon { flex: 0 0 auto; width: 22px; height: 22px; position: relative; transition: transform .3s ease; }
+  .bl-faq-icon::before, .bl-faq-icon::after { content: ""; position: absolute; background: var(--color-obsidian-ink); transition: opacity .3s ease; }
+  .bl-faq-icon::before { left: 0; top: 10px; width: 22px; height: 2px; }
+  .bl-faq-icon::after { left: 10px; top: 0; width: 2px; height: 22px; }
+  .bl-faq-item.is-open .bl-faq-icon::after { opacity: 0; }
+  .bl-faq-a { overflow: hidden; max-height: 0; transition: max-height .4s ease; }
+  .bl-faq-a-inner { padding: 0 0 30px; max-width: 760px; }
+  .bl-faq-a-inner p { font-family: var(--font-serif); font-size: 18px; line-height: 1.65; color: var(--color-graphite); margin: 0 0 16px; }
+
+  /* solutions + related chips/cards */
+  .bl-soln { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--color-fog); padding: 14px 22px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.03em; font-size: 13px; color: var(--color-obsidian-ink); text-decoration: none; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .bl-soln:hover { background: var(--color-obsidian-ink); color: var(--color-paper-white); border-color: var(--color-obsidian-ink); }
+  .bl-related { border: 1px solid var(--color-fog); padding: 36px 34px; text-decoration: none; display: flex; flex-direction: column; gap: 18px; transition: transform .25s ease, border-color .25s ease; }
+  .bl-related:hover { transform: translateY(-4px); border-color: var(--color-obsidian-ink); }
+
+  /* reveal */
+  .sl-reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sl-reveal { opacity: 1; transform: none; transition: none; } }
+
+  @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } }
+  @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } .bl-body { max-width: 880px; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="blog/blog-prims.jsx"></script>
+<script type="text/babel" data-presets="react" src="blog/blog-body-a.jsx"></script>
+<script type="text/babel" data-presets="react" src="blog/blog-body-b.jsx"></script>
+<script type="text/babel" data-presets="react" src="blog/blog-extras.jsx"></script>
+<script type="text/babel" data-presets="react" src="blog/blog-app.jsx"></script>
+</body>
+</html>

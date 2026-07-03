@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aavenir | Design Asylum Client Work</title>
+<meta name="description" content="Aavenir — AI-powered contract lifecycle management on ServiceNow. Brand messaging and website design by Design Asylum." />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+<style>
+  /* Blinker = Regular 400 only (design-system rule): remap heavier Blinker
+     faces to the 400 master so any weight (incl. DS bundle) renders Regular. */
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:500; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:600; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:700; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:800; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:900; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+
+  /* No italics anywhere (incl. design-system component internals) */
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  /* shared layout helpers */
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+  .da-rule { height: 1px; background: var(--color-fog); border: 0; }
+
+  /* section titles: Blinker Regular 400 */
+  #root h2 { font-weight: 400 !important; }
+
+  /* ---- breadcrumb ---- */
+  .sl-crumb { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; color: var(--color-ash); }
+  .sl-crumb a { color: var(--color-ash); text-decoration: none; transition: color .2s ease; }
+  .sl-crumb a:hover { color: var(--color-obsidian-ink); }
+  .sl-crumb-sep { color: var(--color-fog); }
+  .sl-crumb-cur { color: var(--color-obsidian-ink); }
+
+  /* ---- industry tag links ---- */
+  .sl-ind-link { color: var(--color-obsidian-ink); text-decoration: none; background-image: linear-gradient(var(--color-iris-voltage), var(--color-iris-voltage)); background-size: 0% 1.5px; background-repeat: no-repeat; background-position: left 100%; transition: background-size .3s ease; padding-bottom: 2px; }
+  .sl-ind-link:hover { background-size: 100% 1.5px; }
+
+  /* ---- sticky jump nav ---- */
+  .sl-jump { position: sticky; top: 116px; }
+  .sl-jump-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; font-family: var(--font-serif); font-size: 17px; color: var(--color-graphite); text-decoration: none; border-top: 1px solid var(--color-fog); transition: color .2s ease, padding-left .2s ease; }
+  .sl-jump-link:last-child { border-bottom: 1px solid var(--color-fog); }
+  .sl-jump-link .sl-jump-arrow { opacity: 0; transform: translateX(-6px); transition: opacity .2s ease, transform .2s ease; font-size: 13px; }
+  .sl-jump-link:hover { color: var(--color-obsidian-ink); padding-left: 8px; }
+  .sl-jump-link:hover .sl-jump-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ---- mail / arrow links ---- */
+  .da-mail { display: inline-flex; align-items: baseline; gap: 8px; text-decoration: none; color: var(--color-obsidian-ink); }
+  .da-mail .da-mail-arrow { display: inline-block; transition: transform .2s ease; }
+  .da-mail:hover .da-mail-arrow { transform: translate(3px, -3px); }
+
+  /* ---- card cta arrow nudge ---- */
+  .da-cardcta-arrow { display: inline-block; transition: transform .2s ease; }
+  .sl-mediacard:hover .da-cardcta-arrow { transform: translateX(4px); }
+
+  /* ---- team cards ---- */
+  .sl-team-card { transition: transform .25s ease, border-color .25s ease; }
+  .sl-team-card:hover { transform: translateY(-4px); border-color: var(--color-obsidian-ink); }
+  .sl-team-card:hover .sl-readmore { color: var(--color-iris-voltage); }
+  .sl-readmore-arrow { display: inline-block; transition: transform .2s ease; }
+  .sl-team-card:hover .sl-readmore-arrow { transform: translateX(5px); }
+
+  /* ---- service chip marquee ---- */
+  .sl-chip-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%); }
+  .sl-chiptrack { display: flex; align-items: center; gap: 16px; width: max-content; will-change: transform; }
+  .sl-chip-row-a { animation: sl-marquee 64s linear infinite; }
+  .sl-chip-row-b { animation: sl-marquee-rev 64s linear infinite; }
+  .sl-chip-wrap:hover .sl-chiptrack { animation-play-state: paused; }
+  @keyframes sl-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes sl-marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .sl-chip { display: inline-flex; align-items: center; gap: 16px; white-space: nowrap; flex-shrink: 0; border: 1px solid var(--color-fog); padding: 16px 26px; text-decoration: none; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+  .sl-chip .sl-chip-name { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; font-size: 15px; color: var(--color-obsidian-ink); transition: color .25s ease; }
+  .sl-chip .sl-chip-cta { font-family: var(--font-serif); font-size: 13px; color: var(--color-ash); display: inline-flex; align-items: center; gap: 5px; transition: color .25s ease; }
+  .sl-chip:hover { background: var(--color-obsidian-ink); border-color: var(--color-obsidian-ink); }
+  .sl-chip:hover .sl-chip-name { color: var(--color-paper-white); }
+  .sl-chip:hover .sl-chip-cta { color: rgba(255,255,255,0.72); }
+
+  /* ---- before / after slider ---- */
+  .sl-ba { position: relative; overflow: hidden; user-select: none; touch-action: none; aspect-ratio: 16 / 9; cursor: ew-resize; }
+  .sl-ba-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .sl-ba-tag { position: absolute; top: 18px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; padding: 8px 16px; background: rgba(24,31,31,0.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--color-paper-white); }
+  .sl-ba-handle { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--color-paper-white); transform: translateX(-1px); pointer-events: none; }
+  .sl-ba-knob { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 54px; height: 54px; border-radius: 999px; background: var(--color-paper-white); display: flex; align-items: center; justify-content: center; gap: 2px; font-family: var(--font-display); font-weight: 400; font-size: 16px; color: var(--color-obsidian-ink); pointer-events: none; }
+
+  /* ---- generic CTA pills never wrap ---- */
+  #root button { white-space: nowrap; }
+
+  /* ---- reveal-up on scroll ---- */
+  .sl-reveal { opacity: 0; transform: translateY(28px); transition: opacity .72s cubic-bezier(.22,.61,.36,1), transform .72s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sl-chiptrack { animation: none; }
+    .sl-reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ============ LARGE-MONITOR RESPONSIVENESS ============ */
+  @media (min-width: 1728px) {
+    :root { --page-max-width: 1680px; --da-gutter: 56px; --gutter: clamp(40px, 3vw, 64px); }
+  }
+  @media (min-width: 2240px) {
+    :root {
+      --page-max-width: 2080px; --da-gutter: 80px; --gutter: clamp(56px, 3vw, 96px);
+      --text-mega: clamp(48px, 13vw, 220px); --text-section: clamp(34px, 5vw, 78px);
+      --text-statement: clamp(28px, 4.4vw, 78px); --text-stat: clamp(40px, 5vw, 92px);
+      --text-lede: clamp(20px, 2.4vw, 36px);
+    }
+  }
+  @media (min-width: 3200px) {
+    :root {
+      --page-max-width: 2880px; --da-gutter: 120px; --gutter: clamp(96px, 4vw, 160px);
+      --text-mega: clamp(48px, 13vw, 320px); --text-section: clamp(34px, 5vw, 104px);
+      --text-statement: clamp(28px, 4.4vw, 104px); --text-stat: clamp(40px, 5vw, 124px);
+      --text-lede: clamp(20px, 2.4vw, 46px);
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="aavenir/aav-app.jsx"></script>
+</body>
+</html>

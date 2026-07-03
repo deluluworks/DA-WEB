@@ -1,0 +1,7 @@
+# Server-level 301 redirects (preferred over the meta-refresh stubs in /project/*.html)
+# Both alias paths permanently resolve to the canonical Sevenloop client hub,
+# passing link equity through — mirroring the live site's behaviour.
+
+/project/sevenloop                 /clients/sevenloop   301
+/project/sevenloop-explainer-film  /clients/sevenloop   301
+/project/aavenir                   /clients/aavenir     301

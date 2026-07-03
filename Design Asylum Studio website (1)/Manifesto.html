@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Our Manifesto | Design Asylum — B2B Branding Agency</title>
+<meta name="description" content="Why we exist. The belief statement of Design Asylum — a B2B branding studio that refuses to play it safe." />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+<style>
+  /* Blinker = Regular 400 only (design-system rule): remap every heavier
+     Blinker face to the 400 master so any weight request (incl. the DS
+     bundle's hardcoded 700/800) renders at Regular. Fraunces untouched. */
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:500; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:600; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:700; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:800; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Blinker'; font-style:normal; font-weight:900; font-display:swap; src:url('https://cdn.jsdelivr.net/npm/@fontsource/blinker/files/blinker-latin-400-normal.woff2') format('woff2'); }
+
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+  #root h2 { font-weight: 400; }
+
+  .da-mail { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .da-mail .da-mail-arrow { display: inline-block; transition: transform .2s ease; }
+  .da-mail:hover .da-mail-arrow { transform: translate(3px, -3px); }
+  .sl-crumb { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; }
+  .sl-crumb a { text-decoration: none; }
+  .sl-crumb-sep { font-size: 13px; }
+
+  /* reveal */
+  .sl-reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sl-reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ============ MANIFESTO (pure typographic long-read) ============ */
+  .mf-wrap { max-width: 720px; margin: 0 auto; }
+
+  .mf-h1 {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 400;
+    text-transform: none; letter-spacing: -0.028em; line-height: 0.98;
+    font-size: clamp(50px, 6.2vw, 104px);
+    color: var(--color-obsidian-ink);
+  }
+
+  .mf-body p { margin: 0 0 30px; }
+  .mf-body p:last-child { margin-bottom: 0; }
+
+  /* base body — Fraunces, comfortable measure & rhythm */
+  .mf-p {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 1.65vw, 23px); line-height: 1.74;
+    color: var(--color-graphite);
+  }
+
+  /* large opening lead */
+  .mf-lead {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3vw, 40px); line-height: 1.28;
+    letter-spacing: -0.01em;
+    color: var(--color-obsidian-ink);
+    margin-bottom: 48px !important;
+    text-wrap: balance;
+  }
+
+  /* mid-essay emphasis lines */
+  .mf-emph {
+    font-family: var(--font-serif);
+    font-size: clamp(25px, 2.5vw, 34px); line-height: 1.32;
+    letter-spacing: -0.01em;
+    color: var(--color-obsidian-ink);
+    margin: 8px 0 30px !important;
+  }
+
+  .mf-body strong { color: var(--color-obsidian-ink); font-weight: 600; }
+
+  @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } .mf-wrap { max-width: 760px; } }
+  @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } .mf-wrap { max-width: 820px; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="manifesto/manifesto.jsx"></script>
+</body>
+</html>

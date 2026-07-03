@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sevenloop Brochure - Design Asylum</title>
+<meta name="description" content="Sevenloop Brochure project showcase as a print collateral" />
+
+<!-- React + Babel (pinned) -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- Design Asylum design system -->
+<link rel="stylesheet" href="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/styles.css" />
+<script src="_ds/design-asylum-studio-v3-5943145e-1a4f-4091-8df6-de00e686edbf/_ds_bundle.js"></script>
+
+<style>
+  :root {
+    --da-gutter: 40px;
+    --page-max-width: 1500px;
+    --gutter: clamp(16px, 3vw, 40px);
+    --radius-cards: 0px;
+    --radius-body-blocks: 0px;
+    --pr-stack-gap: clamp(64px, 8vw, 148px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 1180px;
+    background: var(--color-paper-white);
+    color: var(--color-obsidian-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
+  #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+  .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
+
+  /* brochure figures */
+  .pr-fig { position: relative; width: 100%; overflow: hidden; }
+  .pr-fig .pr-cap { position: absolute; left: 22px; bottom: 18px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: rgba(255,255,255,0.6); }
+  .pr-fig .pr-idx { position: absolute; right: 22px; top: 18px; font-family: var(--font-display); font-weight: 400; font-size: 12px; color: rgba(255,255,255,0.42); }
+
+  /* AI chip row */
+  .pr-aichip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--color-fog); padding: 11px 18px; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; color: var(--color-obsidian-ink); text-decoration: none; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  .pr-aichip:hover { background: var(--color-obsidian-ink); color: var(--color-paper-white); border-color: var(--color-obsidian-ink); }
+
+  /* reveal */
+  .sl-reveal { opacity: 0; transform: translateY(34px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .sl-reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sl-reveal { opacity: 1; transform: none; transition: none; } }
+
+  @media (min-width: 1728px) { :root { --page-max-width: 1680px; --da-gutter: 56px; } }
+  @media (min-width: 2240px) { :root { --page-max-width: 2080px; --da-gutter: 80px; } }
+  @media (min-width: 3200px) { :root { --page-max-width: 2880px; --da-gutter: 120px; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" src="sevenloop/sl-shared.jsx"></script>
+<script type="text/babel" data-presets="react" src="print/print-page.jsx"></script>
+<script type="text/babel" data-presets="react" src="print/print-app.jsx"></script>
+</body>
+</html>
