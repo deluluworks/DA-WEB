@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: pricing/section-port, phase: testing }
+cursor: { unit: updates/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -213,15 +213,26 @@ alongside the already-shared `svc-grid`/`svc-card`/`auth-tag` (ported during
 | author-tanmaya-rao/metadata | Title + description via Metadata API | passed | Title "Tanmaya Rao" (renders "Tanmaya Rao — Design Asylum"); description ported from the export's about-bio opening sentence |
 | author-tanmaya-rao/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/team`, and `team/section-port`'s Tanmaya Rao card → this page (closes that loop). Moved `/author/tanmaya-rao` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Pricing (`/pricing`) — `Pricing.html`
+
+Source: `pricing/pricing.jsx` — utility 8-row INR/USD/timeline table page.
+`/contact`'s wire-links unit already linked here back in Run 1 (as a
+pending-route placeholder); that link now resolves.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| pricing/section-port | `app/pricing/page.tsx`, `components/pricing/PricingTable.tsx`, `app/styles/pricing.css` | passed | Table wrapper scrolls horizontally on narrow viewports (`min-width: 720px` inside an `overflow-x: auto` wrapper) rather than reflowing the 4-column matrix into single columns — a data table like this can't usefully stack, and this keeps the page body itself overflow-free (verified at 375/768). Page-scoped `.pricing-page .pr-promise-band .pr-promise` override tunes the shared `.pr-promise` class (already used by Why Us in a prose-flow context) to this page's headline-scale closing treatment — same class name, different page-scoped rule, matching the export's own per-page convention of tuning shared class names per context. **Source has several verbatim typos** in the intro/footnote copy ("give you sense of", "retianer", "combiantion", "vs its not is not the same", "the not the same") — ported as-is rather than silently corrected, same policy as the "Experties" typo flagged on the Author page; human should decide whether to clean these up. Tested: build/lint/typecheck clean, 0 failing checks (10 pending-route soft-warnings), screenshot-verified 1440/375, no overflow (table scrolls internally), mobile nav works |
+| pricing/metadata | Title + description via Metadata API | passed | Title "Pricing" (renders "Pricing — Design Asylum"); description is new (the export had no `<meta name="description">` override for this page beyond the site default) |
+| pricing/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "team" link in the intro → `/team`, closing CTA (new, not in source — same added-closer pattern as Team/Why Us/Why Design Asylum) → `/contact`. Plus the pre-existing inbound link from `/contact` now resolves. Moved `/pricing` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author pattern above) when picked up.
+Author/Pricing pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Pricing | `/pricing` | `pricing/` | pricing/section-port | pending |
 | Recent Updates | `/updates` | `footer/recent-updates.jsx` | updates/section-port | pending |
 | Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
 | FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
