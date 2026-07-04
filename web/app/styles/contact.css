@@ -1,0 +1,164 @@
+/* Contact form — ported from da/sections-4.jsx DAContact */
+
+.da-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.da-contact-form {
+  background: var(--color-paper-white);
+  border: 1px solid var(--color-obsidian-ink);
+  border-radius: var(--radius-cards);
+  padding: 36px;
+}
+
+.da-contact-form-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.da-contact-form-head span:first-child {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 18px;
+  color: var(--color-obsidian-ink);
+  white-space: nowrap;
+}
+.da-contact-form-note {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-ash);
+}
+
+.da-contact-form-fields {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.da-contact-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid var(--color-fog);
+  background: transparent;
+  padding: 12px 2px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--color-obsidian-ink);
+  outline: none;
+}
+.da-contact-textarea {
+  resize: vertical;
+}
+
+.da-contact-submit {
+  margin-top: 28px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
+.da-contact-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.da-contact-status {
+  margin: 16px 0 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+}
+.da-contact-status-ok {
+  color: var(--color-deep-teal);
+}
+.da-contact-status-err {
+  color: var(--color-block-maroon);
+}
+
+.da-contact-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+.da-contact-grid {
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  gap: 72px;
+  align-items: start;
+}
+.da-contact-intro h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: var(--text-section);
+  color: var(--color-obsidian-ink);
+}
+.da-contact-intro-links {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.da-mail-serif {
+  font-family: var(--font-serif) !important;
+  font-size: 24px !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: var(--color-obsidian-ink);
+}
+.da-contact-intro p {
+  margin-top: 32px;
+  max-width: 360px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+
+.da-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--color-ash);
+}
+.da-breadcrumb a {
+  color: var(--color-ash);
+}
+.da-breadcrumb a:hover {
+  color: var(--color-obsidian-ink);
+}
+.da-breadcrumb .da-breadcrumb-current {
+  color: var(--color-obsidian-ink);
+}
+
+@media (max-width: 900px) {
+  .da-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .da-contact-page {
+    padding-top: 110px;
+  }
+}
