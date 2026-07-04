@@ -866,6 +866,18 @@ commit, just renamed/repointed) partway through this run, finally
 resolving the durable-branch-naming gap every prior run's log flagged;
 this PR targets `main` accordingly.
 
+**Post-PR fix**: the Vercel preview for PR #7 initially failed —
+`Error: No Output Directory named "public" found after the Build
+completed` — even though `next build` itself succeeded (all 16 routes
+prerendered) in the same log. Confirmed via `mcp__Vercel__get_project` that
+the Vercel project's `framework` field had reset to `null` (Root Directory
+was still correctly `web`), so it fell back to static-site output
+conventions instead of Next.js's `.next` output. Added
+`web/vercel.json` (`{"framework": "nextjs"}`) so this is pinned in-repo
+rather than dependent on the dashboard's auto-detection; the very next
+deploy on the same PR went **Ready**:
+https://designasylum-studio-git-6e4374-ankush-misras-projects-a0fc591e.vercel.app
+
 **Next run should**: pick up `industry-manufacturing/section-port`
 (`industry/ind-*.jsx`) — reuse `components/svc-template/*` and the shared
 `bl-*`/`svc-section-*` CSS from this run rather than re-porting the
