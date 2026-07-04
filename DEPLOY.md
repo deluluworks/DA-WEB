@@ -1,95 +1,105 @@
-# Deploying the Next.js site (`web/`)
+# Deploying Design Asylum Studio
 
-The site is a static-first Next.js App Router app — TypeScript, git-based
-content (MDX + typed content files under `web/content/`, no database), the
-Design Asylum Studio v3 design system self-hosted (fonts, tokens). It builds
-and renders correctly with **zero** environment variables set; the vars below
-only unlock live lead delivery and analytics.
+The site is being rebuilt as a static-first **Next.js App Router** app at
+`web/` (TypeScript, git-based content, no database, no PHP). It deploys to
+**Vercel**. The legacy PHP/Hostinger site (repo root, outside `web/`) stays
+live and untouched until the new app is ready to cut over — see
+[Legacy: Hostinger (PHP)](#legacy-hostinger-php) below.
 
-## How deploys work here
+## How deploys work
 
-1. Every push to a work branch (e.g. `claude/elegant-davinci-r2vqud`,
-   whatever this session's branch is) creates a **Vercel preview deployment**
-   automatically, once a human has connected this repo to a Vercel project
-   (one-time setup, below). Preview URLs show up on the PR.
-2. **Nothing goes live on its own.** The site reaches production only when a
-   human merges the work branch's PR into the production branch
-   (`claude/design-asylum-homepage-elx1ah` — the repo's current default
-   branch) or promotes a specific deployment in the Vercel dashboard. No
-   automated routine triggers a production deploy or promotion.
-3. `web/` is the app root. Point the Vercel project's **Root Directory**
-   setting at `web/` — the legacy PHP files at the repo root
-   (`index.php`, `includes/`, `api/`, `da/`, `_ds/`) are pre-cutover
-   artifacts, untouched by this build, and should not be deployed by Vercel.
+- **Every push** to any branch connected to the Vercel project produces a
+  **Preview Deployment** — a unique URL to review before anything goes
+  live. This is a one-time setup a human does once in the Vercel dashboard
+  (Import the repo → set **Root Directory** to `web/`); after that it's
+  automatic on every push.
+- **Production** only updates when a human merges the branch to the
+  production branch (or promotes a specific deployment in the Vercel
+  dashboard). Nothing in this workflow — including this automated build
+  routine — pushes to the production branch or triggers a production
+  deploy.
+- Vercel builds with `next build` and serves with its own runtime — no
+  `next start` process to manage, no server to patch.
 
-## One-time Vercel project setup (human)
+## One-time setup (human)
 
-1. In Vercel, **Add New Project** → import
-   `DesignAsylum/designasylum.studio-webiste`.
-2. **Root Directory**: `web`.
-3. Framework preset: Next.js (auto-detected).
-4. Build command / output: leave as Next.js defaults (`next build`).
-5. Add the environment variables below (Production **and** Preview scopes —
-   previews are how this gets tested before every promotion).
-6. Deploy. Every subsequent push to any branch now gets a preview; merges to
-   the production branch (or manual promotion) go live.
+1. In Vercel: **Add New → Project**, import
+   `designasylum/designasylum.studio-webiste`, set **Root Directory** to
+   `web`. Framework preset auto-detects Next.js.
+2. Set environment variables (Project Settings → Environment Variables).
+   None are required for the app to **build** — every integration below
+   degrades gracefully when its variable is unset — but they're required
+   for the corresponding feature to actually work in production:
 
-## Environment variables
+   | Variable | Used by | Required for |
+   |---|---|---|
+   | `SHEETS_WEBHOOK_URL` | `app/api/contact/route.ts` | Leads reaching the Google Sheet |
+   | `RESEND_API_KEY` | `app/api/contact/route.ts` | Email notification on new lead |
+   | `CONTACT_NOTIFY_TO` | `app/api/contact/route.ts` | Where the Resend email goes |
+   | `NEXT_PUBLIC_GA_ID` | `components/Analytics.tsx` | Google Analytics (GA4) |
+   | `NEXT_PUBLIC_GTM_ID` | `components/Analytics.tsx` | Google Tag Manager |
+   | `NEXT_PUBLIC_CLARITY_ID` | `components/Analytics.tsx` | Microsoft Clarity |
+   | `NEXT_PUBLIC_GOOGLE_ADS_ID` | `components/Analytics.tsx` | Google Ads conversion tag |
+   | `NEXT_PUBLIC_SITE_URL` | `lib/site-config.ts` | Correct absolute URLs in metadata/sitemap |
 
-All optional at build time — the app builds and every page server-renders
-without any of them. They gate specific runtime features:
+3. **Google Sheets webhook (`SHEETS_WEBHOOK_URL`)**: create a Google Sheet,
+   then Extensions → Apps Script, paste a script that reads the POSTed JSON
+   body (`name`, `email`, `slot`, `message`, `submittedAt`) and appends a
+   row via `SpreadsheetApp`. Deploy it as a Web App (Execute as: *Me*,
+   Access: *Anyone*), and use the resulting `/exec` URL as
+   `SHEETS_WEBHOOK_URL`. Test with a real submission on the Preview
+   Deployment once deployed — this can't be exercised end-to-end in the
+   sandboxed build environment (all external hosts are network-blocked
+   there), only the graceful-failure path is tested there.
+4. **Resend** (optional): create an API key at resend.com, verify a sending
+   domain, set `RESEND_API_KEY` + `CONTACT_NOTIFY_TO`.
 
-| Variable | Required for | Notes |
-|---|---|---|
-| `SHEETS_WEBHOOK_URL` | Contact form → Google Sheets | See "Google Sheets webhook" below. Without it, `/api/contact` still validates and returns success, it just skips the Sheets append. |
-| `RESEND_API_KEY` | Email notification on new leads | Optional even with Sheets configured. |
-| `RESEND_TO_EMAIL` | — | Defaults to `hello@designasylum.in`. |
-| `RESEND_FROM_EMAIL` | — | Defaults to `onboarding@resend.dev`. Set this to an address on a domain verified in Resend before relying on it for real delivery. |
-| `NEXT_PUBLIC_CLARITY_ID` | Microsoft Clarity | Omit to skip the script entirely. |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics (GA4) | Omit to skip. Ignored if `NEXT_PUBLIC_GTM_ID` is set (GTM subsumes it). |
-| `NEXT_PUBLIC_GTM_ID` | Google Tag Manager | If set, loads GTM instead of a bare gtag.js include. |
-| `NEXT_PUBLIC_GOOGLE_ADS_ID` | Google Ads conversion tag | Omit to skip. |
+## Ongoing workflow
 
-`NEXT_PUBLIC_*` vars are inlined at build time and visible in the browser —
-that's expected for analytics IDs, never put a secret in one of them.
+1. Push to a feature branch → review the auto-generated Preview URL
+   (comment on the PR, or the Vercel dashboard).
+2. Merge to the production branch when ready → Vercel promotes
+   automatically, or a human promotes a specific build manually.
+3. `SITE-PROGRESS.md` (repo root) tracks what's been ported, tested, and
+   what's still pending — check it before assuming a page is live-ready.
 
-### Google Sheets webhook (Apps Script)
-
-The contact route posts a JSON body (`name`, `email`, `company`,
-`submittedAt`, `message`) to `SHEETS_WEBHOOK_URL` — no Google API
-credentials needed, just a deployed Apps Script:
-
-1. Create (or open) the target Google Sheet.
-2. **Extensions → Apps Script**, replace the default code with a `doPost`
-   handler that parses `e.postData.contents` as JSON and appends a row.
-3. **Deploy → New deployment → Web app**. Execute as "Me", access "Anyone".
-4. Copy the deployment's web app URL into `SHEETS_WEBHOOK_URL` in Vercel.
-5. Submit the contact form on a preview deployment and confirm a new row
-   appears — this is exactly the "controlled downstream failure" path that
-   the sandbox test suite can't verify for real (all external hosts are
-   blocked there), so this manual check on a live preview is the real proof.
-
-## Testing before merge
-
-From `web/`:
+## Local development
 
 ```
-npm run build && npm run start -- -p 8080   # production build + serve
+cd web
+npm install
+npm run dev      # dev server, hot reload — do NOT use for final verification
+npm run build && npm run start   # production build + serve, matches Vercel
+```
+
+`next dev` hides real SSR/hydration behavior; always verify with
+`build` + `start` before calling a page done (see `web/.testing/`).
+
+## Testing harness
+
+`web/.testing/run-checks.mjs` drives a Playwright Chromium against a running
+`next start` server: SSR content check, hydration/console-error check,
+interactive-element click-sweep, internal-link check, responsive overflow
+check (375/768/1280/1440), and design-system adherence (no stray
+box-shadows, Fraunces body font). Run per-route:
+
+```
 node .testing/run-checks.mjs --url http://127.0.0.1:8080/<slug> --unit <id>
 ```
 
-See `SITE-PROGRESS.md` for the current unit queue and `.testing/routes.json`
-for the slug table `run-checks.mjs` checks against.
-
 ---
 
-## Legacy: deploying the PHP homepage to Hostinger
+## Legacy: Hostinger (PHP)
 
-This section describes the **pre-cutover** PHP shell at the repo root
-(`index.php`, `includes/`, `api/contact.php`, `da/`). It is left in the repo
-untouched during the Next.js migration and should not be edited or deployed
-alongside `web/`. Once the Next.js site is promoted to production, this
-section — and the files it describes — can be retired.
+This section is preserved for the current live site at the repo root
+(`index.php`, `includes/`, `api/`, `da/`, `_ds/`) until cutover. **Do not
+edit these files as part of the Next.js migration** — they're read-only
+scaffolding for the old stack.
+
+This is a PHP site: `index.php` renders the page shell and injects site
+config server-side; the page itself is still a build-less React app
+(loaded from CDN via Babel Standalone) for the visual layer, with a real
+PHP backend for the contact form.
 
 ### File layout
 

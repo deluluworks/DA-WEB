@@ -1,0 +1,29 @@
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/nav.css";
+@import "./styles/footer.css";
+@import "./styles/contact.css";
+@import "./styles/ds-components.css";
+@import "./styles/home.css";
+@import "./styles/manifesto.css";
+@import "./styles/why-design-asylum.css";
+@import "./styles/why-us.css";
+
+/* Mobile-first: no desktop-contract minimum width (supersedes the export's
+   `body { min-width: 1180px }`). Layout must reflow at every breakpoint. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

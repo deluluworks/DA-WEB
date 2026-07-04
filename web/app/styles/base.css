@@ -1,0 +1,191 @@
+/* ===========================================================================
+   Design Asylum — base element defaults & type helper classes
+   Ported from _ds tokens/base.css + motion.css reveal/pill-hover primitives.
+   =========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-paper-white);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variation-settings: var(--serif-variation);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+}
+
+::selection {
+  background: var(--color-solar-bloom);
+  color: var(--color-obsidian-ink);
+}
+
+/* No italics anywhere except where a component explicitly opts in via
+   font-style on its own element (design-system rule: Blinker never italic). */
+
+.da-wrap {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.da-rule {
+  height: 1px;
+  background: var(--color-fog);
+  border: 0;
+}
+
+/* --- Display type helpers (expanded sans, uppercase) --------------------- */
+.da-hero,
+.da-display,
+.da-heading-lg,
+.da-eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  font-stretch: var(--display-stretch);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.da-hero {
+  font-size: var(--text-hero);
+  line-height: var(--leading-hero);
+  letter-spacing: var(--tracking-hero);
+}
+.da-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+.da-heading-lg {
+  font-size: var(--text-heading-lg);
+  line-height: var(--leading-heading-lg);
+  letter-spacing: var(--tracking-heading-lg);
+}
+.da-eyebrow {
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: 0.12em;
+}
+
+/* --- Serif editorial helpers ---------------------------------------------- */
+.da-heading {
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  margin: 0;
+}
+.da-subheading {
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  margin: 0;
+}
+.da-quote {
+  font-family: var(--font-serif);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+  text-wrap: balance;
+}
+.da-body {
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+.da-body-sm {
+  font-family: var(--font-serif);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body-sm);
+}
+.da-caption {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  text-transform: uppercase;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* --- Motion primitives (reveal-up / pill-hover / gradient-loop) ----------- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+  transition:
+    opacity var(--motion-reveal) var(--ease-out),
+    transform var(--motion-reveal) var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal-up.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.pill-hover {
+  transition:
+    transform var(--motion-base) var(--ease-out),
+    background-color var(--motion-base) var(--ease-soft),
+    color var(--motion-base) var(--ease-soft),
+    filter var(--motion-base) var(--ease-soft);
+}
+.pill-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+.pill-hover:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes da-gradient-loop {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.gradient-loop {
+  background-size: 200% 200%;
+  animation: da-gradient-loop var(--motion-loop) var(--ease-inout) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .pill-hover {
+    transition: none !important;
+  }
+  .pill-hover:hover,
+  .pill-hover:active {
+    transform: none !important;
+  }
+  .gradient-loop {
+    animation: none !important;
+  }
+}
+
+/* --- No box-shadows anywhere (design-system rule) ------------------------- */
+* {
+  box-shadow: none;
+}
