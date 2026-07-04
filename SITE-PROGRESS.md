@@ -1,12 +1,12 @@
 ---
-branch: claude/elegant-davinci-d402sk
-pr: (opened this run — see Run 4 note; PR #5 merged into production, #3 closed as stale duplicate)
+branch: claude/elegant-davinci-0oj783
+pr: (opening this run — see Run 5 note; PR #6 merged into production)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 32da12617054ba07cf58679e44a3fa3eee9dfbc0
+last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
 skip: []
-cursor: { unit: clients/section-port, phase: pending }
+cursor: { unit: clients/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS
@@ -239,15 +239,35 @@ earlier page; this is the first page needing the filled/outline variants).
 | updates/metadata | Title + description via Metadata API | passed | Title "Recent Updates" (renders "Recent Updates — Design Asylum"); description ported from the intro paragraph |
 | updates/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "client engagements" link in the intro → `/clients` (pending route), closing CTA (new, not in source — same added-closer pattern as Team/Pricing/Why Us/Why Design Asylum) → `/contact`. `/updates` was already wired into the footer ("Recent updates") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Clients (`/clients`) — `Clients - Index.html`
+
+Source: `footer/clients-index.jsx` — H1 + 44-tile client grid, no other
+sections. Every tile was an unwired `href="#"` in the export; only Sevenloop
+and Aavenir have a real client-hub route queued in the table below, so those
+two tiles link to their real (still-pending) `/clients/sevenloop` and
+`/clients/aavenir` routes and the other 42 link to a same-page anchor
+(`/clients#<slug>`, with a matching `id` on each tile) — same "link to
+nearest real destination, don't invent one" convention as Team's 33
+unbuilt-bio cards. Reused the export's `ci-grid`/`ci-tile` classes verbatim
+as page-scoped CSS (`app/styles/clients.css`, not promoted to
+`ds-components.css` since nothing else in the queue reuses this exact tile
+shape) with a mobile-first 1/2/3/4-column grid (export was a fixed 4-column
+desktop grid with no mobile layout).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| clients/section-port | `app/clients/page.tsx`, `app/styles/clients.css` | pending | 44-tile grid, reveal-up on the grid section. Added a closing `/contact` CTA (not in source — same added-closer pattern as Team/Pricing/Updates/Why Us/Why Design Asylum). Tested: build/lint/typecheck clean, `node .testing/run-checks.mjs --unit clients/section-port` 0 failing checks (13 pending-route soft-warnings — Sevenloop/Aavenir hubs + the rest of the still-unbuilt queue), screenshot-verified 1440/375 full scroll-through (header, tile grid, hover state, closing CTA), no overflow, mobile nav works, grid reflows 1→2→3→4 columns |
+| clients/metadata | Title + description via Metadata API | pending | Title "Clients" (renders "Clients — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| clients/wire-links | 3+ real internal links | pending | Breadcrumb → `/`, closing CTA → `/contact`, Sevenloop/Aavenir tiles → their real pending client-hub routes, remaining 42 tiles → same-page `/clients#<slug>` anchors. `/clients` was already the primary nav's "Work"/"Clients" target and the footer's "Website projects"/"Clients" target since Run 1 — this is the single most-linked-to route landing this run (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all point here); moved `/clients` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs`, converting all of those prior soft-warnings into real passing link checks |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author/Pricing/Recent-Updates pattern above) when picked up.
+Author/Pricing/Recent-Updates/Clients pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
 | FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
 | Service — Branding Agency | `/service/branding-agency` | `service/` | service-branding-agency/section-port | pending |
