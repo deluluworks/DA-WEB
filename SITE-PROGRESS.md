@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
 skip: []
-cursor: { unit: faq/section-port, phase: pending }
+cursor: { unit: faq/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS
