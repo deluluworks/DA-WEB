@@ -2,9 +2,9 @@
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 643369f605e527132c897548372a4f26ac210aff
+last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
 skip: []
-cursor: { unit: location-ahmedabad/section-port, phase: pending }
+cursor: { unit: global/content-studies, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -390,6 +390,57 @@ Page-scoped hero (`.sol-h1`, `.sol-marquee`/`.sol-callout` spacing) in
 | solution-ai-saas-website/metadata | Title + description via Metadata API | passed | Title "AI SaaS Product Website Design Agency"; description ported verbatim from the export's hero subhead. Marker text for `run-checks.mjs` |
 | solution-ai-saas-website/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 9 portfolio cards → real `/clients#<slug>` tiles (Aavenir → `/clients/aavenir` hub; "ASPI & CIS Tech Diplomacy" → the "Aspi & CIS" tile via the same override Service uses). "Solutions" breadcrumb crumb kept non-link (no solutions-index page). Moved `/solution/ai-saas-website` from `PENDING_ROUTES` to `BUILT_ROUTES` |
 
+## Location — Ahmedabad (`/location/ahmedabad`) — `Location - Ahmedabad.html`
+
+Source: `location/loc-*.jsx` (app/blocks/body). Same `Svc*`-template family as
+Service/Industry/Solution, so it **reused `components/svc-template/*` wholesale**
+— no new template components. Differences handled this run:
+- **2-column portfolio** — Location's four city projects lay out 2-wide
+  (`repeat(2,1fr)`) in the export rather than the shared 3-column default.
+  Added an optional `cols` prop to `Portfolio` (+ a `.svc-grid.svc-grid-2`
+  desktop override in `ds-components.css`) that keeps the grid at two columns
+  from 1000px up while still 1→2 on mobile/tablet (mobile-first). Also positions
+  the portfolio **right after the hero** (matches the export's mount order),
+  before the callout/marquee, unlike Industry/Solution.
+- **Page-only `Info` block** (`.loc-info`/`.loc-info-label`) — an outlined
+  label + copy panel used inside the long-form body (Best for / What is
+  included / Engagement model). Ported verbatim from the export's `#svc-extra`
+  block into `app/styles/location.css` (page-scoped — nothing else in the queue
+  reuses it); a small `Info` component lives in the page file.
+- **Two-line CTA band** — reuses the shared `.svc-cta-band` with `.svc-cta-lead`
+  (already in `ds-components.css` since Run 6); the lead + heading wrap in a
+  `<div>` so the flex band stacks the copy block above the button on mobile.
+- No experts grid (Location omits it), so `Experts` is not imported here.
+
+Page-scoped hero (`.loc-h1`) + marquee/callout spacing in
+`app/styles/location.css`.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| location-ahmedabad/section-port | `app/location/ahmedabad/page.tsx`, `app/styles/location.css`, `cols` prop + `.svc-grid-2` on `Portfolio`, page-only `Info`/`.loc-info` | passed | Hero + 2-col portfolio(4) + Q&A callout + standalone marquee + ToC(9)+long-form body (8 sections, 3 `loc-info` blocks) + two-line CTA band(loc-09) + FAQ(6) + related(6). 0 FIX iterations. Tested: build/lint/typecheck clean, `run-checks.mjs` 0 failing (5 pending-route soft-warnings from nav/footer/related → /blog, /audit/hackuity, /print/sevenloop, /clients/sevenloop), screenshot-verified 1440/375 (hero, 2×2 portfolio, callout, marquee, ToC+body, CTA band, mobile single-column portfolio with wrapped tabs, mobile CTA stacks copy above button). FAQ/Related first showed blank in the `fullPage` capture — the **same reveal-up timing artifact** logged in Runs 3/5/6; confirmed benign via computed-style probe (`is-revealed` true, opacity ~1, 6 details + 6 related in DOM) + a targeted in-view crop |
+| location-ahmedabad/metadata | Title + description via Metadata API | passed | Title "Web Design & Branding Agency in Ahmedabad" (renders with the layout template); description ported verbatim from the export's `<meta name="description">`. Marker text ("Branding Agency in Ahmedabad") for `run-checks.mjs` |
+| location-ahmedabad/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 4 portfolio cards → their real `/clients#<slug>` tiles (Rewild Farms / Cloudphysician / Entropik / Relanto all on the /clients grid). "Locations" breadcrumb crumb kept non-link (no locations-index page exists/queued). Moved `/location/ahmedabad` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
+## FAQ — Corporate Rebrand Expert (`/faq/corporate-rebrand-expert`) — `FAQ - Corporate Rebrand Expert.html`
+
+Source: `faq/faq-app.jsx` — a single-question "answer" page (not the accordion
+index; that's the separate `/faq` page from `footer/faq-index.jsx`, already
+passed). Self-contained single file: question hero, long-form answer body
+(reuses the shared `bl-*` article primitives), a highlighted case-study
+callout, a key-facts table, and a services-strip. No svc-template reuse (it's
+not that template family). New page-scoped CSS in `app/styles/faq-detail.css`:
+`.faq-callout`/`.faq-facts`/`.faq-fact*`/`.svc-soln` — ported verbatim from the
+export's `<style>` block, with one mobile-first addition (the export's fixed
+`220px 1fr` fact row stacks to a single column below 640px). Reuses
+`.svc-hero`/`.svc-page` (service.css) for hero padding and the `.fq-closing*`
+classes (faq.css) for the added closing CTA.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| faq-corporate-rebrand-expert/section-port | `app/faq/corporate-rebrand-expert/page.tsx`, `app/styles/faq-detail.css` | passed | Question hero + answer body (h2, 2 `bl-sub` blocks, engagement 4-item `bl-ul`) + case-study callout + 3-row key-facts table + services strip (6 pills) + added closing CTA. 0 FIX iterations. The services strip's 6 links were unwired `href="#"` in the export with no per-service route (only `/service/branding-agency` exists), so they render as static/decorative `<span>` pills — same "no invented destination" policy as the Author page's tag pills. Tested: build/lint/typecheck clean, `run-checks.mjs` 0 failing (5 pending-route soft-warnings from nav/footer → /blog, /audit/hackuity, /print/sevenloop, /clients/sevenloop), screenshot-verified 1440/375 (hero, answer body, callout, facts table, services strip, closing CTA; mobile facts stack to single column, pills reflow full-width). Services strip + closing heading first showed blank in the `fullPage` capture — the **same reveal-up timing artifact** logged in Runs 3/5/6; confirmed benign via computed-style probe (`.faq-services` revealed, opacity 1, 6 pills; closing h2 revealed) + a targeted in-view crop |
+| faq-corporate-rebrand-expert/metadata | Title + description via Metadata API | passed | Title ported via `title.absolute` (the export's `<title>` is the full question with no site suffix, so it bypasses the layout's "%s — Design Asylum" template); description ported verbatim from the export's `<meta name="description">`. Marker text ("align executive stakeholders around a new brand strategy") for `run-checks.mjs` |
+| faq-corporate-rebrand-expert/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/faq` (the FAQ index, built earlier — the export's crumbs were unwired `href="#"`), closing CTA → `/contact`, closing secondary → `/faq`. "Corporate Rebrand Expert" breadcrumb crumb is the current page (non-link). Moved `/faq/corporate-rebrand-expert` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
@@ -402,10 +453,10 @@ matches before assuming a 1:1 fit.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
+| FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | **passed (Run 7)** — see page section above |
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | **passed (Run 6)** — see page section below |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | **passed (Run 6)** — see page section below |
-| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending — next up; reuse svc-template + shared CTA band. **Location adds `.svc-cta-lead`** (already ported to ds-components.css this run) |
+| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | **passed (Run 7)** — see page section above |
 | Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — needs global/content-studies first |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | pending |
 | Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — needs global/content-blog first |
@@ -1003,3 +1054,79 @@ deploys `main` automatically.
 (already in `ds-components.css` from this run) for a two-line CTA band. Then
 `faq-corporate-rebrand-expert/section-port`, then the client-hub/case-study
 pages (several need `global/content-studies`/`global/content-blog` first).
+
+### Run 7 — 2026-07-04 (fresh branch restarted from production tip; quota 2)
+
+**Reconciliation**: this session was assigned branch
+`claude/dazzling-cray-n5h8z0`, reset to `origin/main` (`631486c`, the PR #8
+merge). Diffed `last_run_head` (`643369f`, Run 6's base) through `631486c`:
+only Run 6's own `wip`/`feat`/`chore: progress` commits and the PR #8 merge
+commit — **all carry this routine's trailer / `Claude` author, no human edits
+to reconcile, no re-test needed**. Checked open PRs: none open (PR #8 merged).
+The durable-branch gap is resolved — default branch is `main`, this routine
+restarts from the merged tip each run. Front matter already normalized
+(quota 2, wallclock 75, no stale branch keys); only `last_run_head` bumped to
+`631486c`.
+
+**Environment preflight**: same as all prior runs — no env vars set in this
+sandbox (`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests do
+not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` clean, `next build` clean throughout (17 → 19
+routes as the two pages landed), `next start` on :8080 for every TEST step.
+**Harness note (re-confirming Run 6's lesson)**: after the first cycle's
+rebuild, the old cycle-1 `next-server` was left orphaned holding :8080 and
+served the stale build (the new `next start` failed with `EADDRINUSE`, and the
+FAQ-detail route 404'd because the stale build predated it). Diagnosed via
+`ss -ltnp` + the `EADDRINUSE` in the server log, `kill -9`'d the whole
+npm-exec→sh→next-server pid chain (not just the port's reported pid), confirmed
+the port was free, restarted clean, and the route served 200. **Lesson**: kill
+the entire process chain and verify the port is actually free before every
+restart — killing only the pid `ss` reports for the port can miss the real
+`next-server` child.
+
+**WORK LOOP** (2 of 2 quota — used, 0 FIX-loop iterations, both first-pass):
+
+1. **`location-ahmedabad/section-port`** (+ metadata + wire-links) — reused
+   `components/svc-template/*` wholesale (Location is the same template family
+   as Service/Industry/Solution). Added an optional `cols` prop to `Portfolio`
+   (+ `.svc-grid.svc-grid-2` desktop override) for Location's 2-wide portfolio,
+   and a page-only `.loc-info` block for the body's Best-for/What's-included/
+   Engagement panels. Two-line CTA band reuses the shared `.svc-cta-lead`
+   (added Run 6). No experts grid on this page.
+2. **`faq-corporate-rebrand-expert/section-port`** (+ metadata + wire-links) —
+   the single-question "answer" page (distinct from the `/faq` accordion
+   index). Not a svc-template page; new page-scoped `faq-detail.css`
+   (`.faq-callout`/`.faq-facts`/`.faq-fact*`/`.svc-soln`, mobile-first fact-row
+   stack below 640px). Services-strip links were unwired `href="#"` → rendered
+   as static/decorative pills. Title ported via `title.absolute` (the export's
+   `<title>` is the full question, no site suffix).
+
+Both pages: build/lint/typecheck clean, `run-checks.mjs` 0 failing checks,
+1440/375 screenshot parity + mobile reflow confirmed. The recurring reveal-up
+`fullPage`-capture blank (Location's Experts-less FAQ/Related; the FAQ page's
+services strip + closing heading) was verified benign both times via
+computed-style probes + targeted in-view crops — same lesson as Runs 3/5/6.
+
+**Bugs found and fixed**: none this run (no HTML-entity-in-attribute class
+issues in the source files; ported editorial copy verbatim). No new typos
+flagged beyond those already logged for the Author/Pricing pages.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `0ca0b4c` (location wip) through this run's final commits on
+`claude/dazzling-cray-n5h8z0`; base `631486c` is production's merged tip. All
+commits carry this routine's trailer.
+
+**Green gate**: both cycles passed with zero new blocked units → PR opened from
+`claude/dazzling-cray-n5h8z0` to `main` and merged. Vercel deploys `main`
+automatically.
+
+**Next run should**: pick up `global/content-studies` (extract case-study copy
+into `content/studies/*.mdx` + wire `lib/content/studies.ts`) — it unblocks
+`clients-sevenloop/section-port` (the canonical Sevenloop client hub) and the
+Sevenloop branding case study. Then continue down the client-hub/case-study
+queue (Aavenir hub, OneLern written case study, Hackuity audit, Sevenloop
+print/blog — the last needs `global/content-blog`), plus the late global units
+(`global/sitemap`, `global/robots`) once most routes exist.

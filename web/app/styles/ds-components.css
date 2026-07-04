@@ -203,6 +203,11 @@
   .svc-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+  /* Location's portfolio holds 4 city projects laid out 2-wide in the export
+     (`repeat(2,1fr)`) rather than the shared 3-column default. */
+  .svc-grid.svc-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 .svc-card {
   position: relative;
