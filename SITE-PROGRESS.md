@@ -1,10 +1,10 @@
 ---
 branch: claude/elegant-davinci-d402sk
-pr: (none yet — PR #5 merged into production; this run opens a fresh PR, see Run 4 note)
+pr: (opened this run — see Run 4 note; PR #5 merged into production, #3 closed as stale duplicate)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
+last_run_head: 32da12617054ba07cf58679e44a3fa3eee9dfbc0
 skip: []
 cursor: { unit: clients/section-port, phase: pending }
 ---
@@ -517,3 +517,114 @@ layout/component work, not new copy extraction), then continue down the
 Recent Updates, Clients index, …). Before coding anything, re-run the
 branch-continuity reconciliation above — check open PRs against the
 production branch first.
+
+### Run 4 — 2026-07-04 (PR #5 merged; fresh branch restarted from production tip)
+
+**Reconciliation**: this session was assigned branch
+`claude/elegant-davinci-d402sk`. Checked git state first per the standing
+recommendation: the branch's tip (`8275754`) already matched
+`origin/claude/design-asylum-homepage-elx1ah` (production) exactly — PR #5
+had merged since the last run, and this branch was cut fresh from that
+merged tip rather than needing any reconciliation/fast-forward work.
+Diffed `last_run_head` (`af21bf9`, Run 3's final commit) through `8275754`:
+only two merge commits and Run 3's own final "chore: progress" commit —
+no human edits to reconcile, no re-test needed. Checked open PRs against
+the repo: found #3 (`claude/elegant-davinci-r2vqud`) still open — a stale,
+far-behind duplicate from the same Run-2-era fan-out that #5 (now merged)
+already superseded. Closed it with an explanatory comment rather than
+leaving it to rot (see the PR for the note); no unique work was on that
+branch. No `claude/next-build` branch exists — same harness-assigns-a-
+fresh-branch-per-session situation Runs 2/3 already flagged; still
+unresolved, still recommend a durable branch (or PR-lookup-first) fix.
+
+**Environment preflight**: same as all prior runs — no env vars set in
+this sandbox. Build/tests do not depend on them; no new SETUP NEEDED
+items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout
+(9 → 13 routes as pages landed), `next start` on :8080 for every TEST
+step — killed and confirmed each prior `next-server`/`npm exec` PID
+actually reached zombie/defunct state via `ps aux` before every restart
+(per Run 2's lesson), never relied on the shell's reported exit status
+alone.
+
+**WORK LOOP** (4 of 4 quota units used, 0 FIX-loop iterations needed —
+every unit passed on its first `run-checks.mjs` pass):
+
+1. **`team/section-port`** (+ metadata + wire-links) — two-tier roster
+   (Leadership 12 + Our Team 22), content already available from
+   `global/content-team`. The export's per-member `'#/author/' + slug`
+   hash links never resolved to a real page for 33 of the 34
+   members — only Tanmaya Rao has a queued author-bio page — so those 33
+   cards link to `/team#<slug>` (a real same-page anchor) instead of a
+   fabricated per-person route; only Tanmaya Rao's card links to
+   `/author/tanmaya-rao`. Added a closing `/contact` CTA (not in source).
+2. **`author-tanmaya-rao/section-port`** (+ metadata + wire-links) — bio
+   header, about, service-expertise tags, key-clients marquee, projects
+   grid, blogs list, solution/industry expertise clouds. First page using
+   `svc-marquee`/`auth-blog`/`svc-card.is-feat` — promoted into
+   `ds-components.css` alongside the already-shared
+   `svc-grid`/`svc-card`/`auth-tag`. Project cards and tag pills were
+   unwired `href="#"` placeholders with no real destination — kept
+   static/decorative, no destination invented (same policy as Why
+   Us/Why Design Asylum's inert video buttons). Found source has
+   "Solution **Experties**" / "Industry **Experties**" (typo for
+   "Expertise") in both `TagCloud` headings — ported verbatim, flagged
+   for human review rather than silently corrected.
+3. **`pricing/section-port`** (+ metadata + wire-links) — 8-row INR/USD/
+   timeline table. Table wrapper scrolls horizontally on narrow viewports
+   instead of reflowing (a data matrix can't usefully stack). Reused the
+   shared `.pr-promise` class for the closing band with a page-scoped
+   override (different sizing than Why Us's prose-flow usage of the same
+   class name — matches the export's own per-page tuning convention).
+   Source has several verbatim typos in the intro/footnote ("give you
+   sense of", "retianer", "combiantion", "vs its not is not the same") —
+   ported as-is, flagged for human review, same policy as unit 2's
+   "Experties" typo. `/contact`'s pre-existing link to `/pricing` (added
+   back in Run 1, previously a pending-route soft-warning) now resolves
+   for real.
+4. **`updates/section-port`** (+ metadata + wire-links) — changelog feed
+   (featured highlight, 8-item current-projects list, 9-item archive).
+   Converted the source's large block of inline `style={{...}}` objects
+   into semantic classes (`updates.css`) rather than porting the inline-
+   style pattern verbatim — matches the design system's preference for
+   classes/tokens over stray inline styles. Added `cl-*` changelog
+   primitives and `.fb-chip.is-fill`/`.is-iris` modifiers to
+   `ds-components.css`. Highlight CTA and archive rows were unwired
+   `href="#"` placeholders with no matching article route — rendered as
+   static rows, same policy as unit 2.
+
+**Bugs found and fixed**: none this run (no HTML-entity-in-attribute class
+bugs found in the four new source files — checked each while porting).
+
+**Typos found, NOT corrected (flagged for human review)**: "Solution/
+Industry Experties" (should be "Expertise", `author/auth-blocks.jsx`);
+"give you sense of", "retianer", "combiantion", "vs its not is not the
+same", "the not the same", "not same" (`pricing/pricing.jsx`). Policy:
+this routine ports editorial copy verbatim and flags apparent typos here
+rather than silently rewriting content it wasn't asked to edit — a human
+should decide whether to correct these.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `37fd8bc` through `32da126` on
+`claude/elegant-davinci-d402sk` (this run's commits all carry this
+routine's trailer; base `8275754` is production's merged tip, not a prior
+run's commit).
+
+**Human action needed**: closed stale duplicate PR #3 (see above) — no
+other action needed there. Same durable-branch-naming issue Runs 2/3
+already flagged remains unresolved; consider pinning one so future runs
+stop re-deriving branch continuity from scratch. This run's own PR is
+opened fresh (see below) since #5 already merged and a merged PR can't be
+reused.
+
+**Next run should**: pick up `clients/section-port` (`footer/clients-
+index.jsx`, planned slug `/clients`) — note this is the single
+most-linked-to pending route across every page shipped so far (Home,
+Why Design Asylum, Why Us, Team, Author, Updates all point here), so
+landing it will convert a large number of existing soft-warnings into
+real passes. `global/content-studies` should probably land before or
+alongside `clients-sevenloop/section-port` per its existing note. Continue
+down the "Remaining pages" table in order after that.
