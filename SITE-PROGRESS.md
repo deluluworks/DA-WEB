@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: author-tanmaya-rao/section-port, phase: testing }
+cursor: { unit: pricing/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -196,15 +196,31 @@ layout/component work, no new copy extraction.
 | team/metadata | Title + description via Metadata API | passed | Title "Team" (renders "Team — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
 | team/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Tanmaya Rao's card → `/author/tanmaya-rao` (queued pending route), 33 other cards → `/team#<slug>` real same-page anchors. `/team` was already wired into the primary nav ("Team") and footer ("Team") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Author — Tanmaya Rao (`/author/tanmaya-rao`) — `Author - Tanmaya Rao.html`
+
+Source: `author/auth-app.jsx` (header + about) + `author/auth-blocks.jsx`
+(service tags, key-clients marquee, projects grid, blogs list, solution/
+industry expertise clouds) — a one-off author-bio template attached to blog
+articles (SITE-GUIDE), not a per-team-member bio system (see `team/section-
+port`'s decision on the other 33 roster cards). First page to use `svc-
+marquee`/`auth-blog`/`svc-card.is-feat` — promoted into `ds-components.css`
+alongside the already-shared `svc-grid`/`svc-card`/`auth-tag` (ported during
+`why-design-asylum/section-port`).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| author-tanmaya-rao/section-port | `app/author/tanmaya-rao/page.tsx`, `components/author/{ProjectCard,TagCloud}.tsx`, `app/styles/author.css` | passed | Project cards (real client sites/videos) and tag-cloud pills (service/solution/industry expertise) were all unwired `href="#"` placeholders in the export with no real destination to link to — rendered as static/decorative (non-`<a>`) elements instead, same "no invented destination" decision as Why Us's testimonial-video button and Why Design Asylum's showreel button. Breadcrumb's middle crumb substitutes `/team` for the export's unwired "Authors" placeholder (no authors-index page exists or is planned). Source has "Solution **Experties**" / "Industry **Experties**" (typo for "Expertise") in both `TagCloud` headings — ported verbatim as editorial copy, flagged here for human review rather than silently corrected. Tested: build/lint/typecheck clean, 0 failing checks (10 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (header, about, tags, marquee, projects grid, blogs list, both expertise clouds), no overflow, mobile nav works |
+| author-tanmaya-rao/metadata | Title + description via Metadata API | passed | Title "Tanmaya Rao" (renders "Tanmaya Rao — Design Asylum"); description ported from the export's about-bio opening sentence |
+| author-tanmaya-rao/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/team`, and `team/section-port`'s Tanmaya Rao card → this page (closes that loop). Moved `/author/tanmaya-rao` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team
-pattern above) when picked up.
+units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
+Author pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Author — Tanmaya Rao | `/author/tanmaya-rao` | `author/` | author-tanmaya-rao/section-port | pending |
 | Pricing | `/pricing` | `pricing/` | pricing/section-port | pending |
 | Recent Updates | `/updates` | `footer/recent-updates.jsx` | updates/section-port | pending |
 | Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
