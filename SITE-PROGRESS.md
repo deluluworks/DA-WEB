@@ -1,12 +1,12 @@
 ---
-branch: claude/elegant-davinci-21f0la
-pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/4 — see Run 2 note (duplicates #2/#3, recommend closing #3)
+branch: claude/elegant-davinci-6mi2rx
+pr: TBD — see Run 3 note (this run's session was assigned yet another fresh branch; PR #4 from claude/elegant-davinci-21f0la is its adopted baseline, superseded by this branch going forward)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: df6a7d6aa1003104f27ae95850d3ad9478b9a65f
+last_run_head: 51f7069d93d3b1facd3288f00b369136b772540b
 skip: []
-cursor: { unit: why-us/section-port, phase: pending }
+cursor: { unit: team/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -166,15 +166,31 @@ classes (`wda-*`) live in `app/styles/why-design-asylum.css`.
 | why-design-asylum/metadata | Title + description via Metadata API | passed | Title "Why Design Asylum" (renders "Why Design Asylum — Design Asylum" via layout template); description ported verbatim |
 | why-design-asylum/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, Closing CTAs → `/why-us` + `/contact`, Featured Projects → `/clients` (×6), Team strip → `/team` (×8) — well beyond 3. `/why-design-asylum` was already wired into the primary nav ("Studio") and footer ("Why Design Asylum") in Run 1; registered the route in `.testing/routes.mjs` `BUILT_ROUTES` |
 
+## Why Us (`/why-us`) — `Why Us.html`
+
+Source: `footer/why-us.jsx` — a single-column prose "sales letter" (no
+multi-section layout like the other pages so far). Deliberately lowercase,
+informal voice in the body copy ("right now, you're probably comparing us
+against 3 other agencies...") — kept verbatim, it's the source's
+intentional tone shift from the rest of the site's sentence-case voice.
+Added `.pr-col`/`.pr-promise` to `ds-components.css` (confirmed reused
+verbatim across the same ~6 pages as `pr-ul`/`pr-quote`: Clients Index,
+Contact, FAQ Index, Recent Updates, Why Design Asylum, Pricing).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| why-us/section-port | `app/why-us/page.tsx`, `app/styles/why-us.css` | passed | The export's `AltNav` again not ported (shared global `Nav`, same call as Why Design Asylum). "Watch 10:55 min testimonial video" button kept as the export's own inert placeholder (no video source ever existed). Reuses `RevealObserver`. Tested: build/lint clean, 0 failing checks (12 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through, no overflow |
+| why-us/metadata | Title + description via Metadata API | passed | Title "Why Us?" (renders "Why Us? — Design Asylum"); description ported verbatim |
+| why-us/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`. Also wired the footer's "No-brainer offer" item (present in the export's `SLFooter` copy, dropped in Run 1) to `/why-us` in `lib/site-config.ts` — this closes the loop with `why-design-asylum/section-port`'s "See the offer" link, which pointed here. Registered `/why-us` in `.testing/routes.mjs` `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact/Manifesto/Why-Design-Asylum pattern above)
-when picked up.
+units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us pattern
+above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Why Us | `/why-us` | `footer/why-us.jsx` | why-us/section-port | pending |
 | Team | `/team` | `team/team.jsx` | team/section-port | pending — content ready (global/content-team, passed) |
 | Author — Tanmaya Rao | `/author/tanmaya-rao` | `author/` | author-tanmaya-rao/section-port | pending |
 | Pricing | `/pricing` | `pricing/` | pricing/section-port | pending |
@@ -349,3 +365,100 @@ to finish Home, then move to `manifesto/section-port` per queue order.
 Before coding anything, re-run the branch-continuity reconciliation above
 — if a durable branch still doesn't exist, check for open PRs against the
 production branch first rather than assuming a fresh bootstrap is needed.
+
+### Run 3 — 2026-07-04 (continued on a fourth fresh session branch — see reconciliation)
+
+**Reconciliation — same branch-continuity break as Run 2, again**: this
+session was assigned yet another freshly generated branch,
+`claude/elegant-davinci-6mi2rx`, which turned out to be a direct git
+ancestor of `claude/elegant-davinci-21f0la` (Run 2's branch, PR #4) at
+exactly its pre-bootstrap commit (`5993a4f`) — i.e. zero divergent commits,
+a clean fast-forward. Checked open PRs against the repo first (per Run 2's
+own recommendation) rather than assuming a fresh bootstrap: found **three**
+open draft PRs (#2, #3, #4) all racing the same migration from
+near-simultaneous scheduled runs. PR #4 (`claude/elegant-davinci-21f0la`)
+is the most advanced — it already adopted #2's branch as its baseline and
+carries 4 more shipped units on top, and its own body recommends treating
+it as canonical. Fast-forward merged `origin/claude/elegant-davinci-21f0la`
+into this session's branch (trivial — no conflicts, no re-test needed,
+since the local branch had no commits beyond the shared ancestor) and
+continued the WORK LOOP from its "Next run should" note. No other
+human/prior-session commits existed on top; diffed `last_run_head`
+(`3a97b72`) through the adopted tip (`5d2b94d`) and found only this
+routine's own two "chore: progress" commits — no reconciliation action
+needed beyond what Run 2 already logged.
+
+**Environment preflight**: same as Runs 1–2 — no env vars set in this
+sandbox. Build/tests do not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout,
+`next start` on :8080 for every TEST step, killed and restarted fresh
+before every rebuild (per Run 2's PID lesson — verified each old
+`next-server` PID was actually dead via `ps aux`/port-probe before
+restarting, every time).
+
+**WORK LOOP** (4 of 4 quota units used, 0 FIX-loop iterations needed):
+
+1. **`home/contact-section`** — plus two queue corrections found while
+   reading `sections-4.jsx`/`app.jsx` directly: (a) `home/brand-values-
+   what-we-do` (`DABrandValues`/`DAWhatWeDo`) is dead code in the export —
+   `app.jsx`'s `Page()` never renders them — marked `skipped` rather than
+   ported; (b) `home/wire-links` was already satisfied by links added in
+   prior runs' sections (7 links, 3 destinations) — marked `passed` with
+   no new work. **Home is now fully passed** (13/13 mounted export
+   sections ported).
+2. **`manifesto/section-port`** (+ metadata + wire-links) — first page
+   needing the export's `sl-reveal`/`useReveal` scroll-in pattern; built
+   `components/Reveal.tsx` (`RevealObserver`) hooking into the DS token's
+   existing `.reveal-up`/`.is-revealed` primitive instead of duplicating
+   it under a new class name. Wired the footer's "Our terms" link (in the
+   export's `SLFooter` copy, dropped when `Footer.tsx` was built in Run 1)
+   to `/manifesto`.
+3. **`why-design-asylum/section-port`** (+ metadata + wire-links) — 7
+   sections. Promoted `svc-*`/`fb-*`/`pr-*`/`auth-tag` into
+   `ds-components.css` after confirming they're reused verbatim across
+   ~12 more queued pages; added mobile-first breakpoints (export grids
+   were fixed 2–3 column, no mobile layout at all).
+4. **`why-us/section-port`** (+ metadata + wire-links) — single-column
+   prose page. Added `pr-col`/`pr-promise` to the same shared stylesheet
+   (same reuse pattern, confirmed across 6 pages). Wired the footer's
+   "No-brainer offer" link to `/why-us`, closing the loop with Why Design
+   Asylum's "See the offer" CTA that points here.
+
+**Testing note (not a bug, logged for future runs)**: an initial
+`page.screenshot({ fullPage: true })` taken without any prior real scroll
+produced a false-blank render for `reveal-up`-gated sections on the Why
+Design Asylum page (Featured Projects grid, Fit blocks) — Chromium's
+full-page capture doesn't fire the real scroll events `IntersectionObserver`
+needs. Confirmed via computed-style checks (`opacity`, `.is-revealed`
+class) and targeted crops after a real incremental `scrollTo` loop that
+the underlying page is correct. **Lesson for future runs**: always
+incrementally scroll through the page before a full-page screenshot on
+any route using `RevealObserver`/`.reveal-up`.
+
+**Bugs found and fixed**: none new this run (Run 2's `&rsquo;`-in-attribute
+bug class was already checked exhaustively last run).
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `5d2b94d` (Run 2's final commit, adopted as this run's
+baseline after the branch-continuity fast-forward) through this run's
+last commit on `claude/elegant-davinci-6mi2rx` — see `git log` for exact
+shas (all carry this routine's trailer).
+
+**Human action needed**: three open draft PRs (#2, #3, #4) now exist for
+what is effectively one continuous line of work, plus this run's own PR
+opened from `claude/elegant-davinci-6mi2rx`. Recommend closing #2, #3, and
+#4 in favor of this run's PR (it is the furthest ahead — a strict
+superset of #4's commits) once opened, and — as Run 2 already
+recommended — pinning a durable branch name for this routine so future
+scheduled runs stop rediscovering this same fan-out.
+
+**Next run should**: pick up `team/section-port` (`team/team.jsx` —
+content already ported in `global/content-team`, so this unit is mostly
+layout/component work, not new copy extraction), then continue down the
+"Remaining pages" queue in table order (Author — Tanmaya Rao, Pricing,
+Recent Updates, Clients index, …). Before coding anything, re-run the
+branch-continuity reconciliation above — check open PRs against the
+production branch first.
