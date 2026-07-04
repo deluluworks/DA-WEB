@@ -1,6 +1,6 @@
 ---
 branch: claude/elegant-davinci-21f0la
-pr: pending — see Run 2 note (branch continuity issue, PR #2/#3 duplicate)
+pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/4 — see Run 2 note (duplicates #2/#3, recommend closing #3)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
