@@ -1,11 +1,12 @@
 ---
-branch: claude/elegant-davinci-7ievrz
-pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/2
+branch: claude/elegant-davinci-21f0la
+pr: pending — see Run 2 note (branch continuity issue, PR #2/#3 duplicate)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 96fefa878edd83ffa2f6e42c04d05788c787acc1
+last_run_head: 5a8edd44445885d237b0bd3b92ae8f7c5c42e9ff
 skip: []
+cursor: { unit: home/featured-work, phase: testing }
 ---
 
 # SITE-PROGRESS
@@ -109,7 +110,7 @@ sections are pending-port, old React adopted as baseline where usable.
 | home/hero | `components/home/Hero.tsx` (+ styles in `home.css`) | passed | Ported from `da/sections-1.jsx` `DAHero`. Screenshot-verified 1440/375 |
 | home/logowall | `components/home/LogoWall.tsx` | passed | Ported from `DALogoWall` — CSS marquee animation (`prefers-reduced-motion` respected) |
 | home/cta-closer | Lightweight "Book a call" closing section | passed | Not from export — placeholder closer until Featured/Services etc. land; revisit once real sections below are ported (may replace this) |
-| home/featured-work | `DAFeatured` — 4-project stacking scroll panels | pending | `da/sections-1.jsx` lines 138–204 |
+| home/featured-work | `DAFeatured` — 4-project stacking scroll panels | testing | `da/sections-1.jsx` lines 138–204. `components/home/FeaturedWork.tsx`, styles in `home.css`. Field-notes link points at `/blog` (site-config's "Thinking" mapping) instead of the export's unwired `#thinking` anchor |
 | home/services | `sections-services.jsx` | pending | Not yet read this run |
 | home/showreel-portfolio-painpoints-stats | `sections-2.jsx` / `sections-3.jsx` sections | pending | Not yet read this run |
 | home/whyus-industries-testimonials-faq | `sections-3.jsx` / `sections-4.jsx` sections | pending | `DAFaq` etc. |
