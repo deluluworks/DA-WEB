@@ -1,0 +1,56 @@
+.svc-page {
+  padding-bottom: var(--section-pad-y);
+}
+.svc-hero {
+  padding-top: 140px;
+}
+.svc-h1 {
+  margin: 28px 0 0;
+  max-width: 1100px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(40px, 6.4vw, 104px);
+  color: var(--color-obsidian-ink);
+}
+.svc-hero-p {
+  margin: 30px 0 0;
+  max-width: 880px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.7vw, 24px);
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+.svc-hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+.svc-hero-cta-primary,
+.svc-hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  padding: 16px 28px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+}
+.svc-hero-cta-primary {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+}
+.svc-hero-cta-secondary {
+  background: none;
+  color: var(--color-obsidian-ink);
+  border: 1px solid var(--color-obsidian-ink);
+}
+
+.svc-experts-accent {
+  color: var(--color-iris-voltage);
+}

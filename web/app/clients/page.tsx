@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { RevealObserver } from "@/components/Reveal";
+import { slugify } from "@/lib/slugify";
 
 export const metadata: Metadata = {
   title: "Clients",
@@ -27,14 +28,6 @@ const REAL_HUB: Record<string, string> = {
   Sevenloop: "/clients/sevenloop",
   Aavenir: "/clients/aavenir",
 };
-
-function slugify(name: string) {
-  return name
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 /** Ported from footer/clients-index.jsx (`Clients - Index.html`). */
 export default function ClientsPage() {
