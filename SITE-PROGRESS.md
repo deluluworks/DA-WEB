@@ -255,9 +255,15 @@ auto-mark home passed" instruction.
 Open SETUP NEEDED items: see above (`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`
 + optional Resend vars, analytics IDs) — none blocking.
 
-Vercel preview: not verified this run — no Vercel MCP project appears
-connected yet for this repo; a human should confirm one-time project setup
-per the rewritten DEPLOY.md.
+Vercel preview: the repo **is** already connected to a Vercel project
+(`designasylum-studio-webiste`, team `ankush-misras-projects-a0fc591e`) —
+corrects what was assumed above when this paragraph was first drafted.
+However, its build logs show a 227ms static passthrough deploy (no
+`npm install`/`next build`), meaning **Root Directory is not yet set to
+`web`** in the Vercel project settings. Flagged this on PR #3 — it's the
+one documented manual step in DEPLOY.md's "One-time Vercel project setup";
+no MCP tool available here can change it. Scheduled a one-shot check-in to
+re-verify after a human flips that setting.
 
 Commit range: see `git log` on `claude/elegant-davinci-r2vqud` from
 `20bcc333feaf3221ef5ec3cfc9af3ce4c4f1d354` (merge of SITE-GUIDE.md) to the
