@@ -16,6 +16,7 @@ export const BUILT_ROUTES = {
   "/industry/manufacturing": "Design Agency for Manufacturing Firms",
   "/solution/ai-saas-website": "AI SaaS Product Website Design Agency",
   "/location/ahmedabad": "Branding Agency in Ahmedabad",
+  "/faq/corporate-rebrand-expert": "align executive stakeholders around a new brand strategy",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
@@ -28,5 +29,4 @@ export const PENDING_ROUTES = [
   "/audit/hackuity",
   "/print/sevenloop",
   "/blog",
-  "/faq/corporate-rebrand-expert",
 ];

@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
 skip: []
-cursor: { unit: faq-corporate-rebrand-expert/section-port, phase: pending }
+cursor: { unit: faq-corporate-rebrand-expert/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS
