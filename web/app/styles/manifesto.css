@@ -1,0 +1,60 @@
+.mf-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+.mf-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.mf-header {
+  margin-top: 28px;
+}
+.mf-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.028em;
+  line-height: 0.98;
+  font-size: clamp(50px, 6.2vw, 104px);
+  color: var(--color-obsidian-ink);
+}
+.mf-body {
+  margin-top: clamp(44px, 4.6vw, 72px);
+}
+.mf-body p {
+  margin: 0 0 30px;
+}
+.mf-body p:last-child {
+  margin-bottom: 0;
+}
+.mf-p {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 1.65vw, 23px);
+  line-height: 1.74;
+  color: var(--color-graphite);
+}
+.mf-lead {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--color-obsidian-ink);
+  margin-bottom: 48px !important;
+  text-wrap: balance;
+}
+.mf-emph {
+  font-family: var(--font-serif);
+  font-size: clamp(25px, 2.5vw, 34px);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  color: var(--color-obsidian-ink);
+  margin: 8px 0 30px !important;
+}
+.mf-body strong {
+  color: var(--color-obsidian-ink);
+  font-weight: var(--font-weight-medium);
+}
+.mf-links a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

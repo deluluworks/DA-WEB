@@ -4,9 +4,9 @@ pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/4 — see R
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 5d2b94d9071e09c4a307b2d5059f4498c542da2a
+last_run_head: df6a7d6aa1003104f27ae95850d3ad9478b9a65f
 skip: []
-cursor: { unit: manifesto/section-port, phase: pending }
+cursor: { unit: why-design-asylum/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -124,14 +124,31 @@ below) — **home is now fully passed**.
 | home/metadata | Title/description | passed | Uses layout default (`Design Asylum — Bold by design`) — matches export title verbatim, no override needed |
 | home/wire-links | 3+ internal links | passed | **Correction (Run 3)**: re-audited actual component code rather than trusting the stale Run 2 note — 7 contextual links already exist across the ported sections, to 3 distinct destinations: `/contact` (Faq CTA, Industries CTA), `/blog` (Showreel teaser, FeaturedWork field-notes), `/clients` (Industries logos, Portfolio "see more", PainPoints outcome links). Requirement (3+ real internal links) already met; no new work needed |
 
+## Manifesto (`/manifesto`) — `Manifesto.html`
+
+Source: `manifesto/manifesto.jsx` (single self-mounting page, no `app.jsx`
+assembly step). First page to use the export's `sevenloop/sl-shared.jsx`
+`useReveal`/`sl-reveal` scroll-in pattern — rather than duplicate it under a
+second class name, it now hooks into the DS token-driven `.reveal-up` /
+`.is-revealed` primitive already in `base.css` (ported in Run 1 from the
+`_ds` bundle's own `useReveal`/`revealStyle`) via a new tiny client
+component, `components/Reveal.tsx`'s `RevealObserver`. Reusable by every
+future "SL"-family page (Why Us, FAQ index, Clients index, client hubs,
+etc. all use the same `sl-reveal` pattern in the export).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| manifesto/section-port | `app/manifesto/page.tsx`, `app/styles/manifesto.css`, shared `components/Reveal.tsx` | passed | Verbatim editorial copy (11 paragraphs) from `manifesto/manifesto.jsx`; h1 `*Terms and Conditions` kept as-is per the source's own comment ("verbatim CMS mislabel", also the footer's "Our terms" target). Nav/footer chrome reused from the shared layout (not re-implemented as `SLNav`/`SLFooter` — those export components are what `Nav.tsx`/`Footer.tsx` were already ported from in Run 1). Tested: build/lint clean, 0 failing checks (14 pending-route soft-warnings), screenshot-verified 1440/375 at top/mid-scroll/end, reveal-on-scroll confirmed firing, no overflow |
+| manifesto/metadata | Title + description via Metadata API | passed | Title "Manifesto" (renders "Manifesto — Design Asylum" via the layout template); description ported from the export's `<meta name="description">` verbatim |
+| manifesto/wire-links | 3+ real internal links | passed | Breadcrumb → `/` (Home), plus a new closing line (not in the source essay, added in the site's voice) linking to `/clients` and `/contact` — same pattern as the `/contact` page's added cross-links. Also wired the footer's "Our terms" item (present in the export's `SLFooter` copy but dropped when `Footer.tsx` was built in Run 1) to `/manifesto` in `lib/site-config.ts`, and registered `/manifesto` in `.testing/routes.mjs` `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact pattern above) when picked up.
+units (matching the Home/Contact/Manifesto pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Manifesto | `/manifesto` | `manifesto/` | manifesto/section-port | pending |
 | Why Design Asylum | `/why-design-asylum` | `footer/why-da.jsx` | why-design-asylum/section-port | pending |
 | Why Us | `/why-us` | `footer/why-us.jsx` | why-us/section-port | pending |
 | Team | `/team` | `team/team.jsx` | team/section-port | pending — content ready (global/content-team, passed) |

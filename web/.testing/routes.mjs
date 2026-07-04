@@ -3,12 +3,12 @@
 export const BUILT_ROUTES = {
   "/": "Strategic rebranding",
   "/contact": "Let’s talk about your brand",
+  "/manifesto": "not here to play it safe",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
 // expected 404s during migration and shouldn't hard-fail the link check.
 export const PENDING_ROUTES = [
-  "/manifesto",
   "/why-design-asylum",
   "/why-us",
   "/team",

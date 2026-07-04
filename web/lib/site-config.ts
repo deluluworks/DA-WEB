@@ -58,6 +58,7 @@ export const footerColumns: { heading: string; items: { label: string; href: str
   {
     heading: "Company",
     items: [
+      { label: "Our terms", href: "/manifesto" },
       { label: "FAQs", href: "/faq" },
       { label: "Why Design Asylum", href: "/why-design-asylum" },
       { label: "Recent updates", href: "/updates" },
