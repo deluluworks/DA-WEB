@@ -10,7 +10,7 @@ import { WhyUs } from "@/components/home/WhyUs";
 import { Industries } from "@/components/home/Industries";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Faq } from "@/components/home/Faq";
-import { ArrowLink } from "@/components/ds/ArrowLink";
+import { Contact } from "@/components/home/Contact";
 
 export default function Home() {
   return (
@@ -27,18 +27,7 @@ export default function Home() {
       <Industries />
       <Testimonials />
       <Faq />
-
-      <section className="da-home-cta">
-        <div className="da-home-cta-inner">
-          <h2>
-            Ready to design your business the right to win? Talk to us about your rebrand, your
-            website, or the story you haven&rsquo;t told yet.
-          </h2>
-          <div className="da-home-cta-link">
-            <ArrowLink href="/contact">Book a call</ArrowLink>
-          </div>
-        </div>
-      </section>
+      <Contact />
     </div>
   );
 }

@@ -189,26 +189,18 @@
   }
 }
 
-.da-home-cta {
-  padding: var(--section-pad-y) var(--gutter);
-  display: flex;
-  justify-content: center;
-  text-align: center;
+.da-home-contact {
+  padding-top: var(--section-pad-y);
+  padding-bottom: var(--section-pad-y);
 }
-.da-home-cta-inner {
-  max-width: 720px;
-}
-.da-home-cta h2 {
+.da-home-contact-intro h2 {
   margin: 0;
-  font-family: var(--font-serif);
-  font-weight: var(--font-weight-regular);
-  font-size: var(--text-display);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
-}
-.da-home-cta-link {
-  margin-top: 28px;
-  display: inline-flex;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: var(--text-section);
+  color: var(--color-obsidian-ink);
 }
 
 .da-featured {
