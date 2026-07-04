@@ -1,12 +1,12 @@
 ---
-branch: claude/elegant-davinci-6mi2rx
-pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/5 — see Run 3 note (supersedes #2/#3/#4, recommend closing those)
+branch: claude/elegant-davinci-d402sk
+pr: (none yet — PR #5 merged into production; this run opens a fresh PR, see Run 4 note)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: af21bf9619f15b757efb293245d6bc51438f65e0
+last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: team/section-port, phase: pending }
+cursor: { unit: team/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS

@@ -8,6 +8,7 @@
 @import "./styles/manifesto.css";
 @import "./styles/why-design-asylum.css";
 @import "./styles/why-us.css";
+@import "./styles/team.css";
 
 /* Mobile-first: no desktop-contract minimum width (supersedes the export's
    `body { min-width: 1180px }`). Layout must reflow at every breakpoint. */
