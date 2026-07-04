@@ -652,6 +652,49 @@
   color: var(--color-paper-white);
 }
 
+/* Inline Q&A callout — bordered "Question" block used by the Solution page
+   (identical `.svc-callout-*` rules in its `<style id="svc-extra">`). */
+.svc-callout {
+  border: 1px solid var(--color-obsidian-ink);
+  background: var(--color-paper-off);
+  padding: clamp(32px, 4vw, 52px);
+}
+.svc-callout-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  color: var(--color-iris-voltage);
+}
+.svc-callout-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-iris-voltage);
+}
+.svc-callout-q {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  font-size: clamp(24px, 2.3vw, 34px);
+  color: var(--color-obsidian-ink);
+}
+.svc-callout-a {
+  margin: 22px 0 0;
+  max-width: 880px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.62;
+  color: var(--color-graphite);
+}
+
 .bl-eyebrow {
   font-family: var(--font-display);
   font-weight: var(--font-weight-display);

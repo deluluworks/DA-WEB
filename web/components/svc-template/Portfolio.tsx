@@ -52,6 +52,7 @@ export function Portfolio({
   tabs,
   projects,
   marquee = true,
+  defaultTab,
 }: {
   heading: string;
   tabs: string[];
@@ -62,8 +63,14 @@ export function Portfolio({
    * the page instead, so they pass `marquee={false}` to avoid a duplicate.
    */
   marquee?: boolean;
+  /**
+   * Which tab starts active. The export defaults each page differently
+   * (Industry → "Industry", Solution → "Solution"); defaults to the last tab
+   * to match Service's original behavior when unset.
+   */
+  defaultTab?: string;
 }) {
-  const [tab, setTab] = useState(tabs[tabs.length - 1]);
+  const [tab, setTab] = useState(defaultTab ?? tabs[tabs.length - 1]);
   return (
     <section style={{ paddingTop: "var(--section-pad-y)" }}>
       {marquee && (
