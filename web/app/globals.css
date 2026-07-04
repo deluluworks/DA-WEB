@@ -15,6 +15,8 @@
 @import "./styles/clients.css";
 @import "./styles/faq.css";
 @import "./styles/service.css";
+@import "./styles/industry.css";
+@import "./styles/solution.css";
 
 /* Mobile-first: no desktop-contract minimum width (supersedes the export's
    `body { min-width: 1180px }`). Layout must reflow at every breakpoint. */

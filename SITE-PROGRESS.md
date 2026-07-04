@@ -1,12 +1,10 @@
 ---
-branch: claude/elegant-davinci-0oj783
-pr: (opened this run — see Run 5 note; PR #6 merged into production)
-quota_per_run: 4
+quota_per_run: 2
 fix_cap: 3
-wallclock_cap_min: 90
-last_run_head: 4e08e5f139c09d05e65e8ec6233395a1a11c7fef
+wallclock_cap_min: 75
+last_run_head: 643369f605e527132c897548372a4f26ac210aff
 skip: []
-cursor: { unit: industry-manufacturing/section-port, phase: pending }
+cursor: { unit: location-ahmedabad/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -342,6 +340,56 @@ content is broken, and give the 720ms transition real time to finish.
 | service-branding-agency/metadata | Title + description via Metadata API | passed | Title "Branding Agency" (renders "Branding Agency — Design Asylum"); description ported verbatim |
 | service-branding-agency/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, hero CTA → `/contact`, 22 of 23 portfolio cards → `/clients` tiles or `/clients/sevenloop` — far beyond 3. Moved `/service/branding-agency` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Industry — Manufacturing (`/industry/manufacturing`) — `Industry - Manufacturing.html`
+
+Source: `industry/ind-*.jsx` (app/blocks/body). Confirmed the `Ind*` template
+is byte-for-byte the same shape as the `Svc*` template already ported in Run
+5, so this page **reused `components/svc-template/*` wholesale** — no new
+template components. Two shared additions this run, both promoted to
+`ds-components.css` because Solution and Location reuse them verbatim:
+- **CTA band** (`.svc-cta-band`/`.svc-cta-inner`/`.svc-cta-h`/`.svc-cta-btn`
+  + `.svc-cta-lead`) — the full-bleed dark closer at `id="ind-03"` (the ToC's
+  third entry scroll-spies onto it). Not defined anywhere in the export's
+  shared CSS — it lives in each page's `<style id="svc-extra">` block; ported
+  once here. `.svc-cta-inner` already flex-wraps, so it stacks on mobile with
+  no extra breakpoint.
+- Added a `marquee={false}` prop to `Portfolio` — Industry/Solution/Location
+  render a **standalone labelled** marquee near the top (with `label`),
+  whereas Service renders the marquee inside the portfolio section; the prop
+  suppresses the duplicate.
+
+Page-scoped hero (`.ind-h1`, `.ind-marquee`) in `app/styles/industry.css`.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| industry-manufacturing/section-port | `app/industry/manufacturing/page.tsx`, `app/styles/industry.css`, shared CTA band in `ds-components.css`, `marquee` prop on `Portfolio` | passed | Hero + standalone marquee + ToC(3)+long-form body (2 sections, 9-agency list, Cerrion example) + CTA band + portfolio(8) + FAQ(2) + experts(4) + related(5). 0 FIX iterations. Tested: build/lint/typecheck clean, `run-checks.mjs` 0 failing (5 pending-route soft-warnings from footer/nav → /blog, /clients/sevenloop, /audit/hackuity, /print/sevenloop), screenshot-verified 1440/375 (hero, Q&A-less body, CTA band, 3-col portfolio, experts, related, mobile single-column reflow, mobile CTA stacks). Experts/Related first showed blank in a `fullPage` capture — the **same reveal-up timing artifact** logged in Runs 3/5; confirmed benign via computed-style probe (`is-revealed` true, opacity 1, 4 experts + 5 related in DOM) + targeted in-view crops. |
+| industry-manufacturing/metadata | Title + description via Metadata API | passed | Title "Design Agency for Manufacturing Firms" (renders with the layout template); description ported verbatim from the export's hero subhead. Marker text for `run-checks.mjs` |
+| industry-manufacturing/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 8 portfolio cards → their real `/clients#<slug>` tiles (Sevenloop → `/clients/sevenloop` hub, marked featured). "Industries" breadcrumb crumb kept non-link (no industries-index page exists/queued). Moved `/industry/manufacturing` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
+## Solution — AI SaaS Website (`/solution/ai-saas-website`) — `Solution - AI SaaS Website.html`
+
+Source: `solution/sol-*.jsx` (app/blocks/body). Same `Svc*`-template reuse as
+Industry above. Two page-specific differences handled this run:
+- **Q&A callout** — a bordered "Question" block between the marquee and the
+  ToC (`.svc-callout`/`.svc-callout-tag`/`.svc-callout-dot`/`.svc-callout-q`/
+  `.svc-callout-a`). Ported into `ds-components.css` (shared template class,
+  from the export's `svc-extra` block). The export used an inline `style={{}}`
+  for the tag's dot; converted to a `.svc-callout-dot` class per the DS's
+  class-over-inline-style preference.
+- **Portfolio default tab** — Solution's grid defaults to its *first* tab
+  ("Solution"), unlike Industry/Service which default to the last. Added an
+  optional `defaultTab` prop to `Portfolio` (falls back to the last tab when
+  unset, preserving Service's original behavior).
+
+Page-scoped hero (`.sol-h1`, `.sol-marquee`/`.sol-callout` spacing) in
+`app/styles/solution.css`.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| solution-ai-saas-website/section-port | `app/solution/ai-saas-website/page.tsx`, `app/styles/solution.css`, shared Q&A callout in `ds-components.css`, `defaultTab` prop on `Portfolio` | passed | Hero + standalone marquee + Q&A callout + ToC(3)+long-form body (2 sections, 10-site teardown list, 2 recommendation lists) + CTA band(sol-03) + portfolio(9) + FAQ(1) + experts(5) + related(3). 0 FIX iterations. Tested: build/lint/typecheck clean, `run-checks.mjs` 0 failing (6 pending-route soft-warnings), screenshot-verified 1440/375 (hero, Q&A callout bordered box renders + reflows, CTA band, 3-col portfolio, mobile single-column). Experts/Related reveal-up blank in `fullPage` again — confirmed benign via computed-style probe (5 experts + 3 related, opacity 1, revealed) as with Industry. |
+| solution-ai-saas-website/metadata | Title + description via Metadata API | passed | Title "AI SaaS Product Website Design Agency"; description ported verbatim from the export's hero subhead. Marker text for `run-checks.mjs` |
+| solution-ai-saas-website/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 9 portfolio cards → real `/clients#<slug>` tiles (Aavenir → `/clients/aavenir` hub; "ASPI & CIS Tech Diplomacy" → the "Aspi & CIS" tile via the same override Service uses). "Solutions" breadcrumb crumb kept non-link (no solutions-index page). Moved `/solution/ai-saas-website` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
@@ -355,9 +403,9 @@ matches before assuming a 1:1 fit.
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
-| Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | pending |
-| Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | pending |
-| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending |
+| Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | **passed (Run 6)** — see page section below |
+| Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | **passed (Run 6)** — see page section below |
+| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending — next up; reuse svc-template + shared CTA band. **Location adds `.svc-cta-lead`** (already ported to ds-components.css this run) |
 | Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — needs global/content-studies first |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | pending |
 | Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — needs global/content-blog first |
@@ -885,3 +933,73 @@ template; confirm the markup still matches before assuming a 1:1 fit, then
 continue with `solution-ai-saas-website/section-port` and
 `location-ahmedabad/section-port` (same template family, per this run's
 note), then `faq-corporate-rebrand-expert/section-port` per queue order.
+
+### Run 6 — 2026-07-04 (fresh branch restarted from production tip; quota now 2)
+
+**Reconciliation**: this session was assigned branch
+`claude/dazzling-cray-o6z4m3`, reset to `origin/main` (`643369f`, the PR #7
+merge). Diffed `last_run_head` (`4e08e5f`, Run 5's final commit) through
+`643369f`: only Run 5's own "chore: progress" + Vercel-framework-fix commits
+and the PR #7 merge commit — **no human edits to reconcile, no re-test
+needed**. Checked open PRs: none open (PR #7 merged). The durable-branch gap
+Runs 2–5 flagged is now effectively resolved — the default branch is `main`
+and this routine checks-open-PRs-first / restarts from the merged tip each
+run. **Front-matter drift normalized this run** per the routine's standing
+instruction: `quota_per_run` 4 → **2**, `wallclock_cap_min` 90 → **75**,
+dropped the stale `branch:`/`pr:` keys.
+
+**Environment preflight**: same as all prior runs — no env vars set in this
+sandbox (`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests
+do not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` (clean), `next build` clean throughout (17 → 18
+routes as pages landed), `next start` on :8080 for every TEST step. Harness
+note for future runs: `pkill -f next-server` **kills its own shell** (the
+pattern matches the `pkill` command's own argv → SIGTERM, exit 144) — kill by
+port instead (`ss -ltnp | grep :8080` → `kill <pid>`), which is reliable. Ad
+hoc screenshot scripts must launch via `playwright-core` with
+`executablePath: "/opt/pw-browsers/chromium"` and `waitUntil: "load"` (NOT
+`networkidle` — the marquee animation + blocked analytics hosts never let the
+network idle, causing a 30s timeout); this mirrors what `run-checks.mjs`
+already does.
+
+**WORK LOOP** (2 of 2 quota — new ceiling — used, 0 FIX-loop iterations,
+~15 min wall-clock):
+
+1. **`industry-manufacturing/section-port`** (+ metadata + wire-links) —
+   first reuse of Run 5's `svc-template/*` for a non-Service page. Confirmed
+   `Ind*` == `Svc*` template shape, so zero new template components. Promoted
+   the **CTA band** (`.svc-cta-*`, incl. `.svc-cta-lead` for Location) to
+   `ds-components.css` and added a `marquee={false}` prop to `Portfolio` for
+   the standalone-labelled-marquee pages.
+2. **`solution-ai-saas-website/section-port`** (+ metadata + wire-links) —
+   added the **Q&A callout** (`.svc-callout-*`) to `ds-components.css` and a
+   `defaultTab` prop to `Portfolio` (Solution defaults to its first tab).
+
+Both pages: build/lint/typecheck clean, `run-checks.mjs` 0 failing checks,
+1440/375 screenshot parity + mobile single-column reflow confirmed. The
+recurring reveal-up `fullPage`-capture blank (Experts/Related) was verified
+benign both times via computed-style probes rather than treated as a bug —
+same lesson as Runs 3/5.
+
+**Bugs found and fixed**: none this run (no HTML-entity-in-attribute class
+issues in the four source files; ported editorial copy verbatim). No new
+typos flagged beyond those already logged for the Author/Pricing pages.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `abbb32c` (industry wip/coded — the passing state is
+identical, no separate feat commit was needed) through `a336659` (solution
+feat) on `claude/dazzling-cray-o6z4m3`; base `643369f` is production's merged
+tip. All commits carry this routine's trailer.
+
+**Green gate**: both cycles passed with zero new blocked units → PR opened
+from `claude/dazzling-cray-o6z4m3` to `main` and merged (see below). Vercel
+deploys `main` automatically.
+
+**Next run should**: pick up `location-ahmedabad/section-port`
+(`location/loc-*.jsx`) — same template family; it adds `.svc-cta-lead`
+(already in `ds-components.css` from this run) for a two-line CTA band. Then
+`faq-corporate-rebrand-expert/section-port`, then the client-hub/case-study
+pages (several need `global/content-studies`/`global/content-blog` first).

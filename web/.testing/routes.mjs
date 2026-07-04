@@ -13,6 +13,8 @@ export const BUILT_ROUTES = {
   "/clients": "Worked with companies from a diverse set of industries",
   "/faq": "Every question we get about B2B branding",
   "/service/branding-agency": "Branding Agency",
+  "/industry/manufacturing": "Design Agency for Manufacturing Firms",
+  "/solution/ai-saas-website": "AI SaaS Product Website Design Agency",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
@@ -26,7 +28,5 @@ export const PENDING_ROUTES = [
   "/print/sevenloop",
   "/blog",
   "/faq/corporate-rebrand-expert",
-  "/industry/manufacturing",
-  "/solution/ai-saas-website",
   "/location/ahmedabad",
 ];
