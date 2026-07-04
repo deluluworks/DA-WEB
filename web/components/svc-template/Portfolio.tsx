@@ -51,17 +51,26 @@ export function Portfolio({
   heading,
   tabs,
   projects,
+  marquee = true,
 }: {
   heading: string;
   tabs: string[];
   projects: PortfolioProject[];
+  /**
+   * Service renders the marquee inside the portfolio section; Industry (and
+   * Solution/Location) render a standalone labelled marquee near the top of
+   * the page instead, so they pass `marquee={false}` to avoid a duplicate.
+   */
+  marquee?: boolean;
 }) {
   const [tab, setTab] = useState(tabs[tabs.length - 1]);
   return (
     <section style={{ paddingTop: "var(--section-pad-y)" }}>
-      <div style={{ marginBottom: "clamp(48px,5vw,80px)" }}>
-        <MarqueeStrip />
-      </div>
+      {marquee && (
+        <div style={{ marginBottom: "clamp(48px,5vw,80px)" }}>
+          <MarqueeStrip />
+        </div>
+      )}
       <div className="da-wrap">
         <div className="svc-portfolio-head">
           <h2 className="svc-section-h2">{heading}</h2>

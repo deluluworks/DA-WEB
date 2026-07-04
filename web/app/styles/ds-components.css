@@ -597,6 +597,61 @@
    share this exact structure.
    ========================================================================== */
 
+/* CTA band — full-bleed dark closer used by Industry, Solution, and Location
+   (identical `.svc-cta-*` rules in each page's `<style id="svc-extra">`).
+   `.svc-cta-inner` already flex-wraps, so the heading and button stack on
+   narrow viewports with no extra breakpoint needed. */
+.svc-cta-band {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  margin-top: var(--section-pad-y);
+}
+.svc-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding: clamp(56px, 7vw, 104px) 0;
+}
+.svc-cta-lead {
+  margin: 0 0 14px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.66);
+}
+.svc-cta-h {
+  margin: 0;
+  max-width: 760px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  font-size: var(--text-section);
+  color: var(--color-paper-white);
+}
+.svc-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 420px;
+  padding: 18px 30px;
+  background: var(--color-paper-white);
+  color: var(--color-obsidian-ink);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  white-space: normal;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.svc-cta-btn:hover {
+  background: var(--color-iris-voltage);
+  color: var(--color-paper-white);
+}
+
 .bl-eyebrow {
   font-family: var(--font-display);
   font-weight: var(--font-weight-display);

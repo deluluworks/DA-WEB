@@ -1,0 +1,21 @@
+/* Industry — Manufacturing (`Industry - Manufacturing.html`). Page-scoped
+   hero + standalone marquee spacing. The long-form body, ToC, portfolio,
+   FAQ, experts, and related grids all reuse the shared svc-template
+   components + ds-components.css `bl-*`/`svc-*` classes. The CTA band
+   (`.svc-cta-*`, shared with Solution/Location) lives in ds-components.css. */
+
+.ind-h1 {
+  margin: 28px 0 0;
+  max-width: 1180px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: none;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(40px, 5.2vw, 84px);
+  color: var(--color-obsidian-ink);
+}
+
+.ind-marquee {
+  padding-top: clamp(48px, 5vw, 80px);
+}
