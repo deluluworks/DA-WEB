@@ -518,6 +518,43 @@ Recent Updates, Clients index, …). Before coding anything, re-run the
 branch-continuity reconciliation above — check open PRs against the
 production branch first.
 
+### Reconciliation — PR #3 (`claude/elegant-davinci-r2vqud`) merged forward
+
+PR #3 was another instance of this same fan-out: an independent bootstrap
+of the identical migration, done in parallel on session branch
+`claude/elegant-davinci-r2vqud` without visibility into #5's progress. Its
+`web/` used a `src/` layout (`web/src/app`, `web/src/components`, ...) —
+a different file structure for the same app, not reconcilable file-by-file
+with this branch's `web/app`/`web/components`/`web/lib` layout.
+
+Resolution: merged this branch (production) into `claude/elegant-davinci-r2vqud`
+and, for every conflicting path, kept this branch's version (the more
+advanced, actively-continued implementation — Home/Contact/Manifesto/Why
+Design Asylum/Why Us all ported vs. #3's Contact-only). Deleted #3's entire
+`web/src/` tree and its duplicate `content/` stub files (`content/team/team.ts`,
+`content/studies/*.mdx`, `content/blog/*.mdx`) as superseded — none of it
+was referenced by this branch's code. Verified `npm run build` and
+`npm run lint` both still pass clean on `claude/elegant-davinci-r2vqud`
+after the merge (7 routes, same as this branch pre-merge).
+
+Nothing from #3 was worth cherry-picking forward: its contact-form/route
+handler, PillNav, and Footer are functionally equivalent to what's already
+in `web/components/ContactForm.tsx` / `web/app/api/contact/route.ts` /
+`web/components/Nav.tsx` / `web/components/Footer.tsx` here, just built
+independently. **Recommend closing PR #3** — after this merge its diff
+against `claude/design-asylum-homepage-elx1ah` is empty, so it has nothing
+further to contribute.
+
+*(Editor's note, added while resolving the merge below: this PR #3 merge
+landed on the production branch mid-way through Run 4, after Run 4's own
+branch had already forked from production. Run 4 independently identified
+PR #3 as a stale duplicate — of #5, not realizing by the time it closed #3
+that #3 had already been merged forward per the note above — and closed
+it with an explanatory comment. Both conclusions agree: #3 had nothing
+further to contribute. No `web/` files conflicted when merging this
+production update into Run 4's branch — this file was the only conflict,
+both sides purely additive.)*
+
 ### Run 4 — 2026-07-04 (PR #5 merged; fresh branch restarted from production tip)
 
 **Reconciliation**: this session was assigned branch
