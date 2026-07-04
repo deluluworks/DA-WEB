@@ -373,6 +373,32 @@
   color: var(--color-ash);
 }
 
+/* pr-col — single-column prose "sales letter" measure, used by several
+   long-read pages alongside pr-ul/pr-quote above */
+.pr-col {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.pr-col p {
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 1.6vw, 23px);
+  line-height: 1.6;
+  color: var(--color-graphite);
+  margin: 0 0 26px;
+}
+.pr-col p.pr-strong {
+  color: var(--color-obsidian-ink);
+}
+.pr-promise {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-size: clamp(26px, 3.4vw, 52px);
+  color: var(--color-obsidian-ink);
+  margin: 40px 0;
+}
+
 /* auth-tag — pill link (author/team cross-references) */
 .auth-tag {
   display: inline-flex;

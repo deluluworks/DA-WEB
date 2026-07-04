@@ -1,0 +1,49 @@
+.wu-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+.wu-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  font-size: clamp(28px, 3.8vw, 60px);
+  color: var(--color-obsidian-ink);
+}
+.wu-body {
+  margin-top: 44px;
+}
+.wu-closing {
+  margin-top: 64px;
+  text-align: center;
+}
+.wu-closing-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(28px, 4vw, 64px);
+  color: var(--color-obsidian-ink);
+}
+.wu-closing-sub {
+  margin: 18px 0 32px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--color-ash);
+}
+.wu-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 34px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
