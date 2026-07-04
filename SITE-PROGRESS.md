@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
 skip: []
-cursor: { unit: clients/section-port, phase: testing }
+cursor: { unit: faq/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -256,9 +256,9 @@ desktop grid with no mobile layout).
 
 | Unit id | Description | Status | Notes |
 |---|---|---|---|
-| clients/section-port | `app/clients/page.tsx`, `app/styles/clients.css` | pending | 44-tile grid, reveal-up on the grid section. Added a closing `/contact` CTA (not in source — same added-closer pattern as Team/Pricing/Updates/Why Us/Why Design Asylum). Tested: build/lint/typecheck clean, `node .testing/run-checks.mjs --unit clients/section-port` 0 failing checks (13 pending-route soft-warnings — Sevenloop/Aavenir hubs + the rest of the still-unbuilt queue), screenshot-verified 1440/375 full scroll-through (header, tile grid, hover state, closing CTA), no overflow, mobile nav works, grid reflows 1→2→3→4 columns |
-| clients/metadata | Title + description via Metadata API | pending | Title "Clients" (renders "Clients — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
-| clients/wire-links | 3+ real internal links | pending | Breadcrumb → `/`, closing CTA → `/contact`, Sevenloop/Aavenir tiles → their real pending client-hub routes, remaining 42 tiles → same-page `/clients#<slug>` anchors. `/clients` was already the primary nav's "Work"/"Clients" target and the footer's "Website projects"/"Clients" target since Run 1 — this is the single most-linked-to route landing this run (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all point here); moved `/clients` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs`, converting all of those prior soft-warnings into real passing link checks |
+| clients/section-port | `app/clients/page.tsx`, `app/styles/clients.css` | passed | 44-tile grid, reveal-up on the grid section. Added a closing `/contact` CTA (not in source — same added-closer pattern as Team/Pricing/Updates/Why Us/Why Design Asylum). **1 FIX iteration**: the export's `ci-tile` is a fixed `aspect-ratio: 4/3` square with `overflow: hidden` and a font-size floor of 22px — verbatim-porting that to a 1-column mobile grid produced two problems caught on mobile screenshot review (not caught by `run-checks.mjs`, which only checks page-level horizontal overflow, not per-element clipping): (1) 44 near-square tiles stacked 1-up made for a ~13,700px scroll; (2) long single-word names ("Simplicontract", "Cloudphysician") clipped against the tile edge since the 22px floor couldn't shrink to fit. Fixed by switching the grid's mobile floor to 2 columns (not 1) and giving `.ci-tile`/`.ci-tile-name` mobile-only rules (auto-height tile below 600px instead of the fixed aspect-ratio, font-size floor lowered to a `4.2vw` scaling clamp) — the fixed aspect-ratio + 22px floor only apply from 600px up, where it's verbatim to the export. Re-tested clean after the fix. Tested: build/lint/typecheck clean, `node .testing/run-checks.mjs --unit clients/section-port` 0 failing checks (13 pending-route soft-warnings — Sevenloop/Aavenir hubs + the rest of the still-unbuilt queue), screenshot-verified 1440/375 full scroll-through (header, tile grid, hover state, closing CTA) both before and after the mobile fix, no overflow, mobile nav works, grid reflows 2→3→4 columns |
+| clients/metadata | Title + description via Metadata API | passed | Title "Clients" (renders "Clients — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| clients/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Sevenloop/Aavenir tiles → their real pending client-hub routes, remaining 42 tiles → same-page `/clients#<slug>` anchors. `/clients` was already the primary nav's "Work"/"Clients" target and the footer's "Website projects"/"Clients" target since Run 1 — this is the single most-linked-to route landing this run (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all point here); moved `/clients` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs`, converting all of those prior soft-warnings into real passing link checks |
 
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
