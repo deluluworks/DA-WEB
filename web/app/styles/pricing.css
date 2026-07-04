@@ -1,0 +1,153 @@
+.pricing-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+.pr-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.pr-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(38px, 7.4vw, 124px);
+  color: var(--color-obsidian-ink);
+}
+.pr-intro {
+  margin: 32px 0 0;
+  max-width: 800px;
+  font-family: var(--font-serif);
+  font-size: clamp(17px, 1.55vw, 23px);
+  line-height: 1.62;
+  color: var(--color-graphite);
+}
+
+/* the focal element: 4-column matrix, squared corners, crisp framing.
+   Mobile: the wrapper scrolls horizontally rather than reflowing the table
+   (a data matrix like this can't usefully stack into single columns). */
+.pr-tablewrap {
+  margin-top: clamp(36px, 5vw, 76px);
+  border: 1px solid var(--color-obsidian-ink);
+  overflow-x: auto;
+}
+.pr-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+.pr-table thead th {
+  text-align: left;
+  padding: 16px 20px;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.pr-table tbody td {
+  padding: 22px 20px;
+  border-bottom: 1px solid var(--color-fog);
+  vertical-align: middle;
+}
+.pr-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.pr-table tbody tr {
+  transition: background 0.2s ease;
+}
+.pr-table tbody tr:hover {
+  background: var(--color-paper-off);
+}
+.pr-svc {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  font-size: clamp(16px, 1.35vw, 20px);
+  letter-spacing: -0.005em;
+  color: var(--color-obsidian-ink);
+  text-wrap: balance;
+}
+.pr-svc-arrow {
+  flex: 0 0 auto;
+  color: var(--color-iris-voltage);
+  opacity: 0;
+  transform: translateX(-7px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.pr-table tbody tr:hover .pr-svc-arrow {
+  opacity: 1;
+  transform: none;
+}
+.pr-inr {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  font-size: clamp(15px, 1.3vw, 19px);
+  color: var(--color-obsidian-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pr-usd {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--color-graphite);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pr-time {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  color: var(--color-ash);
+  white-space: nowrap;
+}
+
+.pr-footnote {
+  margin: 30px 0 0;
+  max-width: 840px;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ash);
+}
+
+.pr-promise-band {
+  margin-top: clamp(56px, 7vw, 112px);
+  border-top: 1px solid var(--color-fog);
+  padding-top: clamp(36px, 5vw, 76px);
+}
+/* Overrides the shared .pr-col `.pr-promise` (prose-flow treatment used on
+   Why Us) with the tighter, headline-scale treatment this page's closing
+   band needs — same class name, page-scoped rule, per the export's own
+   per-page <style> convention (each page tunes shared class names to its
+   own context rather than sharing one literal rule). */
+.pricing-page .pr-promise-band .pr-promise {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(28px, 3.6vw, 56px);
+  line-height: 1.12;
+}
+.pricing-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 34px;
+  margin-top: 32px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}

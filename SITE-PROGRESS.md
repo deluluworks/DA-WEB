@@ -1,12 +1,12 @@
 ---
-branch: claude/elegant-davinci-6mi2rx
-pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/5 — see Run 3 note (supersedes #2/#3/#4, recommend closing those)
+branch: claude/elegant-davinci-d402sk
+pr: (opened this run — see Run 4 note; PR #5 merged into production, #3 closed as stale duplicate)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: af21bf9619f15b757efb293245d6bc51438f65e0
+last_run_head: 32da12617054ba07cf58679e44a3fa3eee9dfbc0
 skip: []
-cursor: { unit: team/section-port, phase: pending }
+cursor: { unit: clients/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -183,18 +183,70 @@ Contact, FAQ Index, Recent Updates, Why Design Asylum, Pricing).
 | why-us/metadata | Title + description via Metadata API | passed | Title "Why Us?" (renders "Why Us? — Design Asylum"); description ported verbatim |
 | why-us/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`. Also wired the footer's "No-brainer offer" item (present in the export's `SLFooter` copy, dropped in Run 1) to `/why-us` in `lib/site-config.ts` — this closes the loop with `why-design-asylum/section-port`'s "See the offer" link, which pointed here. Registered `/why-us` in `.testing/routes.mjs` `BUILT_ROUTES` |
 
+## Team (`/team`) — `Team.html`
+
+Source: `team/team.jsx` — two-tier roster (Leadership 12 + Our Team 22),
+content already ported verbatim in `global/content-team`
+(`content/team/data.ts` / `lib/content/team.ts`), so this unit was pure
+layout/component work, no new copy extraction.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| team/section-port | `app/team/page.tsx`, `components/team/{MemberCard,RosterSection}.tsx`, `app/styles/team.css` | passed | Mobile-first `tm-grid` (1 col below 600px, 2 at 600px, 3 at 900px, 4 at 1180px — export was a fixed 4/3/2 desktop-down grid with no mobile floor). **Decision**: the export's card links were export-only hash routes (`'#/author/' + slug(name)`) that never resolved to a real page for any of the 34 members — only one dedicated author template exists in the whole export (`author/`, for Tanmaya Rao, built as a blog-author-bio page, not a per-member bio system per SITE-GUIDE). So only Tanmaya Rao's card links to the queued `/author/tanmaya-rao` route; the other 33 link to `/team#<slug>` (a real, working same-page anchor — not a placeholder `#`) — same "link to nearest real destination" convention used for unbuilt per-item routes elsewhere (home's Portfolio/Industries → `/clients`). Also added a closing CTA (not in the source `team.jsx`, no closer existed) linking to `/contact`, matching the voice/pattern already established on Why Us/Why Design Asylum/Manifesto's added closers. Tested: build/lint/typecheck clean, 0 failing checks (11 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (Leadership + Our Team grids, closing CTA), no overflow, mobile reflows to single column with working mobile nav |
+| team/metadata | Title + description via Metadata API | passed | Title "Team" (renders "Team — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| team/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Tanmaya Rao's card → `/author/tanmaya-rao` (queued pending route), 33 other cards → `/team#<slug>` real same-page anchors. `/team` was already wired into the primary nav ("Team") and footer ("Team") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
+## Author — Tanmaya Rao (`/author/tanmaya-rao`) — `Author - Tanmaya Rao.html`
+
+Source: `author/auth-app.jsx` (header + about) + `author/auth-blocks.jsx`
+(service tags, key-clients marquee, projects grid, blogs list, solution/
+industry expertise clouds) — a one-off author-bio template attached to blog
+articles (SITE-GUIDE), not a per-team-member bio system (see `team/section-
+port`'s decision on the other 33 roster cards). First page to use `svc-
+marquee`/`auth-blog`/`svc-card.is-feat` — promoted into `ds-components.css`
+alongside the already-shared `svc-grid`/`svc-card`/`auth-tag` (ported during
+`why-design-asylum/section-port`).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| author-tanmaya-rao/section-port | `app/author/tanmaya-rao/page.tsx`, `components/author/{ProjectCard,TagCloud}.tsx`, `app/styles/author.css` | passed | Project cards (real client sites/videos) and tag-cloud pills (service/solution/industry expertise) were all unwired `href="#"` placeholders in the export with no real destination to link to — rendered as static/decorative (non-`<a>`) elements instead, same "no invented destination" decision as Why Us's testimonial-video button and Why Design Asylum's showreel button. Breadcrumb's middle crumb substitutes `/team` for the export's unwired "Authors" placeholder (no authors-index page exists or is planned). Source has "Solution **Experties**" / "Industry **Experties**" (typo for "Expertise") in both `TagCloud` headings — ported verbatim as editorial copy, flagged here for human review rather than silently corrected. Tested: build/lint/typecheck clean, 0 failing checks (10 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (header, about, tags, marquee, projects grid, blogs list, both expertise clouds), no overflow, mobile nav works |
+| author-tanmaya-rao/metadata | Title + description via Metadata API | passed | Title "Tanmaya Rao" (renders "Tanmaya Rao — Design Asylum"); description ported from the export's about-bio opening sentence |
+| author-tanmaya-rao/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/team`, and `team/section-port`'s Tanmaya Rao card → this page (closes that loop). Moved `/author/tanmaya-rao` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
+## Pricing (`/pricing`) — `Pricing.html`
+
+Source: `pricing/pricing.jsx` — utility 8-row INR/USD/timeline table page.
+`/contact`'s wire-links unit already linked here back in Run 1 (as a
+pending-route placeholder); that link now resolves.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| pricing/section-port | `app/pricing/page.tsx`, `components/pricing/PricingTable.tsx`, `app/styles/pricing.css` | passed | Table wrapper scrolls horizontally on narrow viewports (`min-width: 720px` inside an `overflow-x: auto` wrapper) rather than reflowing the 4-column matrix into single columns — a data table like this can't usefully stack, and this keeps the page body itself overflow-free (verified at 375/768). Page-scoped `.pricing-page .pr-promise-band .pr-promise` override tunes the shared `.pr-promise` class (already used by Why Us in a prose-flow context) to this page's headline-scale closing treatment — same class name, different page-scoped rule, matching the export's own per-page convention of tuning shared class names per context. **Source has several verbatim typos** in the intro/footnote copy ("give you sense of", "retianer", "combiantion", "vs its not is not the same", "the not the same") — ported as-is rather than silently corrected, same policy as the "Experties" typo flagged on the Author page; human should decide whether to clean these up. Tested: build/lint/typecheck clean, 0 failing checks (10 pending-route soft-warnings), screenshot-verified 1440/375, no overflow (table scrolls internally), mobile nav works |
+| pricing/metadata | Title + description via Metadata API | passed | Title "Pricing" (renders "Pricing — Design Asylum"); description is new (the export had no `<meta name="description">` override for this page beyond the site default) |
+| pricing/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "team" link in the intro → `/team`, closing CTA (new, not in source — same added-closer pattern as Team/Why Us/Why Design Asylum) → `/contact`. Plus the pre-existing inbound link from `/contact` now resolves. Moved `/pricing` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
+## Recent Updates (`/updates`) — `Recent Updates.html`
+
+Source: `footer/recent-updates.jsx` — dated changelog feed (featured
+highlight + 8-row current-projects list + 9-item archive list). Added
+`cl-*` (changelog item/number/archive row) and `.fb-chip.is-fill`/`.is-iris`
+modifiers to `ds-components.css` (`fb-chip` base already existed from an
+earlier page; this is the first page needing the filled/outline variants).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| updates/section-port | `app/updates/page.tsx`, `app/styles/updates.css` | passed | Featured-highlight "Know more →" CTA and the 9-item archive list were unwired `href="#"` placeholders in the export with no matching article/case-study route — rendered as static/decorative rows, same "no invented destination" policy as the Author page's blog list. Converted the source's large block of inline `style={{...}}` objects into semantic classes in `updates.css` (mobile-first `cl-item` grid: 44px number column below 600px, 64px at ≥600px, matching the design system's preference for classes/tokens over stray inline style objects). Tested: build/lint/typecheck clean, 0 failing checks (9 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (highlight box, changelog list, archive list, closing CTA), no overflow, mobile nav works |
+| updates/metadata | Title + description via Metadata API | passed | Title "Recent Updates" (renders "Recent Updates — Design Asylum"); description ported from the intro paragraph |
+| updates/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "client engagements" link in the intro → `/clients` (pending route), closing CTA (new, not in source — same added-closer pattern as Team/Pricing/Why Us/Why Design Asylum) → `/contact`. `/updates` was already wired into the footer ("Recent updates") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us pattern
-above) when picked up.
+units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
+Author/Pricing/Recent-Updates pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Team | `/team` | `team/team.jsx` | team/section-port | pending — content ready (global/content-team, passed) |
-| Author — Tanmaya Rao | `/author/tanmaya-rao` | `author/` | author-tanmaya-rao/section-port | pending |
-| Pricing | `/pricing` | `pricing/` | pricing/section-port | pending |
-| Recent Updates | `/updates` | `footer/recent-updates.jsx` | updates/section-port | pending |
 | Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
 | FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
@@ -492,3 +544,129 @@ in `web/components/ContactForm.tsx` / `web/app/api/contact/route.ts` /
 independently. **Recommend closing PR #3** — after this merge its diff
 against `claude/design-asylum-homepage-elx1ah` is empty, so it has nothing
 further to contribute.
+
+*(Editor's note, added while resolving the merge below: this PR #3 merge
+landed on the production branch mid-way through Run 4, after Run 4's own
+branch had already forked from production. Run 4 independently identified
+PR #3 as a stale duplicate — of #5, not realizing by the time it closed #3
+that #3 had already been merged forward per the note above — and closed
+it with an explanatory comment. Both conclusions agree: #3 had nothing
+further to contribute. No `web/` files conflicted when merging this
+production update into Run 4's branch — this file was the only conflict,
+both sides purely additive.)*
+
+### Run 4 — 2026-07-04 (PR #5 merged; fresh branch restarted from production tip)
+
+**Reconciliation**: this session was assigned branch
+`claude/elegant-davinci-d402sk`. Checked git state first per the standing
+recommendation: the branch's tip (`8275754`) already matched
+`origin/claude/design-asylum-homepage-elx1ah` (production) exactly — PR #5
+had merged since the last run, and this branch was cut fresh from that
+merged tip rather than needing any reconciliation/fast-forward work.
+Diffed `last_run_head` (`af21bf9`, Run 3's final commit) through `8275754`:
+only two merge commits and Run 3's own final "chore: progress" commit —
+no human edits to reconcile, no re-test needed. Checked open PRs against
+the repo: found #3 (`claude/elegant-davinci-r2vqud`) still open — a stale,
+far-behind duplicate from the same Run-2-era fan-out that #5 (now merged)
+already superseded. Closed it with an explanatory comment rather than
+leaving it to rot (see the PR for the note); no unique work was on that
+branch. No `claude/next-build` branch exists — same harness-assigns-a-
+fresh-branch-per-session situation Runs 2/3 already flagged; still
+unresolved, still recommend a durable branch (or PR-lookup-first) fix.
+
+**Environment preflight**: same as all prior runs — no env vars set in
+this sandbox. Build/tests do not depend on them; no new SETUP NEEDED
+items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout
+(9 → 13 routes as pages landed), `next start` on :8080 for every TEST
+step — killed and confirmed each prior `next-server`/`npm exec` PID
+actually reached zombie/defunct state via `ps aux` before every restart
+(per Run 2's lesson), never relied on the shell's reported exit status
+alone.
+
+**WORK LOOP** (4 of 4 quota units used, 0 FIX-loop iterations needed —
+every unit passed on its first `run-checks.mjs` pass):
+
+1. **`team/section-port`** (+ metadata + wire-links) — two-tier roster
+   (Leadership 12 + Our Team 22), content already available from
+   `global/content-team`. The export's per-member `'#/author/' + slug`
+   hash links never resolved to a real page for 33 of the 34
+   members — only Tanmaya Rao has a queued author-bio page — so those 33
+   cards link to `/team#<slug>` (a real same-page anchor) instead of a
+   fabricated per-person route; only Tanmaya Rao's card links to
+   `/author/tanmaya-rao`. Added a closing `/contact` CTA (not in source).
+2. **`author-tanmaya-rao/section-port`** (+ metadata + wire-links) — bio
+   header, about, service-expertise tags, key-clients marquee, projects
+   grid, blogs list, solution/industry expertise clouds. First page using
+   `svc-marquee`/`auth-blog`/`svc-card.is-feat` — promoted into
+   `ds-components.css` alongside the already-shared
+   `svc-grid`/`svc-card`/`auth-tag`. Project cards and tag pills were
+   unwired `href="#"` placeholders with no real destination — kept
+   static/decorative, no destination invented (same policy as Why
+   Us/Why Design Asylum's inert video buttons). Found source has
+   "Solution **Experties**" / "Industry **Experties**" (typo for
+   "Expertise") in both `TagCloud` headings — ported verbatim, flagged
+   for human review rather than silently corrected.
+3. **`pricing/section-port`** (+ metadata + wire-links) — 8-row INR/USD/
+   timeline table. Table wrapper scrolls horizontally on narrow viewports
+   instead of reflowing (a data matrix can't usefully stack). Reused the
+   shared `.pr-promise` class for the closing band with a page-scoped
+   override (different sizing than Why Us's prose-flow usage of the same
+   class name — matches the export's own per-page tuning convention).
+   Source has several verbatim typos in the intro/footnote ("give you
+   sense of", "retianer", "combiantion", "vs its not is not the same") —
+   ported as-is, flagged for human review, same policy as unit 2's
+   "Experties" typo. `/contact`'s pre-existing link to `/pricing` (added
+   back in Run 1, previously a pending-route soft-warning) now resolves
+   for real.
+4. **`updates/section-port`** (+ metadata + wire-links) — changelog feed
+   (featured highlight, 8-item current-projects list, 9-item archive).
+   Converted the source's large block of inline `style={{...}}` objects
+   into semantic classes (`updates.css`) rather than porting the inline-
+   style pattern verbatim — matches the design system's preference for
+   classes/tokens over stray inline styles. Added `cl-*` changelog
+   primitives and `.fb-chip.is-fill`/`.is-iris` modifiers to
+   `ds-components.css`. Highlight CTA and archive rows were unwired
+   `href="#"` placeholders with no matching article route — rendered as
+   static rows, same policy as unit 2.
+
+**Bugs found and fixed**: none this run (no HTML-entity-in-attribute class
+bugs found in the four new source files — checked each while porting).
+
+**Typos found, NOT corrected (flagged for human review)**: "Solution/
+Industry Experties" (should be "Expertise", `author/auth-blocks.jsx`);
+"give you sense of", "retianer", "combiantion", "vs its not is not the
+same", "the not the same", "not same" (`pricing/pricing.jsx`). Policy:
+this routine ports editorial copy verbatim and flags apparent typos here
+rather than silently rewriting content it wasn't asked to edit — a human
+should decide whether to correct these.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `37fd8bc` through `32da126` on
+`claude/elegant-davinci-d402sk` (this run's commits all carry this
+routine's trailer; base `8275754` is production's merged tip, not a prior
+run's commit).
+
+**Human action needed**: closed stale duplicate PR #3 (see above) — no
+other action needed there. Same durable-branch-naming issue Runs 2/3
+already flagged remains unresolved; consider pinning one so future runs
+stop re-deriving branch continuity from scratch. This run's own PR is
+opened fresh (see below) since #5 already merged and a merged PR can't be
+reused. Opened **PR #6** (`claude/elegant-davinci-d402sk` →
+`claude/design-asylum-homepage-elx1ah`). **Vercel preview confirmed
+Ready**:
+https://designasylum-studio-git-c01677-ankush-misras-projects-a0fc591e.vercel.app
+(same project, picked up this branch automatically — no new one-time
+setup needed).
+
+**Next run should**: pick up `clients/section-port` (`footer/clients-
+index.jsx`, planned slug `/clients`) — note this is the single
+most-linked-to pending route across every page shipped so far (Home,
+Why Design Asylum, Why Us, Team, Author, Updates all point here), so
+landing it will convert a large number of existing soft-warnings into
+real passes. `global/content-studies` should probably land before or
+alongside `clients-sevenloop/section-port` per its existing note. Continue
+down the "Remaining pages" table in order after that.

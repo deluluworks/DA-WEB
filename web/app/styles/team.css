@@ -1,0 +1,188 @@
+.tm-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+.tm-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.028em;
+  line-height: 0.98;
+  font-size: clamp(40px, 7vw, 120px);
+  color: var(--color-obsidian-ink);
+}
+.tm-intro {
+  margin: 24px 0 0;
+  max-width: 620px;
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 1.5vw, 22px);
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+
+.tm-section {
+  padding-top: var(--section-pad-y);
+}
+.tm-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--color-obsidian-ink);
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+}
+.tm-sec-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: var(--text-section);
+  color: var(--color-obsidian-ink);
+}
+.tm-sec-count {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  color: var(--color-ash);
+}
+
+.tm-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 600px) {
+  .tm-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .tm-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1180px) {
+  .tm-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.tm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-fog);
+  background: var(--color-paper-white);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.tm-card:hover,
+.tm-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--color-obsidian-ink);
+}
+
+.tm-vis {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.tm-vis-glow {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.tm-card:hover .tm-vis-glow {
+  transform: scale(1.08);
+}
+.tm-initials {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  font-size: clamp(36px, 4vw, 60px);
+  color: rgba(255, 255, 255, 0.16);
+  line-height: 1;
+}
+
+.tm-body {
+  padding: 20px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.tm-role {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+  color: var(--color-iris-voltage);
+}
+.tm-name {
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  font-size: clamp(19px, 1.7vw, 25px);
+  color: var(--color-obsidian-ink);
+}
+.tm-bio {
+  margin: 12px 0 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-graphite);
+  flex: 1 1 auto;
+}
+.tm-more {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--color-obsidian-ink);
+}
+.tm-more-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.tm-card:hover .tm-more-arrow {
+  transform: translateX(5px);
+}
+
+.tm-closing {
+  margin-top: var(--section-pad-y);
+  text-align: center;
+}
+.tm-closing-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(26px, 4vw, 56px);
+  color: var(--color-obsidian-ink);
+}
+.tm-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 34px;
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
