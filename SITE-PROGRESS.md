@@ -4,7 +4,7 @@ pr: pending — see Run 2 note (branch continuity issue, PR #2/#3 duplicate)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 5a8edd44445885d237b0bd3b92ae8f7c5c42e9ff
+last_run_head: 3a97b72995b623beee75615b331ded0aa2fce580
 skip: []
 cursor: { unit: home/brand-values-what-we-do, phase: pending }
 ---
@@ -224,3 +224,86 @@ work for real on that preview.
 **Next run should**: pick up `home/featured-work` (next pending unit in
 table order), then continue down the Home section list, then move to
 `manifesto/section-port` per queue order.
+
+### Run 2 — 2026-07-04 (continued on a new session branch — see reconciliation)
+
+**Reconciliation — branch-continuity break, IMPORTANT for future runs**: this
+routine assumes one durable branch (`[BRANCH: claude/next-build]`) that every
+run resumes. In practice, the harness that invokes this routine assigns each
+session a *freshly generated* branch name
+(`claude/elegant-davinci-<random>`), so no branch named `claude/next-build`
+has ever existed, and this run's assigned branch
+(`claude/elegant-davinci-21f0la`) started at the pre-bootstrap commit
+(`5993a4f`), before `SITE-GUIDE.md` even. Worse: two prior scheduled runs
+fired 32 seconds apart (`2026-07-04T14:32:00Z` and `14:32:32Z`) and each
+independently ran the full FIRST-RUN BOOTSTRAP from scratch, producing two
+competing draft PRs — **#2** (branch `claude/elegant-davinci-7ievrz`:
+contact + `home/hero`+`home/logowall`+`cta-closer` passed, Vercel preview
+confirmed live) and **#3** (branch `claude/elegant-davinci-r2vqud`: contact
++ team-content passed, home left as a stub). Notified the human of this via
+push notification before proceeding (duplicate-PR situation is a
+shared-repo-state judgment call, not something to silently resolve).
+Rather than run a **third** duplicate bootstrap, this run fast-forward
+merged `origin/claude/elegant-davinci-7ievrz` (the more advanced of the
+two) into `claude/elegant-davinci-21f0la` — a clean fast-forward since
+`5993a4f` is its ancestor — and continued the WORK LOOP from there per its
+own `SITE-PROGRESS.md` "Next run should" note. No other human/prior-session
+commits existed beyond that merge; no re-test needed.
+**Human action recommended**: close PR #3 as a duplicate, and treat this
+run's eventual PR (opened against `claude/design-asylum-homepage-elx1ah`,
+same as #2/#3) as the canonical continuation of #2's work. Longer-term, the
+scheduling setup should pin a durable branch name (or this routine should
+look up the branch from the existing open PR against the production
+branch, rather than assuming its own assigned branch is the continuation
+point) so this doesn't recur every run.
+
+**Environment preflight**: same as Run 1 — no env vars set in this sandbox
+(`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests do not
+depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout,
+`next start` on :8080 for every TEST step. One harness hiccup, not a code
+bug: after the first background-server kill, the shell wrapper reported
+the kill as "failed" but the underlying `next-server` process was actually
+still alive and orphaned, holding :8080 and serving a stale build — this
+produced a false-positive test failure (CSS 500, overflow, font fallback)
+on the `home/services` unit's first test run. Diagnosed via `ps aux` +
+`EADDRINUSE` in the server log, killed the real PID, restarted clean, and
+the same test run went green. Lesson recorded in that unit's notes: always
+verify the PID actually died, not just the shell's reported exit status.
+
+**WORK LOOP** (4 of 4 quota units used, all first-pass — 0 FIX-loop
+iterations needed): `home/featured-work`, `home/services`,
+`home/showreel-portfolio-painpoints-stats` (4 sections: Showreel,
+Portfolio, PainPoints, Stats), `home/whyus-industries-testimonials-faq` (4
+sections: WhyUs, Industries, Testimonials, Faq). Home is now 12 of 15
+export sections ported (Hero, LogoWall, FeaturedWork, Services, Showreel,
+Portfolio, PainPoints, Stats, WhyUs, Industries, Testimonials, Faq) plus
+the non-export CTA closer. Added DS primitives `Tag`, `Avatar`, `Eyebrow`
+(ported from the `_ds` bundle source / `da/sections-1.jsx`) — first use of
+any DS primitive beyond Button/Input since the contact page.
+
+**Bugs found and fixed** (real content bugs in the export, not
+introduced): two `PainPoints` quotes had literal `&rsquo;` text baked into
+JSX *string attributes* (e.g. `quote="We can&rsquo;t convey..."`) —
+because JSX only HTML-decodes entities in *children* text, not in string
+attribute literals, the export would have rendered the literal string
+`&rsquo;` on the page. Replaced with real Unicode apostrophes; confirmed
+correct via screenshot. Checked all other `da/*.jsx` files for the same
+pattern — no other instances found.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (same as Run
+1).
+
+**Commit range**: `5a8edd4` (Run 1's final commit, adopted as this run's
+baseline) through `3a97b72` (last passed-unit commit this run) on
+`claude/elegant-davinci-21f0la`.
+
+**Next run should**: pick up `home/brand-values-what-we-do`
+(`DABrandValues` + `DAWhatWeDo` from `sections-4.jsx`), then
+`home/contact-section` (inline `ContactForm` embed) and `home/wire-links`
+to finish Home, then move to `manifesto/section-port` per queue order.
+Before coding anything, re-run the branch-continuity reconciliation above
+— if a durable branch still doesn't exist, check for open PRs against the
+production branch first rather than assuming a fresh bootstrap is needed.
