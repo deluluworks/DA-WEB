@@ -1,10 +1,10 @@
 ---
 branch: claude/elegant-davinci-0oj783
-pr: (opening this run — see Run 5 note; PR #6 merged into production)
+pr: (opened this run — see Run 5 note; PR #6 merged into production)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
+last_run_head: 4e08e5f139c09d05e65e8ec6233395a1a11c7fef
 skip: []
 cursor: { unit: industry-manufacturing/section-port, phase: pending }
 ---
@@ -774,3 +774,99 @@ landing it will convert a large number of existing soft-warnings into
 real passes. `global/content-studies` should probably land before or
 alongside `clients-sevenloop/section-port` per its existing note. Continue
 down the "Remaining pages" table in order after that.
+
+### Run 5 — 2026-07-04 (PR #6 merged; fresh branch restarted from production tip)
+
+**Reconciliation**: this session was assigned branch
+`claude/elegant-davinci-0oj783`. Its tip (`36508d3`) already matched
+`origin/claude/design-asylum-homepage-elx1ah` (production) exactly — PR #6
+had merged since the last run, and this branch was cut fresh from that
+merged tip. Diffed `last_run_head` (`32da126`, Run 4's final commit)
+through `36508d3`: only Run 4's own "chore: progress" commits and the PR #6
+merge commit — no human edits to reconcile, no re-test needed. Checked open
+PRs against the repo (per the standing recommendation): none open — #6 was
+the only one and it's merged, so no fan-out this time, no duplicate-PR
+cleanup needed. Same `[BRANCH: claude/next-build]` mismatch Runs 2–4
+already flagged persists (the harness still assigns a fresh
+`claude/elegant-davinci-<random>` branch per session) — still recommend
+pinning a durable branch name; the check-open-PRs-first workaround
+continues to work fine as a substitute.
+
+**Environment preflight**: same as all prior runs — no env vars set in this
+sandbox. Build/tests do not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout
+(11 → 16 routes as pages landed), `next start` on :8080 for every TEST
+step — confirmed each prior `next-server` PID reached zombie/defunct state
+via `ps aux` before every restart (per Run 2's lesson), never relied on the
+shell's reported exit status alone.
+
+**WORK LOOP** (4 of 4 quota units used, ~28 minutes wall-clock):
+
+1. **`clients/section-port`** (+ metadata + wire-links) — 44-tile client
+   grid. **1 FIX iteration**: verbatim-porting the export's fixed
+   `aspect-ratio: 4/3` tile to a 1-column mobile grid produced a ~13,700px
+   scroll and clipped long single-word names ("Simplicontract",
+   "Cloudphysician") against the tile edge — `run-checks.mjs` didn't catch
+   either problem since it only checks page-level horizontal overflow, not
+   per-element clipping or scroll-length sanity; both were caught by
+   screenshot review. Fixed with a 2-column mobile floor and auto-height
+   tiles below 600px (fixed aspect-ratio + font floor still apply verbatim
+   from 600px up). Converts the single most-linked-to pending route
+   (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all
+   point here) to a real pass.
+2. **`faq/section-port`** (+ metadata + wire-links) — 24-item accordion FAQ
+   index (export's own comment: representative sample of a ~100-item live
+   index). Reused `home/Faq.tsx`'s `.da-faq` native `<details>` classes
+   instead of porting the export's JS-driven `bl-faq-*` accordion. None of
+   the 24 sample slugs match the one queued FAQ detail page
+   (`/faq/corporate-rebrand-expert`), so "Read the full answer" — redundant
+   anyway since the full answer is already shown inline — was dropped
+   rather than wired to 24 fabricated routes. 0 FIX iterations.
+3. **`service-branding-agency/section-port`** (+ metadata + wire-links) —
+   the largest unit this run: hero, sticky scroll-spy ToC + 9-section
+   long-form body, portfolio marquee/tabs/23-project grid, FAQ, 8-person
+   experts grid, 6 related posts. Read `industry/ind-app.jsx` and
+   `industry/ind-blocks.jsx` before starting and found byte-for-byte
+   identical component shapes/class names to `service/svc-*.jsx` under
+   `Ind*` names — confirmed reuse, not speculative — so promoted the
+   generic template pieces to `components/svc-template/*` (7 files) and
+   the `bl-*`/`svc-section-*`/`svc-tabs`/`svc-team-*`/`svc-related-*` CSS to
+   `ds-components.css`, plus extracted `lib/slugify.ts` (shared with
+   `/clients`) rather than re-porting this whole template for Industry/
+   Solution/Location later. Portfolio cards link to their matching
+   `/clients` tile where the client name matches (22 of 23), decorative
+   otherwise. 0 FIX iterations — an initial screenshot showing the entire
+   FAQ and Related sections missing (headings included) turned out to be a
+   test-script timing artifact: `IntersectionObserver` correctly applied
+   `is-revealed` to every element, but the 720ms CSS transition hadn't
+   finished before the screenshot fired. Verified via `getComputedStyle`/
+   `classList` in a Playwright `evaluate` rather than assuming a code bug;
+   fixed by waiting ~900ms post-scroll before capturing. Logged as a
+   lesson (same class as Run 3's reveal-up/fullPage-screenshot lesson) for
+   future runs testing any `.reveal-up` page.
+
+**Bugs found and fixed**: none new in the export's own source this run
+(the `clients/section-port` and `service-branding-agency` fixes above were
+both this migration's own responsive-CSS gaps, not bugs ported from the
+export).
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `9f41fd2` through `4e08e5f` on
+`claude/elegant-davinci-0oj783` (all commits this run carry this routine's
+trailer; base `36508d3` is production's merged tip, not a prior run's
+commit).
+
+**Human action needed**: none blocking. Opening a fresh draft PR against
+`claude/design-asylum-homepage-elx1ah` this run (PR #6 already merged, so
+per the routine's own instructions a merged PR can't be reused as a base).
+
+**Next run should**: pick up `industry-manufacturing/section-port`
+(`industry/ind-*.jsx`) — reuse `components/svc-template/*` and the shared
+`bl-*`/`svc-section-*` CSS from this run rather than re-porting the
+template; confirm the markup still matches before assuming a 1:1 fit, then
+continue with `solution-ai-saas-website/section-port` and
+`location-ahmedabad/section-port` (same template family, per this run's
+note), then `faq-corporate-rebrand-expert/section-port` per queue order.
