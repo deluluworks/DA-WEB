@@ -390,6 +390,50 @@
   }
 }
 
+/* cl-* — changelog list (Recent Updates) */
+.cl-item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 20px;
+  padding: 28px 0;
+  border-top: 1px solid var(--color-fog);
+}
+@media (min-width: 600px) {
+  .cl-item {
+    grid-template-columns: 64px 1fr;
+    gap: 28px;
+    padding: 34px 0;
+  }
+}
+.cl-num {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  font-size: 28px;
+  color: var(--color-fog);
+  line-height: 1;
+}
+@media (min-width: 600px) {
+  .cl-num {
+    font-size: 34px;
+  }
+}
+.cl-archive {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--color-fog);
+  text-decoration: none;
+  transition: padding-left 0.25s ease;
+}
+.cl-archive:last-child {
+  border-bottom: 1px solid var(--color-fog);
+}
+.cl-archive:hover {
+  padding-left: 10px;
+}
+
 /* fb-* — "feedback"/proof band chips, quote rail, play buttons */
 .fb-chip {
   display: inline-flex;
@@ -403,6 +447,14 @@
   letter-spacing: 0.06em;
   font-size: 11px;
   color: var(--color-obsidian-ink);
+}
+.fb-chip.is-fill {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+}
+.fb-chip.is-iris {
+  border-color: var(--color-iris-voltage);
+  color: var(--color-iris-voltage);
 }
 .fb-play {
   display: inline-flex;
