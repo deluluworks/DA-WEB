@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: team/section-port, phase: testing }
+cursor: { unit: author-tanmaya-rao/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -183,15 +183,27 @@ Contact, FAQ Index, Recent Updates, Why Design Asylum, Pricing).
 | why-us/metadata | Title + description via Metadata API | passed | Title "Why Us?" (renders "Why Us? — Design Asylum"); description ported verbatim |
 | why-us/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`. Also wired the footer's "No-brainer offer" item (present in the export's `SLFooter` copy, dropped in Run 1) to `/why-us` in `lib/site-config.ts` — this closes the loop with `why-design-asylum/section-port`'s "See the offer" link, which pointed here. Registered `/why-us` in `.testing/routes.mjs` `BUILT_ROUTES` |
 
+## Team (`/team`) — `Team.html`
+
+Source: `team/team.jsx` — two-tier roster (Leadership 12 + Our Team 22),
+content already ported verbatim in `global/content-team`
+(`content/team/data.ts` / `lib/content/team.ts`), so this unit was pure
+layout/component work, no new copy extraction.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| team/section-port | `app/team/page.tsx`, `components/team/{MemberCard,RosterSection}.tsx`, `app/styles/team.css` | passed | Mobile-first `tm-grid` (1 col below 600px, 2 at 600px, 3 at 900px, 4 at 1180px — export was a fixed 4/3/2 desktop-down grid with no mobile floor). **Decision**: the export's card links were export-only hash routes (`'#/author/' + slug(name)`) that never resolved to a real page for any of the 34 members — only one dedicated author template exists in the whole export (`author/`, for Tanmaya Rao, built as a blog-author-bio page, not a per-member bio system per SITE-GUIDE). So only Tanmaya Rao's card links to the queued `/author/tanmaya-rao` route; the other 33 link to `/team#<slug>` (a real, working same-page anchor — not a placeholder `#`) — same "link to nearest real destination" convention used for unbuilt per-item routes elsewhere (home's Portfolio/Industries → `/clients`). Also added a closing CTA (not in the source `team.jsx`, no closer existed) linking to `/contact`, matching the voice/pattern already established on Why Us/Why Design Asylum/Manifesto's added closers. Tested: build/lint/typecheck clean, 0 failing checks (11 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (Leadership + Our Team grids, closing CTA), no overflow, mobile reflows to single column with working mobile nav |
+| team/metadata | Title + description via Metadata API | passed | Title "Team" (renders "Team — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| team/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Tanmaya Rao's card → `/author/tanmaya-rao` (queued pending route), 33 other cards → `/team#<slug>` real same-page anchors. `/team` was already wired into the primary nav ("Team") and footer ("Team") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us pattern
-above) when picked up.
+units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team
+pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Team | `/team` | `team/team.jsx` | team/section-port | pending — content ready (global/content-team, passed) |
 | Author — Tanmaya Rao | `/author/tanmaya-rao` | `author/` | author-tanmaya-rao/section-port | pending |
 | Pricing | `/pricing` | `pricing/` | pricing/section-port | pending |
 | Recent Updates | `/updates` | `footer/recent-updates.jsx` | updates/section-port | pending |

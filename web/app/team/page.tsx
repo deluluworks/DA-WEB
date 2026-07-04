@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { RevealObserver } from "@/components/Reveal";
 import { RosterSection } from "@/components/team/RosterSection";
@@ -30,6 +31,13 @@ export default function TeamPage() {
 
       <RosterSection title="Leadership" count="12 people" members={leadership} startIndex={0} />
       <RosterSection title="Our Team" count="22 people" members={team} startIndex={3} />
+
+      <div className="da-wrap tm-closing">
+        <p className="tm-closing-h2 reveal-up">This is who you&rsquo;d be working with.</p>
+        <Link href="/contact" className="tm-closing-cta">
+          Book an intro <span aria-hidden>&rarr;</span>
+        </Link>
+      </div>
     </div>
   );
 }

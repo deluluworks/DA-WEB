@@ -157,3 +157,32 @@
 .tm-card:hover .tm-more-arrow {
   transform: translateX(5px);
 }
+
+.tm-closing {
+  margin-top: var(--section-pad-y);
+  text-align: center;
+}
+.tm-closing-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(26px, 4vw, 56px);
+  color: var(--color-obsidian-ink);
+}
+.tm-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 34px;
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
