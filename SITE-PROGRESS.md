@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
 skip: []
-cursor: { unit: faq/section-port, phase: testing }
+cursor: { unit: service-branding-agency/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -260,15 +260,37 @@ desktop grid with no mobile layout).
 | clients/metadata | Title + description via Metadata API | passed | Title "Clients" (renders "Clients — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
 | clients/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Sevenloop/Aavenir tiles → their real pending client-hub routes, remaining 42 tiles → same-page `/clients#<slug>` anchors. `/clients` was already the primary nav's "Work"/"Clients" target and the footer's "Website projects"/"Clients" target since Run 1 — this is the single most-linked-to route landing this run (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all point here); moved `/clients` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs`, converting all of those prior soft-warnings into real passing link checks |
 
+## FAQ index (`/faq`) — `FAQ - Index.html`
+
+Source: `footer/faq-index.jsx` — the export's own comment marks this as a
+"representative cross-cluster set (the live index holds ~100; structure is
+identical)": 24 accordion Q&As, each originally targeting an
+`#/faq/{slug}` detail page. None of those 24 slugs match the one per-
+question FAQ page actually queued in this table
+(`/faq/corporate-rebrand-expert`), so "Read the full answer" — redundant
+anyway, since the accordion already shows the full answer inline — was
+dropped rather than wired to 24 fabricated routes; same "no invented
+destination" policy as the Author page's project cards and the Updates
+archive rows. Reused the `.da-faq`/`.da-faq-q`/`.da-faq-plus`/`.da-faq-a`
+accordion classes verbatim from `components/home/Faq.tsx`'s `home.css`
+rules (native `<details>/<summary>`, no JS state) instead of the export's
+own `bl-faq-*` class family, since the visual/interaction pattern is
+identical and this avoids a second accordion implementation.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| faq/section-port | `app/faq/page.tsx`, `app/styles/faq.css` | passed | Single-column, max-width 880px layout (export's own centering). Added a closing block (not in source — same added-closer pattern as Clients/Team/Pricing/Updates/Why Us/Why Design Asylum) with a primary `/contact` CTA and a secondary `/team` link. Tested: build/lint/typecheck clean, 0 failing checks (6 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (header, all 24 accordion items, closing block), no overflow, mobile nav works, first accordion item open by default matching the export |
+| faq/metadata | Title + description via Metadata API | passed | Title "FAQs" (renders "FAQs — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| faq/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, secondary closing link → `/team`. `/faq` was already the footer's "FAQs" target since Run 1; moved `/faq` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author/Pricing/Recent-Updates/Clients pattern above) when picked up.
+Author/Pricing/Recent-Updates/Clients/FAQ pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
 | Service — Branding Agency | `/service/branding-agency` | `service/` | service-branding-agency/section-port | pending |
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | pending |
