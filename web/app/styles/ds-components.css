@@ -179,3 +179,218 @@
   font-size: 11px;
   color: var(--color-graphite);
 }
+
+/* ---------------------------------------------------------------------------
+   Shared "landing page family" primitives — reused verbatim (same class
+   names/rules) across a dozen export pages beyond Why Design Asylum: Why Us,
+   Clients Index, Contact, FAQ Index/Corporate-Rebrand, Recent Updates,
+   Author, Industry, Location, Service, Solution, OneLern. Ported once here
+   so every future page unit reuses rather than re-declares.
+   --------------------------------------------------------------------------- */
+
+/* svc-* — project/case-study card grid */
+.svc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 700px) {
+  .svc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .svc-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.svc-card {
+  position: relative;
+  border: 1px solid var(--color-fog);
+  background: var(--color-paper-white);
+  padding: 0;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  min-height: 360px;
+}
+.svc-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-obsidian-ink);
+}
+.svc-card-vis {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.svc-card-vis-glow {
+  position: absolute;
+  inset: 0;
+}
+.svc-card-link {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-paper-white);
+  color: var(--color-obsidian-ink);
+  padding: 8px 13px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+}
+.svc-card-body {
+  padding: 22px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+@media (min-width: 1000px) {
+  .svc-card-body {
+    padding: 26px 28px 30px;
+  }
+}
+.svc-card-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-size: clamp(22px, 1.8vw, 28px);
+  color: var(--color-obsidian-ink);
+}
+.svc-card-desc {
+  margin: 14px 0 0;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-graphite);
+}
+
+/* fb-* — "feedback"/proof band chips, quote rail, play buttons */
+.fb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--color-obsidian-ink);
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  color: var(--color-obsidian-ink);
+}
+.fb-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-obsidian-ink);
+  background: none;
+  cursor: pointer;
+  padding: 14px 22px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  color: var(--color-obsidian-ink);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.fb-play:hover {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+}
+.fb-fit {
+  border: 1px solid var(--color-fog);
+  padding: 32px 28px;
+}
+@media (min-width: 700px) {
+  .fb-fit {
+    padding: 40px 38px;
+  }
+}
+.fb-fit.is-no {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  border-color: var(--color-obsidian-ink);
+}
+
+/* pr-* — arrow-bulleted list, rail quote */
+.pr-ul {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pr-ul li {
+  position: relative;
+  padding-left: 30px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+.pr-ul li::before {
+  content: "\2192";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-iris-voltage);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+}
+.pr-quote {
+  border-left: 3px solid var(--color-obsidian-ink);
+  padding-left: 24px;
+  margin: 36px 0;
+}
+.pr-quote p {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.34;
+  color: var(--color-obsidian-ink);
+  margin: 0;
+}
+.pr-quote cite {
+  display: block;
+  margin-top: 18px;
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--color-ash);
+}
+
+/* auth-tag — pill link (author/team cross-references) */
+.auth-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  color: var(--color-obsidian-ink);
+  border: 1px solid var(--color-fog);
+  padding: 11px 18px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.auth-tag:hover {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  border-color: var(--color-obsidian-ink);
+}

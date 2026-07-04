@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: df6a7d6aa1003104f27ae95850d3ad9478b9a65f
 skip: []
-cursor: { unit: why-design-asylum/section-port, phase: pending }
+cursor: { unit: why-us/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -142,14 +142,38 @@ etc. all use the same `sl-reveal` pattern in the export).
 | manifesto/metadata | Title + description via Metadata API | passed | Title "Manifesto" (renders "Manifesto — Design Asylum" via the layout template); description ported from the export's `<meta name="description">` verbatim |
 | manifesto/wire-links | 3+ real internal links | passed | Breadcrumb → `/` (Home), plus a new closing line (not in the source essay, added in the site's voice) linking to `/clients` and `/contact` — same pattern as the `/contact` page's added cross-links. Also wired the footer's "Our terms" item (present in the export's `SLFooter` copy but dropped when `Footer.tsx` was built in Run 1) to `/manifesto` in `lib/site-config.ts`, and registered `/manifesto` in `.testing/routes.mjs` `BUILT_ROUTES` |
 
+## Why Design Asylum (`/why-design-asylum`) — `Why Design Asylum.html`
+
+Source: `footer/why-da.jsx` (self-mounting, 7 sections: Hero, Showreel,
+Testimonials, FeaturedProjects, Fit, TeamStrip, Closing). The export's
+`AltNav` (a `PillNav` instance with page-specific labels: "Our work", "The
+right fit", …) was not ported — the site has one shared global `<Nav/>` in
+the root layout (already established for every other page); a per-page nav
+variant doesn't fit that architecture.
+
+**New shared CSS investment**: this page's `svc-*`/`fb-*`/`pr-*`/`auth-tag`
+classes are reused **verbatim** (same names, same rules) across ~12 more
+export pages (Why Us, Clients Index, FAQ Index/Corporate-Rebrand, Recent
+Updates, Author, Industry, Location, Service, Solution, OneLern) — ported
+once into `app/styles/ds-components.css` (mobile-first grids added: the
+export's fixed 3-column `svc-grid` and 2-column `fb-fit` grid are both
+1-column below 700px) rather than re-declaring per page. Page-only layout
+classes (`wda-*`) live in `app/styles/why-design-asylum.css`.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| why-design-asylum/section-port | `app/why-design-asylum/page.tsx` + `components/why-da/*` | passed | Showreel's "Play showreel" button is the export's own inert placeholder (never wired to a real video) — kept as static/decorative, no video invented. Featured Projects' 6 cards link to `/clients` (no per-project case-study routes exist yet beyond Sevenloop/Aavenir) — same unbuilt-project convention as home's Industries/Portfolio. Team strip's 8 "Meet {name}" pills link to `/team` (export had unwired `href="#"`). Reuses `RevealObserver` built for the manifesto unit — 4 reveal-up elements. Tested: build/lint clean, 0 failing checks (13 pending-route soft-warnings), screenshot-verified 1440/375 (full scroll-through, including a full page + section-cropped pass confirming the reveal-on-scroll fires correctly under real scroll — an initial `fullPage` capture without incremental scrolling produced a false-blank artifact in a few reveal-gated sections; re-verified via computed-style checks and targeted crops, not a site bug), no overflow |
+| why-design-asylum/metadata | Title + description via Metadata API | passed | Title "Why Design Asylum" (renders "Why Design Asylum — Design Asylum" via layout template); description ported verbatim |
+| why-design-asylum/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, Closing CTAs → `/why-us` + `/contact`, Featured Projects → `/clients` (×6), Team strip → `/team` (×8) — well beyond 3. `/why-design-asylum` was already wired into the primary nav ("Studio") and footer ("Why Design Asylum") in Run 1; registered the route in `.testing/routes.mjs` `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
-units (matching the Home/Contact/Manifesto pattern above) when picked up.
+units (matching the Home/Contact/Manifesto/Why-Design-Asylum pattern above)
+when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Why Design Asylum | `/why-design-asylum` | `footer/why-da.jsx` | why-design-asylum/section-port | pending |
 | Why Us | `/why-us` | `footer/why-us.jsx` | why-us/section-port | pending |
 | Team | `/team` | `team/team.jsx` | team/section-port | pending — content ready (global/content-team, passed) |
 | Author — Tanmaya Rao | `/author/tanmaya-rao` | `author/` | author-tanmaya-rao/section-port | pending |
