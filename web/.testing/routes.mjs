@@ -8,12 +8,12 @@ export const BUILT_ROUTES = {
   "/why-us": "on the hunt for a team",
   "/team": "in the same room",
   "/author/tanmaya-rao": "Lead Brand Designer",
+  "/pricing": "sense of the budget",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
 // expected 404s during migration and shouldn't hard-fail the link check.
 export const PENDING_ROUTES = [
-  "/pricing",
   "/updates",
   "/clients",
   "/clients/sevenloop",

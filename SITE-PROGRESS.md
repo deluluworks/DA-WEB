@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: pricing/section-port, phase: pending }
+cursor: { unit: pricing/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS
