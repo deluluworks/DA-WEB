@@ -618,7 +618,12 @@ other action needed there. Same durable-branch-naming issue Runs 2/3
 already flagged remains unresolved; consider pinning one so future runs
 stop re-deriving branch continuity from scratch. This run's own PR is
 opened fresh (see below) since #5 already merged and a merged PR can't be
-reused.
+reused. Opened **PR #6** (`claude/elegant-davinci-d402sk` →
+`claude/design-asylum-homepage-elx1ah`). **Vercel preview confirmed
+Ready**:
+https://designasylum-studio-git-c01677-ankush-misras-projects-a0fc591e.vercel.app
+(same project, picked up this branch automatically — no new one-time
+setup needed).
 
 **Next run should**: pick up `clients/section-port` (`footer/clients-
 index.jsx`, planned slug `/clients`) — note this is the single
