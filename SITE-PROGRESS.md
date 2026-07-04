@@ -1,6 +1,6 @@
 ---
 branch: claude/elegant-davinci-6mi2rx
-pr: TBD — see Run 3 note (this run's session was assigned yet another fresh branch; PR #4 from claude/elegant-davinci-21f0la is its adopted baseline, superseded by this branch going forward)
+pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/5 — see Run 3 note (supersedes #2/#3/#4, recommend closing those)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
