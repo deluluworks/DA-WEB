@@ -859,9 +859,12 @@ export).
 trailer; base `36508d3` is production's merged tip, not a prior run's
 commit).
 
-**Human action needed**: none blocking. Opening a fresh draft PR against
-`claude/design-asylum-homepage-elx1ah` this run (PR #6 already merged, so
-per the routine's own instructions a merged PR can't be reused as a base).
+**Human action needed**: none blocking. Opened **PR #7**
+(`claude/elegant-davinci-0oj783` → `main`) — the repo's default branch
+changed from `claude/design-asylum-homepage-elx1ah` to `main` (same
+commit, just renamed/repointed) partway through this run, finally
+resolving the durable-branch-naming gap every prior run's log flagged;
+this PR targets `main` accordingly.
 
 **Next run should**: pick up `industry-manufacturing/section-port`
 (`industry/ind-*.jsx`) — reuse `components/svc-template/*` and the shared
