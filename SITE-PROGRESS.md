@@ -1,12 +1,12 @@
 ---
-branch: claude/elegant-davinci-d402sk
-pr: (opened this run — see Run 4 note; PR #5 merged into production, #3 closed as stale duplicate)
+branch: claude/elegant-davinci-0oj783
+pr: (opened this run — see Run 5 note; PR #6 merged into production)
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 32da12617054ba07cf58679e44a3fa3eee9dfbc0
+last_run_head: 4e08e5f139c09d05e65e8ec6233395a1a11c7fef
 skip: []
-cursor: { unit: clients/section-port, phase: pending }
+cursor: { unit: industry-manufacturing/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -239,18 +239,122 @@ earlier page; this is the first page needing the filled/outline variants).
 | updates/metadata | Title + description via Metadata API | passed | Title "Recent Updates" (renders "Recent Updates — Design Asylum"); description ported from the intro paragraph |
 | updates/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "client engagements" link in the intro → `/clients` (pending route), closing CTA (new, not in source — same added-closer pattern as Team/Pricing/Why Us/Why Design Asylum) → `/contact`. `/updates` was already wired into the footer ("Recent updates") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Clients (`/clients`) — `Clients - Index.html`
+
+Source: `footer/clients-index.jsx` — H1 + 44-tile client grid, no other
+sections. Every tile was an unwired `href="#"` in the export; only Sevenloop
+and Aavenir have a real client-hub route queued in the table below, so those
+two tiles link to their real (still-pending) `/clients/sevenloop` and
+`/clients/aavenir` routes and the other 42 link to a same-page anchor
+(`/clients#<slug>`, with a matching `id` on each tile) — same "link to
+nearest real destination, don't invent one" convention as Team's 33
+unbuilt-bio cards. Reused the export's `ci-grid`/`ci-tile` classes verbatim
+as page-scoped CSS (`app/styles/clients.css`, not promoted to
+`ds-components.css` since nothing else in the queue reuses this exact tile
+shape) with a mobile-first 1/2/3/4-column grid (export was a fixed 4-column
+desktop grid with no mobile layout).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| clients/section-port | `app/clients/page.tsx`, `app/styles/clients.css` | passed | 44-tile grid, reveal-up on the grid section. Added a closing `/contact` CTA (not in source — same added-closer pattern as Team/Pricing/Updates/Why Us/Why Design Asylum). **1 FIX iteration**: the export's `ci-tile` is a fixed `aspect-ratio: 4/3` square with `overflow: hidden` and a font-size floor of 22px — verbatim-porting that to a 1-column mobile grid produced two problems caught on mobile screenshot review (not caught by `run-checks.mjs`, which only checks page-level horizontal overflow, not per-element clipping): (1) 44 near-square tiles stacked 1-up made for a ~13,700px scroll; (2) long single-word names ("Simplicontract", "Cloudphysician") clipped against the tile edge since the 22px floor couldn't shrink to fit. Fixed by switching the grid's mobile floor to 2 columns (not 1) and giving `.ci-tile`/`.ci-tile-name` mobile-only rules (auto-height tile below 600px instead of the fixed aspect-ratio, font-size floor lowered to a `4.2vw` scaling clamp) — the fixed aspect-ratio + 22px floor only apply from 600px up, where it's verbatim to the export. Re-tested clean after the fix. Tested: build/lint/typecheck clean, `node .testing/run-checks.mjs --unit clients/section-port` 0 failing checks (13 pending-route soft-warnings — Sevenloop/Aavenir hubs + the rest of the still-unbuilt queue), screenshot-verified 1440/375 full scroll-through (header, tile grid, hover state, closing CTA) both before and after the mobile fix, no overflow, mobile nav works, grid reflows 2→3→4 columns |
+| clients/metadata | Title + description via Metadata API | passed | Title "Clients" (renders "Clients — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| clients/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, Sevenloop/Aavenir tiles → their real pending client-hub routes, remaining 42 tiles → same-page `/clients#<slug>` anchors. `/clients` was already the primary nav's "Work"/"Clients" target and the footer's "Website projects"/"Clients" target since Run 1 — this is the single most-linked-to route landing this run (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all point here); moved `/clients` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs`, converting all of those prior soft-warnings into real passing link checks |
+
+## FAQ index (`/faq`) — `FAQ - Index.html`
+
+Source: `footer/faq-index.jsx` — the export's own comment marks this as a
+"representative cross-cluster set (the live index holds ~100; structure is
+identical)": 24 accordion Q&As, each originally targeting an
+`#/faq/{slug}` detail page. None of those 24 slugs match the one per-
+question FAQ page actually queued in this table
+(`/faq/corporate-rebrand-expert`), so "Read the full answer" — redundant
+anyway, since the accordion already shows the full answer inline — was
+dropped rather than wired to 24 fabricated routes; same "no invented
+destination" policy as the Author page's project cards and the Updates
+archive rows. Reused the `.da-faq`/`.da-faq-q`/`.da-faq-plus`/`.da-faq-a`
+accordion classes verbatim from `components/home/Faq.tsx`'s `home.css`
+rules (native `<details>/<summary>`, no JS state) instead of the export's
+own `bl-faq-*` class family, since the visual/interaction pattern is
+identical and this avoids a second accordion implementation.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| faq/section-port | `app/faq/page.tsx`, `app/styles/faq.css` | passed | Single-column, max-width 880px layout (export's own centering). Added a closing block (not in source — same added-closer pattern as Clients/Team/Pricing/Updates/Why Us/Why Design Asylum) with a primary `/contact` CTA and a secondary `/team` link. Tested: build/lint/typecheck clean, 0 failing checks (6 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (header, all 24 accordion items, closing block), no overflow, mobile nav works, first accordion item open by default matching the export |
+| faq/metadata | Title + description via Metadata API | passed | Title "FAQs" (renders "FAQs — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
+| faq/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, secondary closing link → `/team`. `/faq` was already the footer's "FAQs" target since Run 1; moved `/faq` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
+## Service — Branding Agency (`/service/branding-agency`) — `Service - Branding Agency.html`
+
+Source: `service/svc-*.jsx` (5 files: app/body/portfolio/extras/prims) — a
+long-form "SEO landing page" template: hero, sticky scroll-spy Table of
+Contents + 9-section long-form body, portfolio marquee + filter tabs + a
+23-project grid, a 6-item FAQ, an 8-person experts grid, and 6 related-blog
+cards. **Confirmed reused verbatim by 3 more queued pages**: read
+`industry/ind-app.jsx` and `industry/ind-blocks.jsx` before starting this
+unit and found byte-for-byte identical component shapes and class names
+(`ProjectCard`/`FaqItem`/`ExpertCard`, `bl-toc`/`bl-h2`/`bl-ul`/`svc-tabs`/
+`svc-team-grid`/`svc-related`, …) under `Ind*` names instead of `Svc*` —
+Solution and Location follow the same `{prefix}-app.jsx`/`{prefix}-blocks.jsx`/
+`{prefix}-body.jsx` file layout, so near-certainly the same template too.
+Given that, this run promoted the **generic, reusable pieces** to shared
+code rather than porting them once and re-porting for Industry/Solution/
+Location later:
+- `components/svc-template/{Prims,TableOfContents,MarqueeStrip,Portfolio,Faq,Experts,Related}.tsx` — presentational + the scroll-spy client component, all data-driven via props (no Service-specific content baked in).
+- `app/styles/ds-components.css` — the full `bl-*` article-template CSS plus `.svc-section-h2`/`.svc-tabs`/`.svc-team-*`/`.svc-related-*` (previously page-scoped `svc-*` classes for the portfolio grid/marquee already existed here from the Author-page unit).
+- `lib/slugify.ts` — extracted from `app/clients/page.tsx` (now imported by both) since the portfolio grid needed the same slug logic to link back to `/clients` tiles.
+
+Page-specific content (hero copy, the 9 body sections, the 23 projects, the
+6 FAQs, the 8 experts, the 6 related posts) stays in
+`app/service/branding-agency/page.tsx` — only the template mechanics moved.
+
+**Linking decision**: the export's 23 portfolio cards were unwired
+`href="#"`. Most project names match a tile already on `/clients` (built
+this run), so those link to the matching `/clients#<slug>` anchor instead —
+a real destination, not fabricated. Sevenloop links to its real (still
+pending) `/clients/sevenloop` hub. "Fortuna Identity" has no unambiguous
+match (only "Fortuna Cysec" is on the roster, a distinct engagement) and
+stays decorative, same "no invented destination" policy applied to the FAQ
+accordion sub-links (Experts' "Read more" and Related's blog cards — no
+per-expert bio or blog-article routes exist yet).
+
+**Filter tabs**: the export's `svc-tabs` (Solution/Service/Industry/
+Branding Projects) never actually filter the `PROJECTS` array in the
+source — `tab` state only toggles the active button style. Ported as-built
+(decorative tabs), not "fixed" to add filtering the export itself never
+implemented.
+
+**Testing lesson (not a bug — same class as Run 3's, logged for future
+runs)**: the first screenshot pass showed the entire FAQ section and the
+entire Related section missing — headings and all. Diagnosed via
+`getComputedStyle`/`classList` in a Playwright `evaluate` rather than
+guessing: `is-revealed` **was** correctly applied to every `.reveal-up`
+element by the `IntersectionObserver`, but the CSS transition
+(`--motion-reveal: 720ms`) hadn't finished by the time the screenshot fired
+— the capture script's post-scroll wait was only 200–300ms. Not a code bug;
+fixed by waiting ~900ms after the last scroll step before capturing.
+**Lesson**: for any page with `.reveal-up` sections, verify with
+`is-revealed`/computed `opacity` (not just a screenshot) before concluding
+content is broken, and give the 720ms transition real time to finish.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| service-branding-agency/section-port | `app/service/branding-agency/page.tsx`, `app/styles/service.css`, `components/svc-template/*` | passed | 0 FIX iterations (the reveal-up issue above was a test-script timing artifact, not a code fix). Tested: build/lint/typecheck clean, 0 failing checks (5 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through plus targeted crops (hero, ToC+body, portfolio tabs, team grid, related grid), no overflow, mobile nav works, ToC renders as a plain (non-sticky) block above the body below 900px, sticky scroll-spy confirmed above 900px |
+| service-branding-agency/metadata | Title + description via Metadata API | passed | Title "Branding Agency" (renders "Branding Agency — Design Asylum"); description ported verbatim |
+| service-branding-agency/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, hero CTA → `/contact`, 22 of 23 portfolio cards → `/clients` tiles or `/clients/sevenloop` — far beyond 3. Moved `/service/branding-agency` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author/Pricing/Recent-Updates pattern above) when picked up.
+Author/Pricing/Recent-Updates/Clients/FAQ/Service pattern above) when
+picked up. Industry/Solution/Location should reuse `components/svc-template/*`
+and the `bl-*`/`svc-section-*`/`svc-tabs`/`svc-team-*`/`svc-related-*` CSS
+already promoted to `ds-components.css` — confirm each page's markup still
+matches before assuming a 1:1 fit.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
-| FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
-| Service — Branding Agency | `/service/branding-agency` | `service/` | service-branding-agency/section-port | pending |
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | pending |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | pending |
 | Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending |
@@ -670,3 +774,114 @@ landing it will convert a large number of existing soft-warnings into
 real passes. `global/content-studies` should probably land before or
 alongside `clients-sevenloop/section-port` per its existing note. Continue
 down the "Remaining pages" table in order after that.
+
+### Run 5 — 2026-07-04 (PR #6 merged; fresh branch restarted from production tip)
+
+**Reconciliation**: this session was assigned branch
+`claude/elegant-davinci-0oj783`. Its tip (`36508d3`) already matched
+`origin/claude/design-asylum-homepage-elx1ah` (production) exactly — PR #6
+had merged since the last run, and this branch was cut fresh from that
+merged tip. Diffed `last_run_head` (`32da126`, Run 4's final commit)
+through `36508d3`: only Run 4's own "chore: progress" commits and the PR #6
+merge commit — no human edits to reconcile, no re-test needed. Checked open
+PRs against the repo (per the standing recommendation): none open — #6 was
+the only one and it's merged, so no fan-out this time, no duplicate-PR
+cleanup needed. Same `[BRANCH: claude/next-build]` mismatch Runs 2–4
+already flagged persists (the harness still assigns a fresh
+`claude/elegant-davinci-<random>` branch per session) — still recommend
+pinning a durable branch name; the check-open-PRs-first workaround
+continues to work fine as a substitute.
+
+**Environment preflight**: same as all prior runs — no env vars set in this
+sandbox. Build/tests do not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` (471 packages), `next build` clean throughout
+(11 → 16 routes as pages landed), `next start` on :8080 for every TEST
+step — confirmed each prior `next-server` PID reached zombie/defunct state
+via `ps aux` before every restart (per Run 2's lesson), never relied on the
+shell's reported exit status alone.
+
+**WORK LOOP** (4 of 4 quota units used, ~28 minutes wall-clock):
+
+1. **`clients/section-port`** (+ metadata + wire-links) — 44-tile client
+   grid. **1 FIX iteration**: verbatim-porting the export's fixed
+   `aspect-ratio: 4/3` tile to a 1-column mobile grid produced a ~13,700px
+   scroll and clipped long single-word names ("Simplicontract",
+   "Cloudphysician") against the tile edge — `run-checks.mjs` didn't catch
+   either problem since it only checks page-level horizontal overflow, not
+   per-element clipping or scroll-length sanity; both were caught by
+   screenshot review. Fixed with a 2-column mobile floor and auto-height
+   tiles below 600px (fixed aspect-ratio + font floor still apply verbatim
+   from 600px up). Converts the single most-linked-to pending route
+   (Home, Why Design Asylum, Why Us, Team, Author, Updates, nav, footer all
+   point here) to a real pass.
+2. **`faq/section-port`** (+ metadata + wire-links) — 24-item accordion FAQ
+   index (export's own comment: representative sample of a ~100-item live
+   index). Reused `home/Faq.tsx`'s `.da-faq` native `<details>` classes
+   instead of porting the export's JS-driven `bl-faq-*` accordion. None of
+   the 24 sample slugs match the one queued FAQ detail page
+   (`/faq/corporate-rebrand-expert`), so "Read the full answer" — redundant
+   anyway since the full answer is already shown inline — was dropped
+   rather than wired to 24 fabricated routes. 0 FIX iterations.
+3. **`service-branding-agency/section-port`** (+ metadata + wire-links) —
+   the largest unit this run: hero, sticky scroll-spy ToC + 9-section
+   long-form body, portfolio marquee/tabs/23-project grid, FAQ, 8-person
+   experts grid, 6 related posts. Read `industry/ind-app.jsx` and
+   `industry/ind-blocks.jsx` before starting and found byte-for-byte
+   identical component shapes/class names to `service/svc-*.jsx` under
+   `Ind*` names — confirmed reuse, not speculative — so promoted the
+   generic template pieces to `components/svc-template/*` (7 files) and
+   the `bl-*`/`svc-section-*`/`svc-tabs`/`svc-team-*`/`svc-related-*` CSS to
+   `ds-components.css`, plus extracted `lib/slugify.ts` (shared with
+   `/clients`) rather than re-porting this whole template for Industry/
+   Solution/Location later. Portfolio cards link to their matching
+   `/clients` tile where the client name matches (22 of 23), decorative
+   otherwise. 0 FIX iterations — an initial screenshot showing the entire
+   FAQ and Related sections missing (headings included) turned out to be a
+   test-script timing artifact: `IntersectionObserver` correctly applied
+   `is-revealed` to every element, but the 720ms CSS transition hadn't
+   finished before the screenshot fired. Verified via `getComputedStyle`/
+   `classList` in a Playwright `evaluate` rather than assuming a code bug;
+   fixed by waiting ~900ms post-scroll before capturing. Logged as a
+   lesson (same class as Run 3's reveal-up/fullPage-screenshot lesson) for
+   future runs testing any `.reveal-up` page.
+
+**Bugs found and fixed**: none new in the export's own source this run
+(the `clients/section-port` and `service-branding-agency` fixes above were
+both this migration's own responsive-CSS gaps, not bugs ported from the
+export).
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `9f41fd2` through `4e08e5f` on
+`claude/elegant-davinci-0oj783` (all commits this run carry this routine's
+trailer; base `36508d3` is production's merged tip, not a prior run's
+commit).
+
+**Human action needed**: none blocking. Opened **PR #7**
+(`claude/elegant-davinci-0oj783` → `main`) — the repo's default branch
+changed from `claude/design-asylum-homepage-elx1ah` to `main` (same
+commit, just renamed/repointed) partway through this run, finally
+resolving the durable-branch-naming gap every prior run's log flagged;
+this PR targets `main` accordingly.
+
+**Post-PR fix**: the Vercel preview for PR #7 initially failed —
+`Error: No Output Directory named "public" found after the Build
+completed` — even though `next build` itself succeeded (all 16 routes
+prerendered) in the same log. Confirmed via `mcp__Vercel__get_project` that
+the Vercel project's `framework` field had reset to `null` (Root Directory
+was still correctly `web`), so it fell back to static-site output
+conventions instead of Next.js's `.next` output. Added
+`web/vercel.json` (`{"framework": "nextjs"}`) so this is pinned in-repo
+rather than dependent on the dashboard's auto-detection; the very next
+deploy on the same PR went **Ready**:
+https://designasylum-studio-git-6e4374-ankush-misras-projects-a0fc591e.vercel.app
+
+**Next run should**: pick up `industry-manufacturing/section-port`
+(`industry/ind-*.jsx`) — reuse `components/svc-template/*` and the shared
+`bl-*`/`svc-section-*` CSS from this run rather than re-porting the
+template; confirm the markup still matches before assuming a 1:1 fit, then
+continue with `solution-ai-saas-website/section-port` and
+`location-ahmedabad/section-port` (same template family, per this run's
+note), then `faq-corporate-rebrand-expert/section-port` per queue order.

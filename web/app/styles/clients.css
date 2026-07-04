@@ -1,0 +1,125 @@
+.ci-page {
+  padding-top: 150px;
+  padding-bottom: var(--section-pad-y);
+}
+
+.ci-header {
+  max-width: 1180px;
+}
+.ci-header > .da-eyebrow {
+  margin-bottom: 24px;
+}
+.ci-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(40px, 5vw, 84px);
+  color: var(--color-obsidian-ink);
+}
+
+.ci-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: clamp(48px, 5vw, 80px);
+}
+@media (min-width: 600px) {
+  .ci-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+@media (min-width: 900px) {
+  .ci-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1180px) {
+  .ci-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.ci-tile {
+  position: relative;
+  border: 1px solid var(--color-fog);
+  background: var(--color-paper-white);
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 18px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+/* Fixed aspect-ratio tiles (ported verbatim from the export) only once the
+   grid is wide enough that a 2-word name fits two lines without clipping. */
+@media (min-width: 600px) {
+  .ci-tile {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    padding: 24px 26px;
+  }
+}
+.ci-tile:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-obsidian-ink);
+  background: var(--color-paper-off);
+}
+.ci-tile-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  overflow-wrap: break-word;
+  font-size: clamp(14px, 4.2vw, 30px);
+  color: var(--color-obsidian-ink);
+}
+@media (min-width: 600px) {
+  .ci-tile-name { font-size: clamp(22px, 1.8vw, 30px); }
+}
+.ci-tile-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  color: var(--color-ash);
+}
+.ci-tile-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.ci-tile:hover .ci-tile-tag {
+  color: var(--color-iris-voltage);
+}
+
+.ci-closing {
+  margin-top: var(--section-pad-y);
+  text-align: center;
+}
+.ci-closing-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(26px, 4vw, 56px);
+  color: var(--color-obsidian-ink);
+}
+.ci-closing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  padding: 18px 34px;
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}

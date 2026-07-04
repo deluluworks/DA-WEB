@@ -10,12 +10,14 @@ export const BUILT_ROUTES = {
   "/author/tanmaya-rao": "Lead Brand Designer",
   "/pricing": "sense of the budget",
   "/updates": "Ongoing Branding and Website Projects",
+  "/clients": "Worked with companies from a diverse set of industries",
+  "/faq": "Every question we get about B2B branding",
+  "/service/branding-agency": "Branding Agency",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
 // expected 404s during migration and shouldn't hard-fail the link check.
 export const PENDING_ROUTES = [
-  "/clients",
   "/clients/sevenloop",
   "/clients/sevenloop/branding",
   "/clients/aavenir",
@@ -23,9 +25,7 @@ export const PENDING_ROUTES = [
   "/audit/hackuity",
   "/print/sevenloop",
   "/blog",
-  "/faq",
   "/faq/corporate-rebrand-expert",
-  "/service/branding-agency",
   "/industry/manufacturing",
   "/solution/ai-saas-website",
   "/location/ahmedabad",

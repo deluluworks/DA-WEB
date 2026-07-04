@@ -588,3 +588,343 @@
   color: var(--color-paper-white);
   border-color: var(--color-obsidian-ink);
 }
+
+/* ==========================================================================
+   Long-form "SEO landing page" template (bl- and svc-section- classes) —
+   confirmed reused verbatim across Service, Industry, Solution, and Location
+   (service/svc-*.jsx and industry/ind-*.jsx share identical class names and
+   component shapes). Ported here rather than per-page since 4 queued pages
+   share this exact structure.
+   ========================================================================== */
+
+.bl-eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--color-ash);
+  margin: 0 0 26px;
+}
+
+.bl-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(32px, 4vw, 56px);
+  align-items: start;
+  margin-top: clamp(40px, 5vw, 72px);
+}
+@media (min-width: 900px) {
+  .bl-layout {
+    grid-template-columns: 280px 1fr;
+    gap: clamp(48px, 5vw, 96px);
+  }
+}
+
+.bl-toc {
+  padding-right: 8px;
+}
+@media (min-width: 900px) {
+  .bl-toc {
+    position: sticky;
+    top: 110px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+  }
+}
+.bl-toc-h {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-display);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--color-ash);
+  margin-bottom: 18px;
+}
+.bl-toc nav {
+  display: flex;
+  flex-direction: column;
+}
+.bl-toc-link {
+  display: block;
+  padding: 8px 0 8px 16px;
+  border-left: 2px solid var(--color-fog);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-ash);
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.bl-toc-link:hover {
+  color: var(--color-obsidian-ink);
+}
+.bl-toc-link.is-active {
+  color: var(--color-obsidian-ink);
+  border-left-color: var(--color-obsidian-ink);
+}
+
+.bl-body {
+  max-width: 820px;
+}
+.bl-body p {
+  font-family: var(--font-serif);
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.72;
+  color: var(--color-graphite);
+  margin: 0 0 22px;
+}
+.bl-body p.bl-lead {
+  font-size: clamp(20px, 1.9vw, 26px);
+  line-height: 1.55;
+  color: var(--color-obsidian-ink);
+  margin-bottom: 40px;
+}
+.bl-body strong {
+  color: var(--color-obsidian-ink);
+  font-weight: 600;
+}
+.bl-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+  font-size: clamp(24px, 2.5vw, 38px);
+  color: var(--color-obsidian-ink);
+  margin: 0 0 22px;
+  scroll-margin-top: 120px;
+}
+.bl-sub {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  color: var(--color-iris-voltage);
+  margin: 30px 0 14px;
+}
+.bl-sec {
+  padding-top: 48px;
+}
+.bl-sec:first-child {
+  padding-top: 0;
+}
+.bl-ul {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bl-ul li {
+  position: relative;
+  padding-left: 26px;
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--color-graphite);
+}
+.bl-ul li::before {
+  content: "\2192";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-iris-voltage);
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+.bl-block {
+  border: 1px solid var(--color-fog);
+  padding: 26px 24px;
+  margin: 32px 0;
+  background: var(--color-paper-off);
+}
+@media (min-width: 700px) {
+  .bl-block {
+    padding: 30px 32px;
+  }
+}
+.bl-block-head {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(19px, 1.7vw, 24px);
+  color: var(--color-obsidian-ink);
+  margin: 0 0 14px;
+  line-height: 1.18;
+}
+.bl-block p {
+  font-size: clamp(15px, 1.3vw, 17px);
+  margin-bottom: 0;
+}
+
+/* svc-section-h2 — shared section heading used by Portfolio/FAQ/Experts/Related */
+.svc-section-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: var(--text-section);
+  color: var(--color-obsidian-ink);
+}
+
+.svc-portfolio-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.svc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.svc-tab {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  color: var(--color-obsidian-ink);
+  background: none;
+  border: 1px solid var(--color-fog);
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.svc-tab:hover {
+  border-color: var(--color-obsidian-ink);
+}
+.svc-tab.is-active {
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  border-color: var(--color-obsidian-ink);
+}
+
+.svc-experts-inner {
+  padding-top: var(--section-pad-y);
+  padding-bottom: var(--section-pad-y);
+  margin-top: calc(-1 * var(--section-pad-y));
+}
+.svc-team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 600px) {
+  .svc-team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1180px) {
+  .svc-team-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.svc-team-card {
+  border: 1px solid var(--color-fog);
+  padding: 26px 24px 24px;
+  background: var(--color-paper-white);
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.svc-team-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-obsidian-ink);
+}
+.svc-team-role {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--color-iris-voltage);
+}
+.svc-team-name {
+  margin: 16px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  font-size: clamp(21px, 1.7vw, 28px);
+  color: var(--color-obsidian-ink);
+}
+.svc-team-bio {
+  margin: 14px 0 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-graphite);
+  flex: 1 1 auto;
+}
+.svc-team-more {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--color-obsidian-ink);
+}
+
+.svc-related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 700px) {
+  .svc-related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1080px) {
+  .svc-related-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.svc-related {
+  border: 1px solid var(--color-fog);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.svc-related:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-obsidian-ink);
+}
+.svc-related-vis {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.svc-related-vis-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 120% at 78% 22%, rgba(255, 255, 255, 0.18), transparent 55%);
+}
+.svc-related-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  font-size: clamp(19px, 1.6vw, 25px);
+  color: var(--color-obsidian-ink);
+}
+.svc-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--color-obsidian-ink);
+}
