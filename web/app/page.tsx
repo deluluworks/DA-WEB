@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { LogoWall } from "@/components/home/LogoWall";
 import { FeaturedWork } from "@/components/home/FeaturedWork";
+import { Services } from "@/components/home/Services";
 import { ArrowLink } from "@/components/ds/ArrowLink";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <Hero />
       <LogoWall />
       <FeaturedWork />
+      <Services />
 
       <section className="da-home-cta">
         <div className="da-home-cta-inner">

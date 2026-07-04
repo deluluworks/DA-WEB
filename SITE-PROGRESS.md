@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 5a8edd44445885d237b0bd3b92ae8f7c5c42e9ff
 skip: []
-cursor: { unit: home/services, phase: coding }
+cursor: { unit: home/services, phase: testing }
 ---
 
 # SITE-PROGRESS
@@ -111,7 +111,7 @@ sections are pending-port, old React adopted as baseline where usable.
 | home/logowall | `components/home/LogoWall.tsx` | passed | Ported from `DALogoWall` — CSS marquee animation (`prefers-reduced-motion` respected) |
 | home/cta-closer | Lightweight "Book a call" closing section | passed | Not from export — placeholder closer until Featured/Services etc. land; revisit once real sections below are ported (may replace this) |
 | home/featured-work | `DAFeatured` — 4-project stacking scroll panels | passed | `da/sections-1.jsx` lines 138–204. `components/home/FeaturedWork.tsx`, styles in `home.css`. Field-notes link points at `/blog` (site-config's "Thinking" mapping) instead of the export's unwired `#thinking` anchor. Tested: build/lint clean, 0 failing checks (14 pending-route soft-warnings), screenshot-verified 1440/375, no overflow, mobile stacks to single column |
-| home/services | `sections-services.jsx` | pending | Not yet read this run |
+| home/services | `sections-services.jsx` | testing | `components/home/Services.tsx` (client component — cursor-follow color-block preview), styles in `home.css`. Preview/cursor is fine-pointer + ≥900px only (CSS `pointer: fine` media query, matches export's "fine-pointer only" comment); mobile/touch gets the row list without the floating preview |
 | home/showreel-portfolio-painpoints-stats | `sections-2.jsx` / `sections-3.jsx` sections | pending | Not yet read this run |
 | home/whyus-industries-testimonials-faq | `sections-3.jsx` / `sections-4.jsx` sections | pending | `DAFaq` etc. |
 | home/brand-values-what-we-do | `sections-4.jsx` `DABrandValues`, `DAWhatWeDo` | pending | Seen this run while reading `sections-4.jsx` for the contact form; not ported |
