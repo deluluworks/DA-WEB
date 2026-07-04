@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
 skip: []
-cursor: { unit: location-ahmedabad/section-port, phase: testing }
+cursor: { unit: faq-corporate-rebrand-expert/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -390,6 +390,37 @@ Page-scoped hero (`.sol-h1`, `.sol-marquee`/`.sol-callout` spacing) in
 | solution-ai-saas-website/metadata | Title + description via Metadata API | passed | Title "AI SaaS Product Website Design Agency"; description ported verbatim from the export's hero subhead. Marker text for `run-checks.mjs` |
 | solution-ai-saas-website/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 9 portfolio cards → real `/clients#<slug>` tiles (Aavenir → `/clients/aavenir` hub; "ASPI & CIS Tech Diplomacy" → the "Aspi & CIS" tile via the same override Service uses). "Solutions" breadcrumb crumb kept non-link (no solutions-index page). Moved `/solution/ai-saas-website` from `PENDING_ROUTES` to `BUILT_ROUTES` |
 
+## Location — Ahmedabad (`/location/ahmedabad`) — `Location - Ahmedabad.html`
+
+Source: `location/loc-*.jsx` (app/blocks/body). Same `Svc*`-template family as
+Service/Industry/Solution, so it **reused `components/svc-template/*` wholesale**
+— no new template components. Differences handled this run:
+- **2-column portfolio** — Location's four city projects lay out 2-wide
+  (`repeat(2,1fr)`) in the export rather than the shared 3-column default.
+  Added an optional `cols` prop to `Portfolio` (+ a `.svc-grid.svc-grid-2`
+  desktop override in `ds-components.css`) that keeps the grid at two columns
+  from 1000px up while still 1→2 on mobile/tablet (mobile-first). Also positions
+  the portfolio **right after the hero** (matches the export's mount order),
+  before the callout/marquee, unlike Industry/Solution.
+- **Page-only `Info` block** (`.loc-info`/`.loc-info-label`) — an outlined
+  label + copy panel used inside the long-form body (Best for / What is
+  included / Engagement model). Ported verbatim from the export's `#svc-extra`
+  block into `app/styles/location.css` (page-scoped — nothing else in the queue
+  reuses it); a small `Info` component lives in the page file.
+- **Two-line CTA band** — reuses the shared `.svc-cta-band` with `.svc-cta-lead`
+  (already in `ds-components.css` since Run 6); the lead + heading wrap in a
+  `<div>` so the flex band stacks the copy block above the button on mobile.
+- No experts grid (Location omits it), so `Experts` is not imported here.
+
+Page-scoped hero (`.loc-h1`) + marquee/callout spacing in
+`app/styles/location.css`.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| location-ahmedabad/section-port | `app/location/ahmedabad/page.tsx`, `app/styles/location.css`, `cols` prop + `.svc-grid-2` on `Portfolio`, page-only `Info`/`.loc-info` | passed | Hero + 2-col portfolio(4) + Q&A callout + standalone marquee + ToC(9)+long-form body (8 sections, 3 `loc-info` blocks) + two-line CTA band(loc-09) + FAQ(6) + related(6). 0 FIX iterations. Tested: build/lint/typecheck clean, `run-checks.mjs` 0 failing (5 pending-route soft-warnings from nav/footer/related → /blog, /audit/hackuity, /print/sevenloop, /clients/sevenloop), screenshot-verified 1440/375 (hero, 2×2 portfolio, callout, marquee, ToC+body, CTA band, mobile single-column portfolio with wrapped tabs, mobile CTA stacks copy above button). FAQ/Related first showed blank in the `fullPage` capture — the **same reveal-up timing artifact** logged in Runs 3/5/6; confirmed benign via computed-style probe (`is-revealed` true, opacity ~1, 6 details + 6 related in DOM) + a targeted in-view crop |
+| location-ahmedabad/metadata | Title + description via Metadata API | passed | Title "Web Design & Branding Agency in Ahmedabad" (renders with the layout template); description ported verbatim from the export's `<meta name="description">`. Marker text ("Branding Agency in Ahmedabad") for `run-checks.mjs` |
+| location-ahmedabad/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, CTA band → `/contact`, all 4 portfolio cards → their real `/clients#<slug>` tiles (Rewild Farms / Cloudphysician / Entropik / Relanto all on the /clients grid). "Locations" breadcrumb crumb kept non-link (no locations-index page exists/queued). Moved `/location/ahmedabad` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
@@ -405,7 +436,7 @@ matches before assuming a 1:1 fit.
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | **passed (Run 6)** — see page section below |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | **passed (Run 6)** — see page section below |
-| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending — next up; reuse svc-template + shared CTA band. **Location adds `.svc-cta-lead`** (already ported to ds-components.css this run) |
+| Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | **passed (Run 7)** — see page section above |
 | Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — needs global/content-studies first |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | pending |
 | Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — needs global/content-blog first |
