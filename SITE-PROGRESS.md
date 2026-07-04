@@ -1,10 +1,10 @@
 ---
 branch: claude/elegant-davinci-7ievrz
-pr: TBD (created at end of this run — see run log)
+pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/2
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: TBD (set at end of this run)
+last_run_head: 96fefa878edd83ffa2f6e42c04d05788c787acc1
 skip: []
 ---
 
@@ -207,9 +207,14 @@ render possible — see SETUP NEEDED).
 (not started — outside this run's quota).
 
 **Commit range**: see `git log` on this branch for this run's commits
-(all carry this routine's trailer). **Vercel preview**: not verified this
-run — no Vercel MCP project appeared connected; human should confirm a
-preview deployment fires on push and record its URL in the next run.
+(all carry this routine's trailer). **Vercel preview**: confirmed working —
+the Vercel GitHub bot commented on PR #2 with a **Ready** deployment:
+https://designasylum-studio-git-071e17-ankush-misras-projects-a0fc591e.vercel.app
+(project `designasylum-studio-webiste`, owner `ankush-misras-projects`).
+The Vercel project is already connected and building `web/` correctly from
+this branch — no further one-time setup needed there. Human should still
+add the env vars from SETUP NEEDED so the contact/analytics integrations
+work for real on that preview.
 
 **Next run should**: pick up `home/featured-work` (next pending unit in
 table order), then continue down the Home section list, then move to
