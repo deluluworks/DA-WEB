@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 5a8edd44445885d237b0bd3b92ae8f7c5c42e9ff
 skip: []
-cursor: { unit: home/showreel-portfolio-painpoints-stats, phase: testing }
+cursor: { unit: home/whyus-industries-testimonials-faq, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -100,8 +100,9 @@ account should replace/augment this.
 ## Home (`/`) — front door, `Design Asylum Studio.html`
 
 Source: `da/` (`app.jsx`, `sections-1.jsx`…`sections-4.jsx`,
-`sections-services.jsx`). 15 sections total in the export; this run ported
-the first 2 (Hero, LogoWall) plus a lightweight closing CTA. **Per routine
+`sections-services.jsx`). 15 sections total in the export; 8 are now ported
+(Hero, LogoWall, FeaturedWork, Services, Showreel, Portfolio, PainPoints,
+Stats) plus a lightweight closing CTA not from the export. **Per routine
 instructions, home is NOT marked passed as a whole** — its remaining
 sections are pending-port, old React adopted as baseline where usable.
 
@@ -112,7 +113,7 @@ sections are pending-port, old React adopted as baseline where usable.
 | home/cta-closer | Lightweight "Book a call" closing section | passed | Not from export — placeholder closer until Featured/Services etc. land; revisit once real sections below are ported (may replace this) |
 | home/featured-work | `DAFeatured` — 4-project stacking scroll panels | passed | `da/sections-1.jsx` lines 138–204. `components/home/FeaturedWork.tsx`, styles in `home.css`. Field-notes link points at `/blog` (site-config's "Thinking" mapping) instead of the export's unwired `#thinking` anchor. Tested: build/lint clean, 0 failing checks (14 pending-route soft-warnings), screenshot-verified 1440/375, no overflow, mobile stacks to single column |
 | home/services | `sections-services.jsx` | passed | `components/home/Services.tsx` (client component — cursor-follow color-block preview), styles in `home.css`. Preview/cursor is fine-pointer + ≥900px only (CSS `pointer: fine` media query, matches export's "fine-pointer only" comment); mobile/touch gets the row list without the floating preview. Tested: build/lint clean, 0 failing checks, hover-preview screenshot-verified (color-block tile + "VIEW →" cursor follow both work), mobile stacks cleanly with no overflow. Note: first test run hit a false-positive failure (CSS 500 + overflow + font fallback) from a stale orphaned `next-server` process left over from a prior background-task kill on :8080 — killed it and restarted clean, re-ran green. Lesson for future runs: always verify the PID actually died after `pkill`/backgrounding, not just the shell's exit status |
-| home/showreel-portfolio-painpoints-stats | `sections-2.jsx` sections (Showreel, Portfolio, PainPoints, Stats) | testing | `components/home/{Showreel,Portfolio,PainPoints,Stats}.tsx`, styles in `home.css`. Sticky side-column headings (Portfolio intro, PainPoints h2) only sticky at ≥900px — plain stacked flow below that. Found + fixed a real content bug: two PainPoints quotes had literal `&rsquo;` text baked into JSX *string attributes* (not JSX children, so never HTML-decoded in the export) — replaced with real Unicode apostrophes. `#thinking`/`#work` anchor placeholders mapped to `/blog` / `/clients` per site-config's nav mapping |
+| home/showreel-portfolio-painpoints-stats | `sections-2.jsx` sections (Showreel, Portfolio, PainPoints, Stats) | passed | `components/home/{Showreel,Portfolio,PainPoints,Stats}.tsx`, styles in `home.css`. Sticky side-column headings (Portfolio intro, PainPoints h2) only sticky at ≥900px — plain stacked flow below that. Found + fixed a real content bug: two PainPoints quotes had literal `&rsquo;` text baked into JSX *string attributes* (not JSX children, so never HTML-decoded in the export) — replaced with real Unicode apostrophes, screenshot-confirmed rendering correctly. `#thinking`/`#work` anchor placeholders mapped to `/blog` / `/clients` per site-config's nav mapping. Tested: build/lint clean, 0 failing checks on first pass, 1440/375 screenshots verified for full page + close-up of the pain-points cards, no overflow |
 | home/whyus-industries-testimonials-faq | `sections-3.jsx` / `sections-4.jsx` sections | pending | `DAFaq` etc. |
 | home/brand-values-what-we-do | `sections-4.jsx` `DABrandValues`, `DAWhatWeDo` | pending | Seen this run while reading `sections-4.jsx` for the contact form; not ported |
 | home/contact-section | Embed `ContactForm` inline (as the export does, `id="contact"`) | pending | Reuse `components/ContactForm.tsx` built for `/contact`; currently home only links out to `/contact` |
