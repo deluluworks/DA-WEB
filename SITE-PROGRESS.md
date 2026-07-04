@@ -4,7 +4,7 @@ pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/5 — see R
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: 51f7069d93d3b1facd3288f00b369136b772540b
+last_run_head: af21bf9619f15b757efb293245d6bc51438f65e0
 skip: []
 cursor: { unit: team/section-port, phase: pending }
 ---
@@ -447,13 +447,16 @@ baseline after the branch-continuity fast-forward) through this run's
 last commit on `claude/elegant-davinci-6mi2rx` — see `git log` for exact
 shas (all carry this routine's trailer).
 
-**Human action needed**: three open draft PRs (#2, #3, #4) now exist for
-what is effectively one continuous line of work, plus this run's own PR
-opened from `claude/elegant-davinci-6mi2rx`. Recommend closing #2, #3, and
-#4 in favor of this run's PR (it is the furthest ahead — a strict
-superset of #4's commits) once opened, and — as Run 2 already
-recommended — pinning a durable branch name for this routine so future
-scheduled runs stop rediscovering this same fan-out.
+**Human action needed**: four open draft PRs (#2, #3, #4, and this run's
+#5) now exist for what is effectively one continuous line of work.
+Recommend closing #2, #3, and #4 in favor of #5 (it is the furthest ahead
+— a strict superset of all their commits). **Vercel preview confirmed
+Ready** for #5:
+https://designasylum-studio-git-9235a4-ankush-misras-projects-a0fc591e.vercel.app
+(same project as prior runs, picked this branch up automatically — no
+new one-time setup needed). As Run 2 already recommended — still
+unresolved — pinning a durable branch name for this routine would stop
+future scheduled runs from rediscovering this same fan-out.
 
 **Next run should**: pick up `team/section-port` (`team/team.jsx` —
 content already ported in `global/content-team`, so this unit is mostly
