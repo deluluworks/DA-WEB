@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 827575409f2acd449f37f86568ac33b18fa536f7
 skip: []
-cursor: { unit: updates/section-port, phase: testing }
+cursor: { unit: clients/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -225,15 +225,28 @@ pending-route placeholder); that link now resolves.
 | pricing/metadata | Title + description via Metadata API | passed | Title "Pricing" (renders "Pricing — Design Asylum"); description is new (the export had no `<meta name="description">` override for this page beyond the site default) |
 | pricing/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "team" link in the intro → `/team`, closing CTA (new, not in source — same added-closer pattern as Team/Why Us/Why Design Asylum) → `/contact`. Plus the pre-existing inbound link from `/contact` now resolves. Moved `/pricing` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Recent Updates (`/updates`) — `Recent Updates.html`
+
+Source: `footer/recent-updates.jsx` — dated changelog feed (featured
+highlight + 8-row current-projects list + 9-item archive list). Added
+`cl-*` (changelog item/number/archive row) and `.fb-chip.is-fill`/`.is-iris`
+modifiers to `ds-components.css` (`fb-chip` base already existed from an
+earlier page; this is the first page needing the filled/outline variants).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| updates/section-port | `app/updates/page.tsx`, `app/styles/updates.css` | passed | Featured-highlight "Know more →" CTA and the 9-item archive list were unwired `href="#"` placeholders in the export with no matching article/case-study route — rendered as static/decorative rows, same "no invented destination" policy as the Author page's blog list. Converted the source's large block of inline `style={{...}}` objects into semantic classes in `updates.css` (mobile-first `cl-item` grid: 44px number column below 600px, 64px at ≥600px, matching the design system's preference for classes/tokens over stray inline style objects). Tested: build/lint/typecheck clean, 0 failing checks (9 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through (highlight box, changelog list, archive list, closing CTA), no overflow, mobile nav works |
+| updates/metadata | Title + description via Metadata API | passed | Title "Recent Updates" (renders "Recent Updates — Design Asylum"); description ported from the intro paragraph |
+| updates/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, contextual "client engagements" link in the intro → `/clients` (pending route), closing CTA (new, not in source — same added-closer pattern as Team/Pricing/Why Us/Why Design Asylum) → `/contact`. `/updates` was already wired into the footer ("Recent updates") in Run 1; moved from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author/Pricing pattern above) when picked up.
+Author/Pricing/Recent-Updates pattern above) when picked up.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
-| Recent Updates | `/updates` | `footer/recent-updates.jsx` | updates/section-port | pending |
 | Clients index | `/clients` | `footer/clients-index.jsx` | clients/section-port | pending |
 | FAQ index | `/faq` | `footer/faq-index.jsx` | faq/section-port | pending |
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
