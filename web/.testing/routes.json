@@ -1,0 +1,38 @@
+{
+  "_comment": "Slug table for the Playwright harness. status:'built' routes get a hard 200 check wherever they're linked to; status:'pending' routes are known-not-yet-ported and their 404s/prefetch failures are treated as expected noise, not test failures. Updated by every unit that ports or wires a page.",
+  "routes": [
+    {
+      "slug": "/",
+      "status": "built",
+      "unit": "home-shell",
+      "marker": "Bold by design."
+    },
+    {
+      "slug": "/contact",
+      "status": "built",
+      "unit": "contact-page",
+      "marker": "Talk to us for your branding"
+    },
+    { "slug": "/clients", "status": "pending" },
+    { "slug": "/team", "status": "pending" },
+    { "slug": "/faq", "status": "pending" },
+    { "slug": "/pricing", "status": "pending" },
+    { "slug": "/why-design-asylum", "status": "pending" },
+    { "slug": "/why-us", "status": "pending" },
+    { "slug": "/manifesto", "status": "pending" },
+    { "slug": "/recent-updates", "status": "pending" },
+    { "slug": "/service/branding-agency", "status": "pending" },
+    { "slug": "/industry/manufacturing", "status": "pending" },
+    { "slug": "/solution/ai-saas-website", "status": "pending" },
+    { "slug": "/location/ahmedabad", "status": "pending" },
+    { "slug": "/faq/corporate-rebrand-expert", "status": "pending" },
+    { "slug": "/author/tanmaya-rao", "status": "pending" },
+    { "slug": "/clients/sevenloop", "status": "pending" },
+    { "slug": "/clients/sevenloop/branding-case-study", "status": "pending" },
+    { "slug": "/clients/sevenloop/blog", "status": "pending" },
+    { "slug": "/clients/sevenloop/print", "status": "pending" },
+    { "slug": "/clients/aavenir", "status": "pending" },
+    { "slug": "/clients/onelern", "status": "pending" },
+    { "slug": "/clients/hackuity-audit", "status": "pending" }
+  ]
+}
