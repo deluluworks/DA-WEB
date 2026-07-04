@@ -2,9 +2,9 @@
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 643369f605e527132c897548372a4f26ac210aff
+last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
 skip: []
-cursor: { unit: location-ahmedabad/section-port, phase: pending }
+cursor: { unit: location-ahmedabad/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS

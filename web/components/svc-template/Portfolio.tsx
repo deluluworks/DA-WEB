@@ -53,6 +53,7 @@ export function Portfolio({
   projects,
   marquee = true,
   defaultTab,
+  cols,
 }: {
   heading: string;
   tabs: string[];
@@ -69,6 +70,13 @@ export function Portfolio({
    * to match Service's original behavior when unset.
    */
   defaultTab?: string;
+  /**
+   * Desktop column count. Service/Industry/Solution use the shared 3-column
+   * `.svc-grid` default; Location's export lays its 4 city projects out
+   * 2-wide (`repeat(2,1fr)`), so it passes `cols={2}` to keep the grid at two
+   * columns from 1000px up (still 1→2 on mobile/tablet, mobile-first).
+   */
+  cols?: 2 | 3;
 }) {
   const [tab, setTab] = useState(defaultTab ?? tabs[tabs.length - 1]);
   return (
@@ -96,7 +104,7 @@ export function Portfolio({
             ))}
           </div>
         </div>
-        <div className="svc-grid reveal-up">
+        <div className={"svc-grid reveal-up" + (cols === 2 ? " svc-grid-2" : "")}>
           {projects.map((p, i) => (
             <ProjectCard key={p.name} project={p} i={i} />
           ))}
