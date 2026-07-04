@@ -6,7 +6,7 @@ fix_cap: 3
 wallclock_cap_min: 90
 last_run_head: 36508d376e540766291fb5da5c2287fbeb222ea2
 skip: []
-cursor: { unit: service-branding-agency/section-port, phase: testing }
+cursor: { unit: industry-manufacturing/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -283,16 +283,78 @@ identical and this avoids a second accordion implementation.
 | faq/metadata | Title + description via Metadata API | passed | Title "FAQs" (renders "FAQs — Design Asylum"); description ported verbatim from the export's `<meta name="description">` |
 | faq/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, closing CTA → `/contact`, secondary closing link → `/team`. `/faq` was already the footer's "FAQs" target since Run 1; moved `/faq` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
 
+## Service — Branding Agency (`/service/branding-agency`) — `Service - Branding Agency.html`
+
+Source: `service/svc-*.jsx` (5 files: app/body/portfolio/extras/prims) — a
+long-form "SEO landing page" template: hero, sticky scroll-spy Table of
+Contents + 9-section long-form body, portfolio marquee + filter tabs + a
+23-project grid, a 6-item FAQ, an 8-person experts grid, and 6 related-blog
+cards. **Confirmed reused verbatim by 3 more queued pages**: read
+`industry/ind-app.jsx` and `industry/ind-blocks.jsx` before starting this
+unit and found byte-for-byte identical component shapes and class names
+(`ProjectCard`/`FaqItem`/`ExpertCard`, `bl-toc`/`bl-h2`/`bl-ul`/`svc-tabs`/
+`svc-team-grid`/`svc-related`, …) under `Ind*` names instead of `Svc*` —
+Solution and Location follow the same `{prefix}-app.jsx`/`{prefix}-blocks.jsx`/
+`{prefix}-body.jsx` file layout, so near-certainly the same template too.
+Given that, this run promoted the **generic, reusable pieces** to shared
+code rather than porting them once and re-porting for Industry/Solution/
+Location later:
+- `components/svc-template/{Prims,TableOfContents,MarqueeStrip,Portfolio,Faq,Experts,Related}.tsx` — presentational + the scroll-spy client component, all data-driven via props (no Service-specific content baked in).
+- `app/styles/ds-components.css` — the full `bl-*` article-template CSS plus `.svc-section-h2`/`.svc-tabs`/`.svc-team-*`/`.svc-related-*` (previously page-scoped `svc-*` classes for the portfolio grid/marquee already existed here from the Author-page unit).
+- `lib/slugify.ts` — extracted from `app/clients/page.tsx` (now imported by both) since the portfolio grid needed the same slug logic to link back to `/clients` tiles.
+
+Page-specific content (hero copy, the 9 body sections, the 23 projects, the
+6 FAQs, the 8 experts, the 6 related posts) stays in
+`app/service/branding-agency/page.tsx` — only the template mechanics moved.
+
+**Linking decision**: the export's 23 portfolio cards were unwired
+`href="#"`. Most project names match a tile already on `/clients` (built
+this run), so those link to the matching `/clients#<slug>` anchor instead —
+a real destination, not fabricated. Sevenloop links to its real (still
+pending) `/clients/sevenloop` hub. "Fortuna Identity" has no unambiguous
+match (only "Fortuna Cysec" is on the roster, a distinct engagement) and
+stays decorative, same "no invented destination" policy applied to the FAQ
+accordion sub-links (Experts' "Read more" and Related's blog cards — no
+per-expert bio or blog-article routes exist yet).
+
+**Filter tabs**: the export's `svc-tabs` (Solution/Service/Industry/
+Branding Projects) never actually filter the `PROJECTS` array in the
+source — `tab` state only toggles the active button style. Ported as-built
+(decorative tabs), not "fixed" to add filtering the export itself never
+implemented.
+
+**Testing lesson (not a bug — same class as Run 3's, logged for future
+runs)**: the first screenshot pass showed the entire FAQ section and the
+entire Related section missing — headings and all. Diagnosed via
+`getComputedStyle`/`classList` in a Playwright `evaluate` rather than
+guessing: `is-revealed` **was** correctly applied to every `.reveal-up`
+element by the `IntersectionObserver`, but the CSS transition
+(`--motion-reveal: 720ms`) hadn't finished by the time the screenshot fired
+— the capture script's post-scroll wait was only 200–300ms. Not a code bug;
+fixed by waiting ~900ms after the last scroll step before capturing.
+**Lesson**: for any page with `.reveal-up` sections, verify with
+`is-revealed`/computed `opacity` (not just a screenshot) before concluding
+content is broken, and give the 720ms transition real time to finish.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| service-branding-agency/section-port | `app/service/branding-agency/page.tsx`, `app/styles/service.css`, `components/svc-template/*` | passed | 0 FIX iterations (the reveal-up issue above was a test-script timing artifact, not a code fix). Tested: build/lint/typecheck clean, 0 failing checks (5 pending-route soft-warnings), screenshot-verified 1440/375 full scroll-through plus targeted crops (hero, ToC+body, portfolio tabs, team grid, related grid), no overflow, mobile nav works, ToC renders as a plain (non-sticky) block above the body below 900px, sticky scroll-spy confirmed above 900px |
+| service-branding-agency/metadata | Title + description via Metadata API | passed | Title "Branding Agency" (renders "Branding Agency — Design Asylum"); description ported verbatim |
+| service-branding-agency/wire-links | 3+ real internal links | passed | Breadcrumb → `/`, hero CTA → `/contact`, 22 of 23 portfolio cards → `/clients` tiles or `/clients/sevenloop` — far beyond 3. Moved `/service/branding-agency` from `PENDING_ROUTES` to `BUILT_ROUTES` in `.testing/routes.mjs` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
 units (matching the Home/Contact/Manifesto/Why-Design-Asylum/Why-Us/Team/
-Author/Pricing/Recent-Updates/Clients/FAQ pattern above) when picked up.
+Author/Pricing/Recent-Updates/Clients/FAQ/Service pattern above) when
+picked up. Industry/Solution/Location should reuse `components/svc-template/*`
+and the `bl-*`/`svc-section-*`/`svc-tabs`/`svc-team-*`/`svc-related-*` CSS
+already promoted to `ds-components.css` — confirm each page's markup still
+matches before assuming a 1:1 fit.
 
 | Page | Planned slug | Source folder | Unit id | Status |
 |---|---|---|---|---|
 | FAQ — Corporate Rebrand Expert | `/faq/corporate-rebrand-expert` | `faq/` | faq-corporate-rebrand-expert/section-port | pending |
-| Service — Branding Agency | `/service/branding-agency` | `service/` | service-branding-agency/section-port | pending |
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | pending |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | pending |
 | Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | pending |
