@@ -1,10 +1,10 @@
 ---
 branch: claude/elegant-davinci-r2vqud
-pr: TBD — filled in after the draft PR is opened this run
+pr: https://github.com/DesignAsylum/designasylum.studio-webiste/pull/3
 quota_per_run: 4
 fix_cap: 3
 wallclock_cap_min: 90
-last_run_head: TBD — filled in at end of run (see run log)
+last_run_head: 7b17047f59a101d89793111ebdc82390c7d6a671
 skip: []
 ---
 
