@@ -6,6 +6,10 @@ import { Showreel } from "@/components/home/Showreel";
 import { Portfolio } from "@/components/home/Portfolio";
 import { PainPoints } from "@/components/home/PainPoints";
 import { Stats } from "@/components/home/Stats";
+import { WhyUs } from "@/components/home/WhyUs";
+import { Industries } from "@/components/home/Industries";
+import { Testimonials } from "@/components/home/Testimonials";
+import { Faq } from "@/components/home/Faq";
 import { ArrowLink } from "@/components/ds/ArrowLink";
 
 export default function Home() {
@@ -19,6 +23,10 @@ export default function Home() {
       <Portfolio />
       <PainPoints />
       <Stats />
+      <WhyUs />
+      <Industries />
+      <Testimonials />
+      <Faq />
 
       <section className="da-home-cta">
         <div className="da-home-cta-inner">
