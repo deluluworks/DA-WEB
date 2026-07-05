@@ -2,7 +2,7 @@
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 00f556ea077fdfaeadfbfd7940f113f3b6850e83
+last_run_head: 6b3dacb902f96d0b5d865705002004e874360be1
 skip: []
 cursor: { unit: global/motion-retrofit, phase: pending }
 ---
@@ -1499,3 +1499,73 @@ against Run 9's `clients-sevenloop` shape before assuming reuse), then
 "Thinking"/footer "Blog" both point at `/blog`; the blog article's breadcrumb
 also links here, so building it resolves that soft-warn), plus the late globals
 (`global/sitemap`, `global/robots`) once most routes exist.
+
+### Run 11 — 2026-07-05 (session branch `claude/zealous-feynman-dxjlw0`)
+
+**Reconciliation**: session branch reset to `origin/main` (`6b3dacb`, the merged
+tip of Run 10's PR #12). Diffed `last_run_head` (`00f556e`) → `origin/main`: the
+5 commits in between (`06561f0`, `2031a23`, `90208a4`, `9e2823e`, merge `6b3dacb`)
+are all Run 10's own routine commits (author "Claude", routine trailer — blog
+article + print showcase). No human edits, no third-party shared-file touches →
+no re-test/adopt needed.
+
+**QUEUE UPGRADE (one-time)**: this is the first run under the prompt version that
+adds the FULL-RANGE-RESPONSIVE (375→2560) and MOTION-PARITY release criteria. The
+three upgrade units did not yet exist, so inserted them at the FRONT of the queue:
+`global/harness-viewport-motion`, `global/large-viewport-sweep`,
+`global/motion-retrofit` (new "## Global / viewport + motion upgrade" section).
+Cursor moved off `clients-aavenir` to the first of these. Front matter already
+normalized (`quota_per_run: 2`, `wallclock_cap_min: 75`, no stale `branch:`/`pr:`).
+
+**Environment preflight**: same as Runs 1–10 — no env vars in this sandbox
+(`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests don't depend
+on them; no new SETUP NEEDED. All external hosts blocked (analytics untestable
+locally, excluded from console-error checks by design).
+
+**Build & serve**: `npm ci` clean; `next build` clean throughout (20 routes, all
+prerendered static ○). **Serving note for future runs**: this sandbox KILLS
+detached/background processes (`next start` via `run_in_background` or `setsid` dies
+with exit 144) AND blocks foreground `sleep`. The working pattern is
+`.testing/with-server.sh` (added this run): it boots `next start`, waits via
+`curl --retry` (not `sleep`), runs the given command, and tears the server down —
+all inside ONE foreground `Bash` call with `dangerouslyDisableSandbox`. Every check
+this run ran through it.
+
+**WORK LOOP** (2 of 2 quota cycles used, both passed):
+
+1. **`global/harness-viewport-motion`** — extended `.testing/run-checks.mjs`:
+   responsive loop now covers 375/768/1280/1440/**1920/2560**; horizontal overflow
+   measured by momentarily lifting the `overflow-x:hidden` mask (the old
+   `scrollWidth` check was blind to it); ≥1920 asserts a centered+capped `.da-wrap`
+   column and a full-bleed `.da-footer`; new MOTION PASS (reveal-on-scroll, marquee
+   transform advance, accordion transition incl. pseudo-elements, hover-lift
+   transition, hero-gradient running probe) with PASS/SKIP/FAIL semantics; plus a
+   `reducedMotion:'reduce'` suppression sample. **Real bug caught & fixed**: home
+   Industries `.da-ind-row` (`15% 50% 35%` tracks + `gap:32px`) clipped 2px at
+   ~768px → `0.15fr 0.5fr 0.35fr` + `min-width:0`. Tested green on home/service/
+   contact.
+2. **`global/large-viewport-sweep`** — re-verified ALL 20 built routes at 1920 and
+   2560: **0 failures** everywhere. ≥1920 composition already sound (centered
+   `--page-max-width:1200` column, full-bleed bands, `clamp()` type caps), so no
+   per-page re-test units opened. One harness-precision fix (accordion detection
+   scans ::before/::after — the blog FAQ animates via a pseudo-element). Visual 2560
+   spot-checks on 7 representative pages all clean.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (env vars — unchanged).
+
+**Commit range**: `62066eb` (harness wip) → `07c4880` (cycle 1) → `336e2fa`
+(cycle 2) + this progress commit on `claude/zealous-feynman-dxjlw0`; base `6b3dacb`
+is production's merged tip. All commits carry this routine's trailer.
+
+**Green gate**: both cycles passed with zero new blocked units → PR from
+`claude/zealous-feynman-dxjlw0` to `main`, merged. Vercel deploys `main`.
+
+**Next run should**: pick up `global/motion-retrofit` (build/confirm the shared
+motion islands — reveal, marquee, hover-lift, accordion, **animated hero gradient**
+— and apply to every ported page per the export sources; the hero gradient is the
+one motion the harness currently reports as absent/SKIP on every page, so it's the
+main retrofit target; then re-verify each with the motion pass). After that, resume
+the page ports: `clients-aavenir/section-port` (`aavenir/`, uses
+`content/studies/aavenir.mdx`), `case-studies-onelern`, `audit-hackuity`,
+`blog-index`, then the late globals (`global/sitemap`, `global/robots`).
