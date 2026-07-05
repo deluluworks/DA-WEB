@@ -1,0 +1,198 @@
+/* ============================================================================
+   Sevenloop — Branding Case Study (`/clients/sevenloop/branding`)
+   Ported from `Sevenloop - Branding Case Study.html` + casestudy/cs-page.jsx.
+   Image-forward template: header + sticky metadata sidebar, then a full-bleed
+   vertical figure stack. `cs-*` classes kept verbatim; mobile-first grid added
+   (export was a fixed 2-column desktop-only header, min-width:1180px).
+   ========================================================================== */
+
+.cs-page {
+  --cs-stack-gap: clamp(72px, 9vw, 168px);
+  background: var(--color-paper-white);
+  padding-top: 120px;
+}
+
+/* ---- header: title + metadata sidebar ---- */
+.cs-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(40px, 6vw, 64px);
+  align-items: start;
+}
+.cs-h1 {
+  margin: 24px 0 0;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(38px, 5.2vw, 74px);
+  color: var(--color-obsidian-ink);
+}
+.cs-clover {
+  margin-top: 56px;
+}
+.cs-aside {
+  position: static;
+}
+.cs-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  border-top: 1px solid var(--color-fog);
+}
+.cs-meta-label {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--color-ash);
+}
+.cs-meta-value {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--color-obsidian-ink);
+}
+.cs-tag {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border: 1px solid var(--color-obsidian-ink);
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  color: var(--color-obsidian-ink);
+  background: var(--color-paper-white);
+}
+.cs-investors {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cs-investor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border: 1px solid var(--color-fog);
+  height: 52px;
+  padding: 0 22px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  font-size: 15px;
+  color: var(--color-graphite);
+  background: var(--color-paper-white);
+}
+.cs-empty-rule {
+  height: 1px;
+  width: 56px;
+  background: var(--color-fog);
+  margin-top: 6px;
+}
+
+/* ---- full-bleed figure stack ---- */
+.cs-stack {
+  margin-top: var(--cs-stack-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cs-stack-gap);
+}
+.cs-figure {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+}
+.cs-figure-word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-figure-word span {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: clamp(34px, 6vw, 96px);
+}
+.cs-cap {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.62);
+}
+.cs-idx {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.04em;
+}
+
+/* ---- slim back-link bar (replaces the export's sparse footer; the global
+        site footer supplies contact/legal) ---- */
+.cs-backbar {
+  margin-top: var(--cs-stack-gap);
+  border-top: 1px solid var(--color-fog);
+}
+.cs-backbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 40px 0;
+}
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--color-obsidian-ink);
+}
+.cs-back .cs-back-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.cs-back:hover .cs-back-arrow {
+  transform: translateX(-4px);
+}
+
+/* ============ TABLET / DESKTOP (mobile-first upgrades) ============ */
+@media (min-width: 900px) {
+  .cs-page {
+    padding-top: 150px;
+  }
+  .cs-header {
+    grid-template-columns: 1.55fr 1fr;
+    gap: clamp(48px, 6vw, 110px);
+  }
+  .cs-aside {
+    position: sticky;
+    top: 116px;
+  }
+}
