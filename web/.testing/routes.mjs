@@ -18,12 +18,12 @@ export const BUILT_ROUTES = {
   "/location/ahmedabad": "Branding Agency in Ahmedabad",
   "/faq/corporate-rebrand-expert": "align executive stakeholders around a new brand strategy",
   "/clients/sevenloop": "custom metal manufacturing platform",
+  "/clients/sevenloop/branding": "Branding and project brochure design",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
 // expected 404s during migration and shouldn't hard-fail the link check.
 export const PENDING_ROUTES = [
-  "/clients/sevenloop/branding",
   "/clients/aavenir",
   "/case-studies/onelern",
   "/audit/hackuity",
