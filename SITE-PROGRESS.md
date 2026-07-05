@@ -441,6 +441,41 @@ classes (faq.css) for the added closing CTA.
 | faq-corporate-rebrand-expert/metadata | Title + description via Metadata API | passed | Title ported via `title.absolute` (the export's `<title>` is the full question with no site suffix, so it bypasses the layout's "%s — Design Asylum" template); description ported verbatim from the export's `<meta name="description">`. Marker text ("align executive stakeholders around a new brand strategy") for `run-checks.mjs` |
 | faq-corporate-rebrand-expert/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/faq` (the FAQ index, built earlier — the export's crumbs were unwired `href="#"`), closing CTA → `/contact`, closing secondary → `/faq`. "Corporate Rebrand Expert" breadcrumb crumb is the current page (non-link). Moved `/faq/corporate-rebrand-expert` from `PENDING_ROUTES` to `BUILT_ROUTES` |
 
+## Sevenloop — Client Hub (`/clients/sevenloop`) — `Sevenloop - Client Hub.html`
+
+Source: `sevenloop/sl-*.jsx` (`sl-app.jsx` mounts SLNav, SLHeader, SLOverview,
+SLEditorial, SLTransformation, SLTeam, SLServices, SLFooter). SLNav/SLFooter are
+the shared global `Nav`/`Footer`. First client-hub page; consumes the Run-8
+content-layer study `content/studies/sevenloop.mdx` for the long-form editorial
+prose (parsed into sections by `##` heading in the page component, so copy is
+not duplicated between the MDX and the component). Page-scoped CSS in
+`app/styles/sevenloop.css` (the export's `sl-*` classes ported verbatim, with
+mobile-first grids added — the export was fixed multi-column, `min-width:1180px`
+desktop-only). New components under `components/sevenloop/`: `MediaTile`
+(decorative colour-block placeholder tiles — the export ships no real imagery),
+`BeforeAfter` (client component — pointer-drag + keyboard compare slider),
+`ProjectTeam` (13-member project team, roster local to this page since it's the
+project-specific composition/roles, distinct from the global 34-person roster),
+`ServiceMarquee` (CSS-only dual-row marquee).
+
+**Linking decisions** (same "no invented destination" policy as prior pages):
+first industry link ("Design Agency for Manufacturing Firms") → the real
+`/industry/manufacturing`; the other 4 industries render as decorative
+underline-hover spans (no matching route). "Visit website" → external
+`https://sevenloop.com` (the domain is named verbatim in the source copy, not
+invented). Both "View case study" CTAs → `/clients/sevenloop/branding` (the
+still-pending branding case study — `related` in the study frontmatter).
+Team "Read more": Tanmaya Rao → `/author/tanmaya-rao`, the other 12 →
+`/team#<slug>` real same-page anchors (the team page sets `id={slug}` on cards).
+Service marquee chips: "Branding Agency" → `/service/branding-agency`, the rest
+decorative. Jump-nav = real same-page anchors (`#about`, `#logo-design`, …).
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| clients-sevenloop/section-port | `app/clients/sevenloop/page.tsx`, `app/styles/sevenloop.css`, `components/sevenloop/{MediaTile,BeforeAfter,ProjectTeam,ServiceMarquee}.tsx` | passed | All 6 sections ported (header/overview+deliverables/editorial/transformation/team/services). 0 FIX iterations. Tested: `tsc --noEmit` + `eslint` + `next build` clean (prerendered static ○); `run-checks.mjs` 0 failing (5 pending-route soft-warnings from footer/nav → /blog, /clients/sevenloop/branding, /audit/hackuity, /print/sevenloop). Screenshot-verified 1440/375: desktop parity (sticky jump-nav + sticky editorial heading ≥900px, deliverable tile grids, before/after drag slider, 3-col team grid, dual-row service marquee) and mobile reflow (jump-nav non-sticky top block, single-column overview/editorial/team, 2-col tile grids, slider intact), no overflow at 375/768/1280/1440, mobile nav works. Transformation/Team/Services first showed blank in the `fullPage` capture — the **same reveal-up timing artifact** logged in Runs 3/5/6/7; confirmed benign via computed-style probe (`.sl-ba` opacity 1 h=585, 13 team cards revealed, 58 chips, editorial revealed) + targeted in-view crops of each |
+| clients-sevenloop/metadata | Title + description via Metadata API | passed | Title via `title.absolute` ("Sevenloop \| Design Asylum Client Work", ported verbatim from the export `<title>` which carries its own suffix). Description sourced from the study `summary` frontmatter (the export had no `<meta name="description">`). Marker text "custom metal manufacturing platform" registered in `.testing/routes.mjs` |
+| clients-sevenloop/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/clients`, industry → `/industry/manufacturing`, case-study CTAs → `/clients/sevenloop/branding`, team → `/author/tanmaya-rao` + 12×`/team#<slug>`, service → `/service/branding-agency`, jump-nav same-page anchors — well beyond 3 distinct destinations. Moved `/clients/sevenloop` from `PENDING_ROUTES` to `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
@@ -457,7 +492,7 @@ matches before assuming a 1:1 fit.
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | **passed (Run 6)** — see page section below |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | **passed (Run 6)** — see page section below |
 | Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | **passed (Run 7)** — see page section above |
-| Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — content unblocked (Run 8: `content/studies/sevenloop.mdx` ready) |
+| Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | **passed (Run 9)** — see page section above |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | pending |
 | Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — content unblocked (Run 8: `content/blog/sevenloop-rebrand-webflow-case-study.mdx` ready) |
 | Sevenloop — Print Showcase | `/print/sevenloop` | `print/` | print-sevenloop/section-port | pending |
