@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 00f556ea077fdfaeadfbfd7940f113f3b6850e83
 skip: []
-cursor: { unit: clients-aavenir/section-port, phase: pending }
+cursor: { unit: global/harness-viewport-motion, phase: testing }
 ---
 
 # SITE-PROGRESS
@@ -61,6 +61,19 @@ export: `Design Asylum Studio website (1)/` (read-only — never edit).
   plus screenshotting the *built* Next.js pages standalone. **Human
   action**: eyeball the Vercel preview next to the exported `.html` files
   opened locally for true side-by-side parity.
+
+## Global / viewport + motion upgrade *(inserted at FRONT of queue — Run 11)*
+
+Pages shipped before this prompt version were only verified to 1440 with
+animations disabled. These three units retrofit the two new release criteria —
+FULL-RANGE RESPONSIVE (375→2560) and MOTION PARITY — across the whole site.
+They run before the remaining page ports.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| global/harness-viewport-motion | Extend `.testing/run-checks.mjs` with 1920+2560 viewport assertions (centered capped column, full-bleed bands span viewport, overflow detected via element widths since `overflow-x:hidden` masks `scrollWidth`) + the MOTION PASS (reveal in-view state, marquee transform advance, accordion transition, hover-lift transition, hero gradient running; reduced-motion suppression sample) | pending | 1 cycle |
+| global/large-viewport-sweep | Fix shared layout/tokens for >=1920 composition (centered max-width column, full-bleed bands, fluid caps), then re-verify EVERY passed route at 1920 and 2560. Per-page re-test units opened only for pages still broken after the shared fix | pending | 1 cycle |
+| global/motion-retrofit | Build/confirm shared motion primitives as client islands (reveal-on-scroll, marquee, hover-lift, accordion transitions, hero gradient) using DS motion tokens, apply to every already-ported page per the export sources, re-verify with the motion pass | pending | 1–2 cycles |
 
 ## Global / late units
 

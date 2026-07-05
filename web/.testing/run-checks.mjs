@@ -194,19 +194,70 @@ async function main() {
   }
 
   // --- 5. Responsive checks ---------------------------------------------------
-  for (const width of [375, 768, 1280, 1440]) {
+  // 375/768 reflow, 1280/1440 desktop, 1920/2560 large-viewport composition.
+  for (const width of [375, 768, 1280, 1440, 1920, 2560]) {
     await page.setViewportSize({ width, height: 900 });
     await page.waitForTimeout(150);
-    const overflow = await page.evaluate(() => {
-      const doc = document.documentElement;
-      return doc.scrollWidth - doc.clientWidth;
+    const m = await page.evaluate(() => {
+      const html = document.documentElement;
+      const body = document.body;
+      // The site sets `overflow-x: hidden` on html/body, which clamps
+      // scrollWidth and would MASK real horizontal overflow. Temporarily lift
+      // it to measure the true content width, then restore.
+      const prevH = html.style.overflowX;
+      const prevB = body.style.overflowX;
+      html.style.overflowX = "visible";
+      body.style.overflowX = "visible";
+      const overflow = html.scrollWidth - html.clientWidth;
+      html.style.overflowX = prevH;
+      body.style.overflowX = prevB;
+      const vw = window.innerWidth;
+      const columns = [...document.querySelectorAll(".da-wrap")].map((w) => {
+        const r = w.getBoundingClientRect();
+        return { w: Math.round(r.width), left: Math.round(r.left), right: Math.round(vw - r.right) };
+      });
+      const footer = document.querySelector(".da-footer");
+      const footerW = footer ? Math.round(footer.getBoundingClientRect().width) : null;
+      return { vw, overflow, columns, footerW };
     });
-    if (overflow > 1) {
-      fail(`horizontal overflow of ${overflow}px at ${width}px viewport`);
+
+    if (m.overflow > 1) {
+      fail(`horizontal overflow of ${m.overflow}px at ${width}px viewport`);
     } else {
       ok(`no horizontal overflow at ${width}px`);
     }
+
+    // Large-viewport composition (>=1920): centered capped content column +
+    // full-bleed bands spanning the whole viewport.
+    if (width >= 1920) {
+      if (!m.columns.length) {
+        warn(`no .da-wrap content column found at ${width}px — cannot assert centered/capped layout`);
+      } else {
+        const offenders = m.columns.filter(
+          (c) => c.w >= m.vw - 1 || Math.abs(c.left - c.right) > 2,
+        );
+        if (offenders.length) {
+          offenders
+            .slice(0, 3)
+            .forEach((c) =>
+              fail(
+                `content column not centered/capped at ${width}px: width=${c.w}, left=${c.left}, right=${c.right}`,
+              ),
+            );
+        } else {
+          ok(`content column centered & capped at ${m.columns[0].w}px, ${width}px viewport`);
+        }
+      }
+      if (m.footerW == null) {
+        warn(`no .da-footer to assert full-bleed span at ${width}px`);
+      } else if (Math.abs(m.footerW - m.vw) > 2) {
+        fail(`full-bleed footer does not span viewport at ${width}px: ${m.footerW}px vs ${m.vw}px`);
+      } else {
+        ok(`full-bleed footer spans viewport at ${width}px`);
+      }
+    }
   }
+  await page.setViewportSize({ width: 1280, height: 900 });
 
   // --- 6. Design-system adherence ---------------------------------------------
   const dsReport = await page.evaluate(() => {
@@ -233,13 +284,179 @@ async function main() {
 
   await browser.close();
 
-  // --- 7. Contact-route-specific checks ---------------------------------------
+  // --- 7. MOTION PASS ---------------------------------------------------------
+  await runMotionPass(url);
+
+  // --- 8. Contact-route-specific checks ---------------------------------------
   if (unit && /contact/i.test(unit)) {
     await checkContactApi();
   }
 
   console.log(`\n${failures.length} failing checks, ${warnings.length} warnings.`);
   if (failures.length) process.exit(1);
+}
+
+// Each motion check either PASSes (behaves), SKIPs (element absent on this
+// route — reported as ok), or FAILs (element present but motion broken).
+// A route without a given motion is not penalised; a route that ships a
+// motion element that doesn't animate is a hard fail.
+const MARQUEE_SEL = ".da-marquee-track, .svc-marquee-track, .sl-marquee";
+const LIFT_SEL =
+  ".pill-hover, .ci-tile, .svc-card, .tm-card, .pr-card, .fb-card, .bl-related-card, .svc-related-card";
+
+async function runMotionPass(url) {
+  const browser = await chromium.launch({
+    executablePath: "/opt/pw-browsers/chromium",
+    args: ["--no-sandbox"],
+  });
+
+  // --- animations ENABLED (prefers-reduced-motion: no-preference) -----------
+  const ctx = await browser.newContext({
+    viewport: { width: 1280, height: 900 },
+    reducedMotion: "no-preference",
+  });
+  const page = await ctx.newPage();
+  await page.goto(url, { waitUntil: "load" });
+  await page.waitForTimeout(300);
+
+  // reveal-on-scroll: targets gain their in-view state after scrolling.
+  const revealCount = await page.locator(".reveal-up").count();
+  if (revealCount) {
+    await page.evaluate(async () => {
+      const step = Math.floor(window.innerHeight * 0.8);
+      for (let y = 0; y < document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+    });
+    await page.waitForTimeout(400);
+    const revealed = await page.locator(".reveal-up.is-revealed").count();
+    if (revealed > 0)
+      ok(`motion: ${revealed}/${revealCount} reveal-up elements gained is-revealed on scroll`);
+    else fail(`motion: reveal-up present (${revealCount}) but none gained is-revealed on scroll`);
+  } else {
+    ok("motion: no reveal-up targets on this route (skip)");
+  }
+
+  // marquee: transform advances between two samples ~500ms apart.
+  const marqueeCount = await page.locator(MARQUEE_SEL).count();
+  if (marqueeCount) {
+    const read = () =>
+      page.evaluate((s) => {
+        const e = document.querySelector(s);
+        return e ? getComputedStyle(e).transform : null;
+      }, MARQUEE_SEL);
+    const t1 = await read();
+    await page.waitForTimeout(500);
+    const t2 = await read();
+    if (t1 && t2 && t1 !== t2)
+      ok(`motion: marquee transform advances over 500ms (${marqueeCount} track(s))`);
+    else fail(`motion: marquee present but transform did not advance (${t1} -> ${t2})`);
+  } else {
+    ok("motion: no marquee on this route (skip)");
+  }
+
+  // accordion: a transition is declared and the open state flips on toggle.
+  const acc = page.locator("details.da-faq, details.bl-faq, details[class*='faq']");
+  const accCount = await acc.count();
+  if (accCount) {
+    const first = acc.first();
+    const before = await first.evaluate((e) => e.open);
+    const hasTransition = await page.evaluate(() => {
+      const el = document.querySelector(".da-faq-plus, .bl-faq-plus, [class*='faq-plus'], [class*='faq-a']");
+      if (!el) return false;
+      const d = getComputedStyle(el).transitionDuration;
+      return !!d && d !== "0s" && d !== "";
+    });
+    await first.locator("summary").first().click().catch(() => {});
+    await page.waitForTimeout(150);
+    const after = await first.evaluate((e) => e.open);
+    if (after !== before && hasTransition)
+      ok("motion: accordion open state flips and a transition is declared");
+    else if (after !== before)
+      fail("motion: accordion toggles but no transition declared on its animated element");
+    else fail("motion: accordion open state did not flip on click");
+  } else {
+    ok("motion: no accordion on this route (skip)");
+  }
+
+  // card hover-lift: a lift-capable element declares its transition.
+  const liftCount = await page.locator(LIFT_SEL).count();
+  if (liftCount) {
+    const declared = await page.evaluate((sel) => {
+      for (const el of document.querySelectorAll(sel)) {
+        const cs = getComputedStyle(el);
+        const dur = cs.transitionDuration;
+        const prop = cs.transitionProperty;
+        if (dur && dur !== "0s" && (/transform|all/.test(prop))) return true;
+      }
+      return false;
+    }, LIFT_SEL);
+    if (declared) ok(`motion: hover-lift transition declared (${liftCount} candidate element(s))`);
+    else fail(`motion: hover-lift elements present (${liftCount}) but none declare a transform transition`);
+  } else {
+    ok("motion: no hover-lift elements on this route (skip)");
+  }
+
+  // hero gradient: an element reports a non-none, running gradient animation.
+  const grad = await page.evaluate(() => {
+    for (const el of document.querySelectorAll("*")) {
+      const cs = getComputedStyle(el);
+      const name = cs.animationName;
+      if (name && name !== "none" && /gradient/i.test(name) && cs.animationPlayState === "running") {
+        return { name, cls: String(el.className).slice(0, 60) };
+      }
+    }
+    return null;
+  });
+  if (grad) ok(`motion: hero gradient animation running (${grad.name})`);
+  else ok("motion: no running hero-gradient animation on this route (skip — motion-retrofit target)");
+
+  await ctx.close();
+
+  // --- prefers-reduced-motion: those same animations are suppressed ---------
+  const rctx = await browser.newContext({
+    viewport: { width: 1280, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const rpage = await rctx.newPage();
+  await rpage.goto(url, { waitUntil: "load" });
+  await rpage.waitForTimeout(250);
+
+  if (revealCount) {
+    const allShown = await rpage.evaluate(() =>
+      [...document.querySelectorAll(".reveal-up")].every(
+        (el) => parseFloat(getComputedStyle(el).opacity) > 0.99,
+      ),
+    );
+    if (allShown) ok("reduced-motion: reveal-up shown instantly (hidden state suppressed)");
+    else fail("reduced-motion: reveal-up still hidden — reveal not suppressed under reduced motion");
+  }
+  if (marqueeCount) {
+    const suppressed = await rpage.evaluate((s) => {
+      const e = document.querySelector(s);
+      if (!e) return true;
+      const cs = getComputedStyle(e);
+      return cs.animationName === "none" || cs.animationPlayState === "paused";
+    }, MARQUEE_SEL);
+    if (suppressed) ok("reduced-motion: marquee animation suppressed");
+    else fail("reduced-motion: marquee still animating under prefers-reduced-motion");
+  }
+  if (grad) {
+    const gradStopped = await rpage.evaluate(() => {
+      for (const el of document.querySelectorAll("*")) {
+        const cs = getComputedStyle(el);
+        if (/gradient/i.test(cs.animationName) && cs.animationName !== "none" && cs.animationPlayState === "running")
+          return false;
+      }
+      return true;
+    });
+    if (gradStopped) ok("reduced-motion: hero gradient animation suppressed");
+    else fail("reduced-motion: hero gradient still animating under prefers-reduced-motion");
+  }
+
+  await rctx.close();
+  await browser.close();
 }
 
 async function checkContactApi() {
