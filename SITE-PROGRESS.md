@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 09e9cc9f811ed510bf7504280527cf0720628347
 skip: []
-cursor: { unit: print-sevenloop/section-port, phase: pending }
+cursor: { unit: print-sevenloop/section-port, phase: testing }
 ---
 
 # SITE-PROGRESS
