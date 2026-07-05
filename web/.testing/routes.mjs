@@ -19,6 +19,7 @@ export const BUILT_ROUTES = {
   "/faq/corporate-rebrand-expert": "align executive stakeholders around a new brand strategy",
   "/clients/sevenloop": "custom metal manufacturing platform",
   "/clients/sevenloop/branding": "Branding and project brochure design",
+  "/blog/sevenloop-rebrand-webflow-case-study": "Transforming Precision Manufacturing",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are

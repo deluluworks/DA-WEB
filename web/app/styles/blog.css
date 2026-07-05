@@ -1,0 +1,465 @@
+/* Sevenloop blog article — page-scoped layer.
+ * Article-body primitives (bl-body/bl-h2/bl-sub/bl-ul/bl-block/bl-toc/bl-layout)
+ * are shared and already live in ds-components.css; this file adds the pieces
+ * unique to the blog article: header, hero tile, pull quotes, figures, the ToC
+ * AI chips, FAQ accordion, author card, solutions row, cross-links and related
+ * cards. Ported from the export's `blog/*.jsx` + inline `<style>` block, made
+ * mobile-first (the export was desktop-only, min-width:1180). */
+
+/* --- article header --- */
+.bl-article-head {
+  padding-top: clamp(112px, 15vw, 140px);
+}
+.bl-title {
+  margin: 28px 0 0;
+  max-width: 1040px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  font-size: clamp(34px, 5vw, 76px);
+  color: var(--color-obsidian-ink);
+}
+.bl-dek {
+  margin: 24px 0 0;
+  max-width: 780px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.7vw, 24px);
+  line-height: 1.5;
+  color: var(--color-graphite);
+}
+.bl-byline {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.bl-byline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bl-byline-k {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  color: var(--color-ash);
+}
+.bl-byline-v {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--color-obsidian-ink);
+}
+.bl-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-top: 40px;
+  background: var(--color-obsidian-ink);
+}
+@media (min-width: 700px) {
+  .bl-hero {
+    aspect-ratio: 21 / 9;
+    margin-top: 48px;
+  }
+}
+.bl-hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(80% 130% at 20% 22%, rgba(239, 108, 46, 0.34), transparent 52%),
+    radial-gradient(80% 130% at 84% 84%, rgba(81, 111, 234, 0.46), transparent 52%),
+    radial-gradient(60% 100% at 62% 32%, rgba(150, 235, 235, 0.18), transparent 56%);
+}
+.bl-hero-cap {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- pull quote --- */
+.bl-pull {
+  margin: 40px 0;
+  padding: 0 0 0 24px;
+  border-left: 3px solid var(--color-obsidian-ink);
+}
+.bl-pull p {
+  font-family: var(--font-serif);
+  font-size: clamp(21px, 2.4vw, 34px);
+  line-height: 1.36;
+  color: var(--color-obsidian-ink);
+  margin: 0;
+}
+.bl-pull cite {
+  display: block;
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  color: var(--color-ash);
+}
+
+/* --- figure tile --- */
+.bl-fig {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 32px 0;
+  overflow: hidden;
+  background: var(--color-obsidian-ink);
+}
+.bl-fig-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 130% at 24% 20%, rgba(255, 194, 64, 0.3), transparent 54%),
+    radial-gradient(90% 130% at 84% 86%, rgba(81, 111, 234, 0.42), transparent 54%);
+}
+.bl-fig figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- ToC AI chips --- */
+.bl-toc-ai {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-fog);
+}
+.bl-toc-ai .bl-toc-h {
+  margin-bottom: 14px;
+}
+.bl-toc-ai-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bl-aichip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--color-fog);
+  padding: 9px 14px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+  color: var(--color-obsidian-ink);
+}
+.bl-aichip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-iris-voltage);
+}
+
+/* --- shared spacing for the trailing sections --- */
+.bl-extra {
+  padding-top: var(--section-pad-y);
+}
+.bl-extra-last {
+  padding-bottom: var(--section-pad-y);
+}
+.bl-extra .svc-section-h2 {
+  margin: 0 0 32px;
+}
+
+/* --- FAQ accordion (native <details>) --- */
+.bl-faq-item {
+  border-top: 1px solid var(--color-fog);
+}
+.bl-faq-item:last-child {
+  border-bottom: 1px solid var(--color-fog);
+}
+.bl-faq-q {
+  list-style: none;
+  cursor: pointer;
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(19px, 1.8vw, 26px);
+  color: var(--color-obsidian-ink);
+}
+.bl-faq-q::-webkit-details-marker {
+  display: none;
+}
+.bl-faq-icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  position: relative;
+}
+.bl-faq-icon::before,
+.bl-faq-icon::after {
+  content: "";
+  position: absolute;
+  background: var(--color-obsidian-ink);
+  transition: opacity 0.3s ease;
+}
+.bl-faq-icon::before {
+  left: 0;
+  top: 10px;
+  width: 22px;
+  height: 2px;
+}
+.bl-faq-icon::after {
+  left: 10px;
+  top: 0;
+  width: 2px;
+  height: 22px;
+}
+.bl-faq-item[open] .bl-faq-icon::after {
+  opacity: 0;
+}
+.bl-faq-a-inner {
+  padding: 0 0 30px;
+  max-width: 760px;
+}
+.bl-faq-sub {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: var(--color-ash);
+  margin-bottom: 14px;
+}
+.bl-faq-a-inner p {
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.65;
+  color: var(--color-graphite);
+  margin: 0;
+}
+
+/* --- author bio card --- */
+.bl-author {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+  border: 1px solid var(--color-fog);
+  padding: 28px;
+}
+@media (min-width: 640px) {
+  .bl-author {
+    grid-template-columns: 140px 1fr;
+    gap: 36px;
+    padding: 40px;
+  }
+}
+.bl-author-portrait {
+  width: 120px;
+  height: 120px;
+  background: var(--color-deep-teal);
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .bl-author-portrait {
+    width: 140px;
+    height: 140px;
+  }
+}
+.bl-author-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(100% 100% at 30% 25%, rgba(255, 194, 64, 0.4), transparent 60%);
+}
+.bl-author-portrait span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.bl-author-role {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--color-iris-voltage);
+}
+.bl-author-name {
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(24px, 2.4vw, 36px);
+  color: var(--color-obsidian-ink);
+}
+.bl-author-bio {
+  margin: 14px 0 0;
+  max-width: 620px;
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.55;
+  color: var(--color-graphite);
+}
+
+/* --- solutions pill row --- */
+.bl-soln-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bl-soln {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-fog);
+  padding: 14px 22px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 13px;
+  color: var(--color-obsidian-ink);
+}
+
+/* --- cross-links to the Sevenloop case study --- */
+.bl-crosslinks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+@media (min-width: 640px) {
+  .bl-crosslinks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.bl-crosslink {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--color-fog);
+  padding: 28px 30px;
+  text-decoration: none;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.bl-crosslink:hover {
+  border-color: var(--color-obsidian-ink);
+  transform: translateY(-4px);
+}
+.bl-crosslink-k {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--color-iris-voltage);
+}
+.bl-crosslink-t {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.25;
+  color: var(--color-obsidian-ink);
+}
+
+/* --- related posts --- */
+.bl-more-h {
+  margin-top: 8px;
+}
+.bl-related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 32px;
+}
+@media (min-width: 700px) {
+  .bl-related-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.bl-related {
+  border: 1px solid var(--color-fog);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+@media (min-width: 700px) {
+  .bl-related {
+    padding: 36px 34px;
+  }
+}
+.bl-related-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-block-iris);
+}
+.bl-related-maroon .bl-related-thumb {
+  background: var(--color-block-maroon);
+}
+.bl-related-thumb-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 120% at 78% 22%, rgba(255, 255, 255, 0.18), transparent 55%);
+}
+.bl-related-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  font-size: clamp(20px, 1.9vw, 28px);
+  color: var(--color-obsidian-ink);
+}
+.bl-related-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.bl-related-metaitem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bl-related-metak {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  color: var(--color-ash);
+}
+.bl-related-metav {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-graphite);
+}
