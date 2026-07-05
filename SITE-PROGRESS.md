@@ -2,9 +2,9 @@
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 00f556ea077fdfaeadfbfd7940f113f3b6850e83
+last_run_head: 6b3dacb902f96d0b5d865705002004e874360be1
 skip: []
-cursor: { unit: clients-aavenir/section-port, phase: pending }
+cursor: { unit: global/motion-retrofit, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -61,6 +61,19 @@ export: `Design Asylum Studio website (1)/` (read-only — never edit).
   plus screenshotting the *built* Next.js pages standalone. **Human
   action**: eyeball the Vercel preview next to the exported `.html` files
   opened locally for true side-by-side parity.
+
+## Global / viewport + motion upgrade *(inserted at FRONT of queue — Run 11)*
+
+Pages shipped before this prompt version were only verified to 1440 with
+animations disabled. These three units retrofit the two new release criteria —
+FULL-RANGE RESPONSIVE (375→2560) and MOTION PARITY — across the whole site.
+They run before the remaining page ports.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| global/harness-viewport-motion | Extend `.testing/run-checks.mjs` with 1920+2560 viewport assertions (centered capped column, full-bleed bands span viewport, overflow detected via element widths since `overflow-x:hidden` masks `scrollWidth`) + the MOTION PASS (reveal in-view state, marquee transform advance, accordion transition, hover-lift transition, hero gradient running; reduced-motion suppression sample) | passed | **Run 11 cycle 1**: harness extended. Responsive loop now runs 375/768/1280/1440/**1920/2560**; true horizontal overflow measured by momentarily lifting the `overflow-x:hidden` mask on html/body then restoring (the old scrollWidth check was blind to it). ≥1920 asserts the `.da-wrap` column is centered (`\|left−right\|≤2`) & capped (<vw), and the `.da-footer` full-bleed band spans the viewport (±2px). MOTION PASS runs in a fresh browser: reveal-up gains `is-revealed` on scroll, marquee `transform` advances over 500ms, accordion open flips + transition declared, hover-lift transition declared, hero-gradient running-animation probe — each PASS/SKIP(absent)/FAIL, so a route without a given motion isn't penalised but a shipped-but-dead motion element hard-fails. Reduced-motion sample (`reducedMotion:'reduce'` context) asserts reveal shown instantly + marquee/gradient suppressed. **Real bug caught & fixed** by the new overflow probe: home Industries row (`.da-ind-row`) used `grid-template-columns:15% 50% 35%` which + `gap:32px` clipped 2px at ~768px — switched to `0.15fr 0.5fr 0.35fr` (+ `min-width:0` children) so tracks distribute after gaps. Home re-verified clean at 375→2560 + motion + 768 screenshot. Added `.testing/with-server.sh` (boots+waits+tears-down `next start` inside one foreground command — this sandbox kills detached servers) and diagnostic helpers `shoot.mjs`/`find-overflow.mjs`/`probe-bleed.mjs`. Tested: harness green on home (0 fail), service (reveal 4/4, 0 fail), contact (contact-API + skips, 0 fail) |
+| global/large-viewport-sweep | Fix shared layout/tokens for >=1920 composition (centered max-width column, full-bleed bands, fluid caps), then re-verify EVERY passed route at 1920 and 2560. Per-page re-test units opened only for pages still broken after the shared fix | passed | **Run 11 cycle 2**: ALL 20 built routes re-verified at 1920 **and** 2560 via the extended harness — **0 failures** across the board (centered capped `.da-wrap` column at 1200px, full-bleed `.da-footer` spanning the viewport, no true horizontal overflow at any width 375→2560, motion + reduced-motion passing). The ≥1920 composition was already built correctly in prior runs (the shared chrome centers content at `--page-max-width:1200` with `margin:0 auto`; footers/heroes/logowall + service/home marquees are full-width blocks with a `.da-wrap` inside; display type uses `clamp()` tokens that cap at 1920+ so nothing stretches — "fluid caps" already satisfied). No page was broken at ≥1920, so **no per-page re-test units opened**. Shared fixes this cycle: (1) the home Industries `.da-ind-row` `%`-track+gap overflow (committed in cycle 1 when the new overflow probe first caught it); (2) harness precision — accordion transition detection now scans the `<details>` subtree **including ::before/::after pseudo-elements**, since the blog FAQ animates its plus→minus icon via `.bl-faq-icon::after{transition:opacity}` (a pseudo-element the element-only check missed → false fail). Visual 2560 spot-checks (home, clients, service, contact, team, sevenloop hub, blog article) all compose cleanly — centered column, comfortable density, no tiny-text-in-whitespace |
+| global/motion-retrofit | Build/confirm shared motion primitives as client islands (reveal-on-scroll, marquee, hover-lift, accordion transitions, hero gradient) using DS motion tokens, apply to every already-ported page per the export sources, re-verify with the motion pass | pending | 1–2 cycles |
 
 ## Global / late units
 
@@ -1486,3 +1499,73 @@ against Run 9's `clients-sevenloop` shape before assuming reuse), then
 "Thinking"/footer "Blog" both point at `/blog`; the blog article's breadcrumb
 also links here, so building it resolves that soft-warn), plus the late globals
 (`global/sitemap`, `global/robots`) once most routes exist.
+
+### Run 11 — 2026-07-05 (session branch `claude/zealous-feynman-dxjlw0`)
+
+**Reconciliation**: session branch reset to `origin/main` (`6b3dacb`, the merged
+tip of Run 10's PR #12). Diffed `last_run_head` (`00f556e`) → `origin/main`: the
+5 commits in between (`06561f0`, `2031a23`, `90208a4`, `9e2823e`, merge `6b3dacb`)
+are all Run 10's own routine commits (author "Claude", routine trailer — blog
+article + print showcase). No human edits, no third-party shared-file touches →
+no re-test/adopt needed.
+
+**QUEUE UPGRADE (one-time)**: this is the first run under the prompt version that
+adds the FULL-RANGE-RESPONSIVE (375→2560) and MOTION-PARITY release criteria. The
+three upgrade units did not yet exist, so inserted them at the FRONT of the queue:
+`global/harness-viewport-motion`, `global/large-viewport-sweep`,
+`global/motion-retrofit` (new "## Global / viewport + motion upgrade" section).
+Cursor moved off `clients-aavenir` to the first of these. Front matter already
+normalized (`quota_per_run: 2`, `wallclock_cap_min: 75`, no stale `branch:`/`pr:`).
+
+**Environment preflight**: same as Runs 1–10 — no env vars in this sandbox
+(`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests don't depend
+on them; no new SETUP NEEDED. All external hosts blocked (analytics untestable
+locally, excluded from console-error checks by design).
+
+**Build & serve**: `npm ci` clean; `next build` clean throughout (20 routes, all
+prerendered static ○). **Serving note for future runs**: this sandbox KILLS
+detached/background processes (`next start` via `run_in_background` or `setsid` dies
+with exit 144) AND blocks foreground `sleep`. The working pattern is
+`.testing/with-server.sh` (added this run): it boots `next start`, waits via
+`curl --retry` (not `sleep`), runs the given command, and tears the server down —
+all inside ONE foreground `Bash` call with `dangerouslyDisableSandbox`. Every check
+this run ran through it.
+
+**WORK LOOP** (2 of 2 quota cycles used, both passed):
+
+1. **`global/harness-viewport-motion`** — extended `.testing/run-checks.mjs`:
+   responsive loop now covers 375/768/1280/1440/**1920/2560**; horizontal overflow
+   measured by momentarily lifting the `overflow-x:hidden` mask (the old
+   `scrollWidth` check was blind to it); ≥1920 asserts a centered+capped `.da-wrap`
+   column and a full-bleed `.da-footer`; new MOTION PASS (reveal-on-scroll, marquee
+   transform advance, accordion transition incl. pseudo-elements, hover-lift
+   transition, hero-gradient running probe) with PASS/SKIP/FAIL semantics; plus a
+   `reducedMotion:'reduce'` suppression sample. **Real bug caught & fixed**: home
+   Industries `.da-ind-row` (`15% 50% 35%` tracks + `gap:32px`) clipped 2px at
+   ~768px → `0.15fr 0.5fr 0.35fr` + `min-width:0`. Tested green on home/service/
+   contact.
+2. **`global/large-viewport-sweep`** — re-verified ALL 20 built routes at 1920 and
+   2560: **0 failures** everywhere. ≥1920 composition already sound (centered
+   `--page-max-width:1200` column, full-bleed bands, `clamp()` type caps), so no
+   per-page re-test units opened. One harness-precision fix (accordion detection
+   scans ::before/::after — the blog FAQ animates via a pseudo-element). Visual 2560
+   spot-checks on 7 representative pages all clean.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (env vars — unchanged).
+
+**Commit range**: `62066eb` (harness wip) → `07c4880` (cycle 1) → `336e2fa`
+(cycle 2) + this progress commit on `claude/zealous-feynman-dxjlw0`; base `6b3dacb`
+is production's merged tip. All commits carry this routine's trailer.
+
+**Green gate**: both cycles passed with zero new blocked units → PR from
+`claude/zealous-feynman-dxjlw0` to `main`, merged. Vercel deploys `main`.
+
+**Next run should**: pick up `global/motion-retrofit` (build/confirm the shared
+motion islands — reveal, marquee, hover-lift, accordion, **animated hero gradient**
+— and apply to every ported page per the export sources; the hero gradient is the
+one motion the harness currently reports as absent/SKIP on every page, so it's the
+main retrofit target; then re-verify each with the motion pass). After that, resume
+the page ports: `clients-aavenir/section-port` (`aavenir/`, uses
+`content/studies/aavenir.mdx`), `case-studies-onelern`, `audit-hackuity`,
+`blog-index`, then the late globals (`global/sitemap`, `global/robots`).
