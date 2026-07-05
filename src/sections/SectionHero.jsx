@@ -33,9 +33,9 @@ export function DAHero() {
   const ul = { backgroundImage: 'linear-gradient(var(--color-obsidian-ink), var(--color-obsidian-ink))', backgroundSize: '100% 4px', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 92%' };
   const edge = 'max(var(--da-gutter), calc((100vw - var(--page-max-width)) / 2 + var(--da-gutter)))';
   return (
-    <header style={{ position: 'relative', overflow: 'hidden', paddingTop: 168, paddingLeft: edge, paddingBottom: 104 }}>
+    <header className="da-hero-header" style={{ position: 'relative', overflow: 'hidden', paddingTop: 168, paddingLeft: edge, paddingBottom: 104 }}>
       <div aria-hidden="true" style={{ position: 'absolute', inset: '-8% -20% auto -20%', height: 620, background: 'var(--gradient-solar-bloom)', opacity: 0.42, filter: 'blur(10px)', pointerEvents: 'none' }} />
-      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0, 560px) minmax(0, 1fr)', gap: 'clamp(40px, 5vw, 88px)', alignItems: 'stretch' }}>
+      <div className="da-hero-grid" style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0, 560px) minmax(0, 1fr)', gap: 'clamp(40px, 5vw, 88px)', alignItems: 'stretch' }}>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 8, paddingBottom: 8 }}>
           <h1 className="da-rise" style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 1.08, fontSize: 'clamp(46px, 5.2vw, 76px)', color: INK }}>
             <span style={ul}>Strategic rebranding</span><br />
@@ -47,7 +47,7 @@ export function DAHero() {
           </p>
           <div className="da-rise" style={{ display: 'flex', gap: 14, marginTop: 42, animationDelay: '.22s' }}>
             <Button variant="primary" size="lg" iconRight={<span aria-hidden>&rarr;</span>}>Start a project</Button>
-            <Button variant="secondary" size="lg">Don&rsquo;t click this</Button>
+            <Button variant="secondary" size="lg" onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}>Don&rsquo;t click this</Button>
           </div>
         </div>
         <div className="da-hero-film" style={{ position: 'relative', overflow: 'hidden', minHeight: 'clamp(440px, 56vh, 660px)', background: 'var(--color-deep-teal)' }}>
@@ -120,7 +120,7 @@ function ProjectPanel({ name, desc, statValue, statCaption, cover, wordColor, ct
   return (
     <article style={{ borderTop: first ? 'none' : '1px solid var(--color-fog)', background: 'var(--color-paper-white)' }}>
       <div className="da-wrap" style={{ width: '100%', paddingTop: 44, paddingBottom: 160 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '38fr 62fr', gap: 56, alignItems: 'stretch' }}>
+        <div className="da-feat-grid" style={{ display: 'grid', gridTemplateColumns: '38fr 62fr', gap: 56, alignItems: 'stretch' }}>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 40 }}>
             <h2 style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 0.95, fontSize: 'clamp(38px,4vw,60px)', color: INK }}>{name}</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
@@ -134,7 +134,7 @@ function ProjectPanel({ name, desc, statValue, statCaption, cover, wordColor, ct
               </div>
             </div>
           </div>
-          <div style={{ position: 'relative', borderRadius: 0, overflow: 'hidden', background: cover, width: '100%', aspectRatio: '16 / 9' }}>
+          <div className="da-feat-cover" style={{ position: 'relative', borderRadius: 0, overflow: 'hidden', background: cover, width: '100%', aspectRatio: '16 / 9' }}>
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span style={{ fontFamily: DISPLAY, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: 'clamp(40px,5vw,68px)', color: wordColor }}>{name}</span>
             </div>
@@ -157,11 +157,11 @@ export function DAFeatured() {
     { name: 'Lumen',     cover: 'var(--color-block-solar)',  wordColor: 'var(--color-obsidian-ink)',  cta: 'View project',     desc: 'Branding for a cybersecurity brand built for fast-growing businesses that refuse to look generic.',                    statValue: '67%',  statCaption: 'Brand recall in category testing' },
   ];
   return (
-    <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 0, background: 'var(--color-paper-white)' }}>
+    <section id="work" style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 0, background: 'var(--color-paper-white)' }}>
       <div className="da-wrap" style={{ textAlign: 'center', paddingBottom: 8 }}>
         <h2 style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 400, fontSize: 'var(--text-section)', lineHeight: 1.0, letterSpacing: '-0.02em', color: INK }}>Featured Projects</h2>
         <div style={{ marginTop: 18, display: 'flex', justifyContent: 'center' }}>
-          <ArrowLink href="#thinking" style={{ whiteSpace: 'nowrap' }}>Field notes, April 2026</ArrowLink>
+          <ArrowLink href="#" style={{ whiteSpace: 'nowrap' }}>Field notes, April 2026</ArrowLink>
         </div>
       </div>
       <div style={{ position: 'relative' }}>

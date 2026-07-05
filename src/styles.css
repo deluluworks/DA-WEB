@@ -19,10 +19,11 @@
   --radius-body-blocks: 0px;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   margin: 0;
-  min-width: 1180px;
+  min-width: 320px;
+  overflow-x: hidden;
   background: var(--color-paper-white);
   color: var(--color-obsidian-ink);
   -webkit-font-smoothing: antialiased;
@@ -31,6 +32,32 @@ body {
 ::selection { background: var(--color-solar-bloom); color: var(--color-obsidian-ink); }
 
 #root *, #root *::before, #root *::after { font-style: normal !important; }
+
+/* ============ SKIP LINK (TC-017) ============ */
+.da-skip-link {
+  position: absolute;
+  top: -9999px;
+  left: var(--da-gutter);
+  z-index: 9999;
+  background: var(--color-obsidian-ink);
+  color: var(--color-paper-white);
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+}
+.da-skip-link:focus { top: 0; }
+
+/* ============ FOCUS INDICATORS (TC-026) ============ */
+:focus-visible {
+  outline: 2.5px solid var(--color-iris-voltage);
+  outline-offset: 3px;
+}
+/* Suppress focus ring on mouse, keep for keyboard */
+:focus:not(:focus-visible) { outline: none; }
 
 .da-wrap { max-width: var(--page-max-width); margin: 0 auto; padding-left: var(--da-gutter); padding-right: var(--da-gutter); }
 .da-rule { height: 1px; background: var(--color-fog); border: 0; }
@@ -109,7 +136,8 @@ body {
 .da-svc-meta { font-size: 16px; color: var(--color-graphite); white-space: nowrap; transition: transform .3s ease; }
 .da-svc-row:hover .da-svc-title, .da-svc-row:hover .da-svc-meta { transform: translateX(12px); }
 .da-svc-modalwrap, .da-svc-cursorwrap { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; will-change: transform; }
-.da-svc-modal { width: clamp(300px, 26vw, 440px); height: clamp(220px, 19vw, 330px); transform: translate(-50%, -50%) scale(0); transition: transform .45s cubic-bezier(.76,0,.24,1); overflow: hidden; }
+/* TC-005: larger modal so long service names never clip */
+.da-svc-modal { width: clamp(360px, 30vw, 500px); height: clamp(240px, 21vw, 360px); transform: translate(-50%, -50%) scale(0); transition: transform .45s cubic-bezier(.76,0,.24,1); overflow: hidden; }
 .da-svc-modal[data-active="true"] { transform: translate(-50%, -50%) scale(1); }
 .da-svc-stack { position: absolute; inset: 0; width: 100%; height: 100%; transition: top .5s cubic-bezier(.76,0,.24,1); }
 .da-svc-tile { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -119,6 +147,61 @@ body {
 
 #root h1, #root h2, #root h3, #root h4 { font-weight: 400 !important; }
 @media (prefers-reduced-motion: reduce) { .da-marquee-track { animation: none; } }
+
+/* ============ RESPONSIVE LAYOUT (TC-001, TC-002, TC-003) ============ */
+
+/* Tablet and mid-range desktop — hero stacks */
+@media (max-width: 1100px) {
+  :root { --da-gutter: 32px; }
+  .da-hero-header { padding-right: var(--da-gutter) !important; }
+  .da-hero-grid { grid-template-columns: 1fr !important; }
+  .da-hero-film { min-height: 400px !important; }
+  .da-feat-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .da-feat-cover { aspect-ratio: 16 / 7 !important; }
+}
+
+/* Tablet — stack most 2-col layouts */
+@media (max-width: 900px) {
+  :root { --da-gutter: 24px; --section-pad-y: 72px; }
+  .da-portfolio-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-portfolio-sticky { position: static !important; }
+  .da-painpoints-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .da-painpoints-cards { grid-template-columns: 1fr !important; }
+  .da-stats-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-whyus-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-testimonials-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-testimonials-sticky { position: static !important; }
+  .da-testimonials-cards { grid-template-columns: 1fr !important; }
+  .da-faq-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .da-faq-sticky { position: static !important; }
+  .da-contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-brandvalues-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .da-whatwedo-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .da-footer-top { grid-template-columns: 1fr 1fr !important; gap: 40px !important; }
+  .da-footer-seo { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+  .da-industry-row-inner { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .da-industry-ctas { align-items: flex-start !important; }
+}
+
+/* Mobile — single column everything */
+@media (max-width: 600px) {
+  :root { --da-gutter: 20px; }
+  .da-painpoints-cards { grid-template-columns: 1fr !important; }
+  .da-testimonials-cards { grid-template-columns: 1fr !important; }
+  .da-brandvalues-cells { grid-template-columns: 1fr !important; }
+  .da-footer-top { grid-template-columns: 1fr !important; }
+  .da-footer-seo { grid-template-columns: 1fr 1fr !important; }
+  .da-svc-head { flex-direction: column; align-items: flex-start; }
+  .da-faq .da-faq-q { font-size: 18px; }
+  /* Keep marquee readable on mobile */
+  .da-marquee-logo { font-size: 22px; }
+  /* Services list — wrap meta text */
+  .da-svc-meta { white-space: normal !important; text-align: right; }
+  /* Industry rows — stacked on mobile */
+  .da-industry-row-wrap { padding: 28px 8px !important; }
+  /* Showreel teaser - stack on mobile */
+  .da-showreel-teaser { flex-direction: column !important; gap: 24px !important; }
+}
 
 /* ============ LARGE-MONITOR RESPONSIVENESS ============ */
 @media (min-width: 1728px) {

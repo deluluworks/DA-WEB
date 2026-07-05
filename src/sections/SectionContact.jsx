@@ -14,7 +14,7 @@ export function DAFaq() {
     ['Where are you, and do you work internationally?', 'We&rsquo;re a studio that works wherever the brief is. Remote-first, async-friendly, and used to working across time zones.'],
     ['Why does branding matter for B2B?', 'Because B2B buyers are still people. Clarity, confidence and a point of view shorten sales cycles, attract better talent and make investors lean in.'],
     ['When should a startup invest in branding?', 'When the story has outgrown the slide deck, usually around a raise, a pivot, or a new category you&rsquo;re trying to own.'],
-    ['What&rsquo;s the difference between a refresh and a full rebrand?', 'A refresh sharpens what already works. A rebrand rebuilds positioning, name and identity from the ground up. We&rsquo;ll tell you honestly which one you need.'],
+    ['What’s the difference between a refresh and a full rebrand?', 'A refresh sharpens what already works. A rebrand rebuilds positioning, name and identity from the ground up. We’ll tell you honestly which one you need.'],
     ['How do you measure the ROI of branding?', 'Against the things branding actually moves: pipeline quality, conversion, talent, raise outcomes. We agree what we&rsquo;re watching before we start.'],
     ['How long does a typical project take?', 'A focused identity runs 6&ndash;10 weeks. A full brand-and-website build runs 3&ndash;5 months. We&rsquo;ll map dates against your milestones up front.'],
     ['Do you build websites, or just brand?', 'Both. We design and build in Webflow and beyond, so the brand doesn&rsquo;t fall apart the moment it hits the web.'],
@@ -24,8 +24,8 @@ export function DAFaq() {
   ];
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-paper-white)' }}>
-      <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '34fr 66fr', gap: 64, alignItems: 'start' }}>
-        <div style={{ position: 'sticky', top: 120 }}>
+      <div className="da-wrap da-faq-grid" style={{ display: 'grid', gridTemplateColumns: '34fr 66fr', gap: 64, alignItems: 'start' }}>
+        <div className="da-faq-sticky" style={{ position: 'sticky', top: 120 }}>
           <Eyebrow>FAQ</Eyebrow>
           <h2 style={{ margin: '20px 0 0', fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.0, fontSize: 'clamp(34px,3.6vw,52px)', color: 'var(--color-obsidian-ink)' }}>Common questions</h2>
           <a href="#contact" style={{ marginTop: 32, display: 'inline-flex', alignItems: 'center', gap: 12, textDecoration: 'none', background: 'var(--color-obsidian-ink)', color: 'var(--color-paper-white)', padding: '16px 28px', borderRadius: 999, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 13, whiteSpace: 'nowrap' }}>
@@ -56,6 +56,7 @@ export function DAContact() {
 
   const [form, setForm] = useState({ name: '', email: '', message: '', slot: slots[1], website: '' });
   const [status, setStatus] = useState({ state: 'idle', message: '' });
+  const [formMode, setFormMode] = useState('brief');
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -84,7 +85,7 @@ export function DAContact() {
 
   return (
     <section id="contact" style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
-      <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '40fr 60fr', gap: 72, alignItems: 'start' }}>
+      <div className="da-wrap da-contact-grid" style={{ display: 'grid', gridTemplateColumns: '40fr 60fr', gap: 72, alignItems: 'start' }}>
         <div>
           <h2 style={{ margin: 0, fontFamily: D, fontWeight: 400, fontSize: 'var(--text-section)', lineHeight: 1.0, letterSpacing: '-0.02em', color: 'var(--color-obsidian-ink)' }}>Let&rsquo;s talk about your brand</h2>
           <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -96,24 +97,27 @@ export function DAContact() {
           <p style={{ margin: '32px 0 0', maxWidth: 360, fontFamily: S, fontSize: 17, lineHeight: 1.55, color: 'var(--color-graphite)' }}>Tell us what you&rsquo;re building. We reply within a day, usually with questions, sometimes with opinions.</p>
         </div>
         <form onSubmit={handleSubmit} style={{ background: 'var(--color-paper-white)', border: '1px solid var(--color-obsidian-ink)', borderRadius: 'var(--radius-cards)', padding: 36 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', fontSize: 18, color: 'var(--color-obsidian-ink)', whiteSpace: 'nowrap' }}>Send a brief</span>
-            <span style={{ fontFamily: S, fontStyle: 'normal', fontSize: 15, color: 'var(--color-ash)' }}>30 min intro call</span>
+          <div style={{ display: 'flex', gap: 0, borderBottom: '1.5px solid var(--color-fog)', marginBottom: 4 }}>
+            {[['brief', 'Send a brief'], ['call', '30 min intro call']].map(([mode, label]) => (
+              <button key={mode} type="button" onClick={() => setFormMode(mode)} style={{ flex: 1, border: 'none', background: 'none', cursor: 'pointer', paddingBottom: 14, paddingTop: 4, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 14, color: formMode === mode ? 'var(--color-obsidian-ink)' : 'var(--color-ash)', borderBottom: formMode === mode ? '2px solid var(--color-obsidian-ink)' : '2px solid transparent', marginBottom: -1.5, textAlign: mode === 'brief' ? 'left' : 'right' }}>{label}</button>
+            ))}
           </div>
 
           <input type="text" name="website" value={form.website} onChange={update('website')} tabIndex={-1} autoComplete="off" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} aria-hidden="true" />
 
           <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <input type="text" required placeholder="Your name" value={form.name} onChange={update('name')} style={inputStyle} />
-            <input type="email" required placeholder="Email address" value={form.email} onChange={update('email')} style={inputStyle} />
-            <select value={form.slot} onChange={update('slot')} style={{ ...inputStyle, color: 'var(--color-graphite)' }}>
+            <input type="text" required aria-label="Your name" placeholder="Your name" value={form.name} onChange={update('name')} style={inputStyle} />
+            <input type="email" required aria-label="Email address" placeholder="Email address" value={form.email} onChange={update('email')} style={inputStyle} />
+            <select value={form.slot} onChange={update('slot')} aria-label="Preferred time slot" style={{ ...inputStyle, color: 'var(--color-graphite)' }}>
               {slots.map((s) => <option key={s} value={s}>{`Preferred slot — ${s}`}</option>)}
             </select>
-            <textarea required placeholder="What are you building?" value={form.message} onChange={update('message')} rows={4} style={{ ...inputStyle, resize: 'vertical', fontFamily: S }} />
+            {formMode === 'brief' && (
+              <textarea required aria-label="Message" placeholder="What are you building?" value={form.message} onChange={update('message')} rows={4} style={{ ...inputStyle, resize: 'vertical', fontFamily: S }} />
+            )}
           </div>
 
           <button type="submit" disabled={status.state === 'sending'} style={{ marginTop: 28, width: '100%', border: 'none', cursor: status.state === 'sending' ? 'default' : 'pointer', opacity: status.state === 'sending' ? 0.6 : 1, background: 'var(--color-obsidian-ink)', color: 'var(--color-paper-white)', padding: '18px 0', borderRadius: 999, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 14 }}>
-            {status.state === 'sending' ? 'Sending…' : 'Send brief'}
+            {status.state === 'sending' ? 'Sending…' : formMode === 'brief' ? 'Send brief' : 'Book a call'}
           </button>
 
           {status.state === 'success' && <p role="status" style={{ marginTop: 16, fontFamily: S, fontSize: 15, color: 'var(--color-deep-teal)' }}>{status.message}</p>}
@@ -144,9 +148,9 @@ export function DABrandValues() {
   ];
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
-      <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
+      <div className="da-wrap da-brandvalues-grid" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
         <h2 style={{ margin: 0, fontFamily: D, fontWeight: 400, fontSize: 'var(--text-section)', lineHeight: 1.0, letterSpacing: '-0.02em', color: 'var(--color-obsidian-ink)' }}>As a brand strategy studio, we believe in</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid var(--color-fog)', borderLeft: '1px solid var(--color-fog)' }}>
+        <div className="da-brandvalues-cells" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderTop: '1px solid var(--color-fog)', borderLeft: '1px solid var(--color-fog)' }}>
           {values.map(([k, t]) => (
             <div key={t} style={{ padding: 40, borderRight: '1px solid var(--color-fog)', borderBottom: '1px solid var(--color-fog)', minHeight: 220, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <Blob kind={k} />
@@ -176,7 +180,7 @@ export function DAWhatWeDo() {
   const services = ['Brand strategy & brand design', 'Website design', 'Website development', 'Film, live action & animation', 'Print design', 'Brand campaigns'];
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-paper-white)' }}>
-      <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+      <div className="da-wrap da-whatwedo-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
         <div>
           <h2 style={{ margin: 0, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.0, fontSize: 'clamp(40px,4.4vw,68px)', color: 'var(--color-obsidian-ink)' }}>What we do</h2>
           <div style={{ marginTop: 40 }}><Mosaic /></div>
@@ -211,7 +215,7 @@ export function DAFooter() {
   return (
     <footer style={{ background: 'var(--color-paper-white)', borderTop: '1px solid var(--color-fog)', paddingTop: 96 }}>
       <div className="da-wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.3fr', gap: 56, paddingBottom: 64 }}>
+        <div className="da-footer-top" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.3fr', gap: 56, paddingBottom: 64 }}>
           <FooterNav onDark={false}
             primary={[{ label: 'Projects' }, { label: 'B2B website design' }, { label: 'Website projects' }, { label: '3D & motion' }]}
             secondary={[{ label: 'Thinking' }, { label: 'Website audit' }, { label: 'Print studio' }, { label: 'Studio reviews' }]} />
@@ -238,7 +242,7 @@ export function DAFooter() {
             ))}
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 40, paddingTop: 40, paddingBottom: 64 }}>
+        <div className="da-footer-seo" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 40, paddingTop: 40, paddingBottom: 64 }}>
           {Object.entries(seo).map(([head, items]) => (
             <div key={head}>
               <div style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: 10, color: 'var(--color-ash)', marginBottom: 16 }}>{head}</div>

@@ -8,19 +8,21 @@ export default function App() {
   return (
     <>
       <DANav />
-      <DAHero />
-      <DALogoWall />
-      <DAFeatured />
-      <DAServices />
-      <DAShowreel />
-      <DAPortfolio />
-      <DAPainPoints />
-      <DAStats />
-      <DAWhyUs />
-      <DAIndustries />
-      <DATestimonials />
-      <DAFaq />
-      <DAContact />
+      <main id="main-content">
+        <DAHero />
+        <DALogoWall />
+        <DAFeatured />
+        <DAServices />
+        <DAShowreel />
+        <DAPortfolio />
+        <DAPainPoints />
+        <DAStats />
+        <DAWhyUs />
+        <DAIndustries />
+        <DATestimonials />
+        <DAFaq />
+        <DAContact />
+      </main>
       <DAFooter />
     </>
   );

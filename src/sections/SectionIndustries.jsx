@@ -28,7 +28,7 @@ export function DAWhyUs() {
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
       <div className="da-wrap">
         <Eyebrow>Our brand promise, we take ownership. Period.</Eyebrow>
-        <div style={{ marginTop: 44, display: 'grid', gridTemplateColumns: '40fr 60fr', gap: 72, alignItems: 'start' }}>
+        <div className="da-whyus-grid" style={{ marginTop: 44, display: 'grid', gridTemplateColumns: '40fr 60fr', gap: 72, alignItems: 'start' }}>
           <MazeGraphic />
           <div>
             {points.map((p, i) => (
@@ -54,7 +54,8 @@ function IndustryRow({ name, desc, services, ctas, onDark }) {
   const ctaColor  = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
   const tagStyle  = onDark ? { color: 'var(--color-paper-white)', borderColor: 'rgba(255,255,255,0.32)' } : undefined;
   return (
-    <div className={onDark ? 'da-row da-row-dark' : 'da-row'} style={{ display: 'grid', gridTemplateColumns: '15% 50% 35%', gap: 32, alignItems: 'center', padding: '34px 16px', borderTop: border }}>
+    <div className={onDark ? 'da-row da-row-dark' : 'da-row'} style={{ borderTop: border }}>
+      <div className="da-industry-row-inner" style={{ display: 'grid', gridTemplateColumns: '15% 50% 35%', gap: 32, alignItems: 'center', padding: '34px 16px' }}>
       <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '-0.01em', fontSize: 22, color: nameColor }}>{name}</span>
       <div>
         <p style={{ margin: 0, fontFamily: S, fontSize: 18, lineHeight: 1.5, color: descColor }}>{desc}</p>
@@ -62,12 +63,13 @@ function IndustryRow({ name, desc, services, ctas, onDark }) {
           {services.map((s) => <Tag key={s} style={tagStyle}>{s}</Tag>)}
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+      <div className="da-industry-ctas" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
         {ctas.map((c) => (
           <a key={c} href="#work" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.06em', fontSize: 11, color: ctaColor, textDecoration: 'none', borderBottom: `1px solid ${ctaColor}`, paddingBottom: 3, whiteSpace: 'nowrap' }}>
             {c} <span aria-hidden>&rarr;</span>
           </a>
         ))}
+      </div>
       </div>
     </div>
   );
@@ -126,9 +128,9 @@ export function DATestimonials() {
   const D = 'var(--font-display)';
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-deep-teal)', color: 'var(--color-paper-white)' }}>
-      <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
-        <h2 style={{ margin: 0, position: 'sticky', top: 120, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.02, fontSize: 'clamp(30px,3.2vw,46px)', color: 'var(--color-paper-white)' }}>Client words, backing the brand-strategy results</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+      <div className="da-wrap da-testimonials-grid" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
+        <h2 className="da-testimonials-sticky" style={{ margin: 0, position: 'sticky', top: 120, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.02, fontSize: 'clamp(30px,3.2vw,46px)', color: 'var(--color-paper-white)' }}>Client words, backing the brand-strategy results</h2>
+        <div className="da-testimonials-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
           <TestimonialCard onDark name="Dr. Mallesh B." initials="Mallesh B" title="Co-founder, i3systems"          cover="var(--color-block-iris)"   quote="It was a genuinely successful branding project, and, more to the point, fun to work with the team." />
           <TestimonialCard onDark name="Sharan Urubail" initials="Sharan U"  title="CEO & co-founder, Ximkart"      cover="var(--color-block-maroon)" quote="From concept to final branding the whole thing was glitch-free. Conversations with our own clients are so much easier now." highlight="glitch-free" />
         </div>
