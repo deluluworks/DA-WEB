@@ -1139,9 +1139,14 @@
 
 @media (min-width: 700px) {
   .da-ind-row {
-    grid-template-columns: 15% 50% 35%;
+    /* fr tracks distribute space AFTER the column gaps, so the row never
+       overflows the way fixed `%` tracks + gap do (2px clip at ~768px). */
+    grid-template-columns: 0.15fr 0.5fr 0.35fr;
     gap: 32px;
     align-items: center;
+  }
+  .da-ind-row > * {
+    min-width: 0;
   }
   .da-ind-ctas {
     flex-direction: column;

@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 00f556ea077fdfaeadfbfd7940f113f3b6850e83
 skip: []
-cursor: { unit: global/harness-viewport-motion, phase: testing }
+cursor: { unit: global/large-viewport-sweep, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -71,7 +71,7 @@ They run before the remaining page ports.
 
 | Unit id | Description | Status | Notes |
 |---|---|---|---|
-| global/harness-viewport-motion | Extend `.testing/run-checks.mjs` with 1920+2560 viewport assertions (centered capped column, full-bleed bands span viewport, overflow detected via element widths since `overflow-x:hidden` masks `scrollWidth`) + the MOTION PASS (reveal in-view state, marquee transform advance, accordion transition, hover-lift transition, hero gradient running; reduced-motion suppression sample) | pending | 1 cycle |
+| global/harness-viewport-motion | Extend `.testing/run-checks.mjs` with 1920+2560 viewport assertions (centered capped column, full-bleed bands span viewport, overflow detected via element widths since `overflow-x:hidden` masks `scrollWidth`) + the MOTION PASS (reveal in-view state, marquee transform advance, accordion transition, hover-lift transition, hero gradient running; reduced-motion suppression sample) | passed | **Run 11 cycle 1**: harness extended. Responsive loop now runs 375/768/1280/1440/**1920/2560**; true horizontal overflow measured by momentarily lifting the `overflow-x:hidden` mask on html/body then restoring (the old scrollWidth check was blind to it). ≥1920 asserts the `.da-wrap` column is centered (`\|left−right\|≤2`) & capped (<vw), and the `.da-footer` full-bleed band spans the viewport (±2px). MOTION PASS runs in a fresh browser: reveal-up gains `is-revealed` on scroll, marquee `transform` advances over 500ms, accordion open flips + transition declared, hover-lift transition declared, hero-gradient running-animation probe — each PASS/SKIP(absent)/FAIL, so a route without a given motion isn't penalised but a shipped-but-dead motion element hard-fails. Reduced-motion sample (`reducedMotion:'reduce'` context) asserts reveal shown instantly + marquee/gradient suppressed. **Real bug caught & fixed** by the new overflow probe: home Industries row (`.da-ind-row`) used `grid-template-columns:15% 50% 35%` which + `gap:32px` clipped 2px at ~768px — switched to `0.15fr 0.5fr 0.35fr` (+ `min-width:0` children) so tracks distribute after gaps. Home re-verified clean at 375→2560 + motion + 768 screenshot. Added `.testing/with-server.sh` (boots+waits+tears-down `next start` inside one foreground command — this sandbox kills detached servers) and diagnostic helpers `shoot.mjs`/`find-overflow.mjs`/`probe-bleed.mjs`. Tested: harness green on home (0 fail), service (reveal 4/4, 0 fail), contact (contact-API + skips, 0 fail) |
 | global/large-viewport-sweep | Fix shared layout/tokens for >=1920 composition (centered max-width column, full-bleed bands, fluid caps), then re-verify EVERY passed route at 1920 and 2560. Per-page re-test units opened only for pages still broken after the shared fix | pending | 1 cycle |
 | global/motion-retrofit | Build/confirm shared motion primitives as client islands (reveal-on-scroll, marquee, hover-lift, accordion transitions, hero gradient) using DS motion tokens, apply to every already-ported page per the export sources, re-verify with the motion pass | pending | 1–2 cycles |
 
