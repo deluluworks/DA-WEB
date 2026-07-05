@@ -362,11 +362,19 @@ async function runMotionPass(url) {
   if (accCount) {
     const first = acc.first();
     const before = await first.evaluate((e) => e.open);
-    const hasTransition = await page.evaluate(() => {
-      const el = document.querySelector(".da-faq-plus, .bl-faq-plus, [class*='faq-plus'], [class*='faq-a']");
-      if (!el) return false;
-      const d = getComputedStyle(el).transitionDuration;
-      return !!d && d !== "0s" && d !== "";
+    // A transition may live on the marker element itself OR on its ::before/
+    // ::after pseudo-elements (e.g. the blog FAQ animates a plus→minus icon
+    // via `.bl-faq-icon::after { transition: opacity }`). Scan the whole
+    // accordion subtree including pseudo-elements.
+    const hasTransition = await first.evaluate((details) => {
+      const nonZero = (d) => !!d && d.split(",").some((x) => parseFloat(x) > 0);
+      const nodes = [details, ...details.querySelectorAll("*")];
+      for (const n of nodes) {
+        for (const pseudo of [null, "::before", "::after"]) {
+          if (nonZero(getComputedStyle(n, pseudo).transitionDuration)) return true;
+        }
+      }
+      return false;
     });
     await first.locator("summary").first().click().catch(() => {});
     await page.waitForTimeout(150);
