@@ -19,6 +19,8 @@ export const BUILT_ROUTES = {
   "/faq/corporate-rebrand-expert": "align executive stakeholders around a new brand strategy",
   "/clients/sevenloop": "custom metal manufacturing platform",
   "/clients/sevenloop/branding": "Branding and project brochure design",
+  "/blog/sevenloop-rebrand-webflow-case-study": "Transforming Precision Manufacturing",
+  "/print/sevenloop": "Sevenloop Brochure",
 };
 
 // Planned routes that don't exist yet — internal links pointing at these are
@@ -27,6 +29,5 @@ export const PENDING_ROUTES = [
   "/clients/aavenir",
   "/case-studies/onelern",
   "/audit/hackuity",
-  "/print/sevenloop",
   "/blog",
 ];
