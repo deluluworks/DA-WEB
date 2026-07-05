@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 09e9cc9f811ed510bf7504280527cf0720628347
 skip: []
-cursor: { unit: blog-sevenloop-rebrand/section-port, phase: testing }
+cursor: { unit: print-sevenloop/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -504,6 +504,52 @@ duplicate footer.
 | clients-sevenloop-branding/metadata | Title + description via Metadata API | passed | Title via `title.absolute` ("Sevenloop \| Branding — Design Asylum"; the export `<title>` is "Sevenloop \| Branding" with its own scheme). Description ported verbatim from the export's `<meta name="description">` / study summary. Marker text "Branding and project brochure design" registered in `.testing/routes.mjs` |
 | clients-sevenloop-branding/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/clients` + `/clients/sevenloop`, back-bar → `/clients/sevenloop` + `/clients`. Moved `/clients/sevenloop/branding` from `PENDING_ROUTES` to `BUILT_ROUTES` — this also resolves the two "View case study" CTAs on the Sevenloop hub built earlier this run |
 
+## Sevenloop — Blog Article (`/blog/sevenloop-rebrand-webflow-case-study`) — `Sevenloop - Blog Article.html`
+
+Source: `blog/blog-*.jsx` (app/prims/body-a/body-b/extras) — a long-form
+21-section editorial article with a sticky scroll-spy ToC. The full article copy
+was already extracted verbatim into `content/blog/sevenloop-rebrand-webflow-case-study.mdx`
+(Run 8), so this unit is layout + a small markdown renderer, no copy re-extraction.
+
+**Rendering decision**: the MDX body is read as a raw string (via `getPostBySlug`),
+so rather than add a markdown dependency, a compact server-side renderer
+(`components/blog/ArticleBody.tsx`) maps the article's fixed construct set — H2
+sections, H3 subs, `-` lists, `>` blockquotes (pull quotes + bordered call-out
+blocks), `*Figure: …*` tiles, inline `**bold**` — into the export's `bl-*`
+article structure. `extractToc()` derives the ToC (id + label) from the same H2
+pass, so the sticky scroll-spy sidebar (`components/blog/BlogToc.tsx`, the one
+client component) and the body agree on `sec-01…sec-21` ids with zero
+duplication. Body sections are **not** `reveal-up` (matches the export — only the
+hero tile + the trailing FAQ/author/solutions/related sections reveal), sidestepping
+the reveal-timing screenshot artifact logged in prior runs.
+
+Most `bl-*` article primitives (`bl-body`/`bl-h2`/`bl-sub`/`bl-ul`/`bl-block`/
+`bl-toc`/`bl-layout`) were already shared in `ds-components.css` from the
+Service/Industry pages; this run added the blog-only pieces to a new page-scoped
+`app/styles/blog.css` (mobile-first): article header + hero gradient tile, pull
+quotes (`bl-pull`), figure tiles (`bl-fig`), ToC AI chips (`bl-aichip`), the FAQ
+accordion (native `<details>`, `bl-faq-*`, same no-JS pattern as `/faq`), author
+card, solutions row, the Sevenloop cross-links, and related cards.
+
+**Linking decisions** (same "no invented destination" policy as prior pages):
+the export's ToC "read summarised version with" AI chips (ChatGPT/Claude/…) and
+the "Solutions we offer" pills were unwired `href="#"` with no real target →
+rendered as decorative static chips/pills. The two "More blogs" teasers have no
+article body in the export → decorative cards (not linked to a fabricated route).
+Added an on-topic **"Explore the Sevenloop work"** cross-link block → the real
+`/clients/sevenloop` hub + `/clients/sevenloop/branding` case study (both built
+Run 9), giving the page real editorial cross-links to its own subject.
+
+**Flagged for human** (verbatim, per don't-silently-correct policy): the export's
+ToC sub-heading reads "Read **summaried** version with" — the source's own typo
+for "summarised"; kept as-is with a code comment, human to decide.
+
+| Unit id | Description | Status | Notes |
+|---|---|---|---|
+| blog-sevenloop-rebrand/section-port | `app/blog/sevenloop-rebrand-webflow-case-study/page.tsx`, `components/blog/{ArticleBody,BlogToc}.tsx`, `app/styles/blog.css` | passed | Header + sticky scroll-spy ToC + 21-section body (pull quotes, call-out blocks, figure tiles, lists) + FAQ(3) + author card + solutions strip + Sevenloop cross-links + related cards. 0 FIX iterations. Tested: `tsc --noEmit` + `eslint` + `next build` clean (prerendered static ○); `node .testing/run-checks.mjs --unit blog-sevenloop-rebrand/section-port` 0 failing (4 pending-route soft-warnings from breadcrumb/nav/footer → /blog, /audit/hackuity, /print/sevenloop). Screenshot-verified 1440/375: desktop parity (nav "Thinking" active, gradient hero tile, two-column ToC+body, pull quotes, FAQ accordion first-open with plus/minus icons, author card) and mobile reflow (single-column, ToC stacks above body, hamburger nav, hero caption), no overflow at 375/768/1280/1440, no box-shadow, Fraunces body font |
+| blog-sevenloop-rebrand/metadata | Title + description via Metadata API | passed | Title via `title.absolute` (the export `<title>` is the article title with no site suffix); description = the study/post `summary` frontmatter (matches the export's `<meta name="description">` verbatim). Marker text "Transforming Precision Manufacturing" registered in `.testing/routes.mjs` |
+| blog-sevenloop-rebrand/wire-links | 3+ real internal links | passed | Breadcrumb → `/` + `/blog` (index, still pending — soft-warn until built), cross-links → `/clients/sevenloop` + `/clients/sevenloop/branding` (real, on-topic), plus 21 same-page ToC anchors. 4 distinct real route destinations, beyond 3. Registered `/blog/sevenloop-rebrand-webflow-case-study` in `.testing/routes.mjs` `BUILT_ROUTES` |
+
 ## Remaining pages (not started — queue order per SITE-GUIDE.md §2–§7)
 
 Each row is a coarse section-port placeholder; will be split into granular
@@ -522,7 +568,7 @@ matches before assuming a 1:1 fit.
 | Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | **passed (Run 7)** — see page section above |
 | Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | **passed (Run 9)** — see page section above |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | **passed (Run 9)** — see page section above |
-| Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — content unblocked (Run 8: `content/blog/sevenloop-rebrand-webflow-case-study.mdx` ready) |
+| Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | **passed (Run 10)** — see page section below |
 | Sevenloop — Print Showcase | `/print/sevenloop` | `print/` | print-sevenloop/section-port | pending |
 | Aavenir — Client Hub | `/clients/aavenir` | `aavenir/` | clients-aavenir/section-port | pending |
 | OneLern — Written Case Study | `/case-studies/onelern` | `writtencs/` | case-studies-onelern/section-port | pending |
