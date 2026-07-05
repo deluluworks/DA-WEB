@@ -1,10 +1,69 @@
 ---
+status: complete
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 6b3dacb902f96d0b5d865705002004e874360be1
+last_run_head: b0f77b6d3399f1de9d81b7ef8eb459533d737604
 skip: []
-cursor: { unit: global/sitemap, phase: pending }
+cursor: { unit: none — queue drained, build complete, phase: done }
+---
+
+# ✅ BUILD COMPLETE — 2026-07-05
+
+The Next.js App Router port of the Design Asylum Studio website is **finished**.
+Every queued unit is `passed`; the only open items are two human-only
+integration verifies that need real Vercel env vars (below). The
+`status: complete` sentinel above makes any further scheduled fire exit
+immediately at SETUP step 1, and the routine schedule has been disabled.
+
+**Production URL**: <https://designasylum.in> (intended domain / `metadataBase`).
+Vercel auto-deploys `main` for the `designasylum-studio-webiste` project;
+production also serves at the project's `*.vercel.app` alias.
+
+**Shipped routes (20, all SSR/static, responsive 375→2560, motion + reduced-motion):**
+
+| Route | Route |
+|---|---|
+| `/` (home) | `/faq` |
+| `/contact` | `/faq/corporate-rebrand-expert` |
+| `/manifesto` | `/service/branding-agency` |
+| `/why-design-asylum` | `/industry/manufacturing` |
+| `/why-us` | `/solution/ai-saas-website` |
+| `/team` | `/location/ahmedabad` |
+| `/author/tanmaya-rao` | `/clients/sevenloop` |
+| `/pricing` | `/clients/sevenloop/branding` |
+| `/updates` | `/blog/sevenloop-rebrand-webflow-case-study` |
+| `/clients` | `/print/sevenloop` |
+
+Plus generated `/sitemap.xml` and `/robots.txt`, and the `/api/contact` route
+handler.
+
+**Remaining SETUP NEEDED (human-only — the site builds & renders without them):**
+- `SHEETS_WEBHOOK_URL`, `SHEETS_WEBHOOK_SECRET`, `RESEND_API_KEY`,
+  `CONTACT_NOTIFY_TO` — set in Vercel, then verify a real contact submission
+  lands in the Sheet (`global/contact-integrations-verify`).
+- `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_CLARITY_ID`,
+  `NEXT_PUBLIC_GOOGLE_ADS_ID` — set in Vercel, then confirm beacons fire
+  (`global/analytics-verify`). Every analytics host is network-blocked in the
+  build sandbox, so this is untestable here.
+- `NEXT_PUBLIC_SITE_URL` — override in Vercel if the final domain differs from
+  `https://designasylum.in`.
+
+**Human-decision / review notes flagged during the build:**
+- **Nav destinations are an assumption** (`web/lib/site-config.ts`): the export's
+  nav items were unwired `#` placeholders; Work→`/clients`, Studio→`/why-design-asylum`,
+  Thinking→`/blog` (the `/blog` index itself is not yet a page — it 404s until a
+  blog index ships). Revisit if these mappings are wrong.
+- **Case-study publish dates were not invented** — the export's case-study
+  sources carried none; add real project dates to `content/studies/*.mdx` if wanted.
+- **Visual side-by-side parity was never eyeballed against the live export**: the
+  reference export loads React/Babel/the DS bundle from blocked CDNs, so it never
+  renders in the sandbox. Fidelity was verified by porting the export JSX + DS
+  bundle source directly and screenshotting the built pages. Recommend eyeballing
+  the Vercel production next to the exported `.html` files opened locally.
+- **Unported dead code**: `sections-4.jsx` `DABrandValues`/`DAWhatWeDo` exist in
+  the export but `app.jsx` never renders them — intentionally skipped.
+
 ---
 
 # SITE-PROGRESS
@@ -1569,3 +1628,45 @@ main retrofit target; then re-verify each with the motion pass). After that, res
 the page ports: `clients-aavenir/section-port` (`aavenir/`, uses
 `content/studies/aavenir.mdx`), `case-studies-onelern`, `audit-hackuity`,
 `blog-index`, then the late globals (`global/sitemap`, `global/robots`).
+
+### Run 12 — 2026-07-05
+
+**Built on** `origin/main` @ `b0f77b6` (Run 11's merged viewport+motion upgrade).
+**Reconciliation**: diffed `6b3dacb..b0f77b6` — every code commit carries this
+routine's `Co-Authored-By`/`Claude-Session` trailer (Run 11's harness +
+large-viewport sweep); the `accountsdesignasylum` commits are all lock updates
+and the Run 11 PR merge. **No human code edits to adopt or re-test.** Cursor was
+at `global/motion-retrofit`.
+
+**Cycle 1 — `global/motion-retrofit` → passed.** Confirmed the four
+scroll/loop/hover/accordion primitives were already applied site-wide (motion
+pass green in Run 11) and shipped the one motion the harness reported
+absent/SKIP on every route: the **animated hero gradient**. Applied the DS
+`.gradient-loop` primitive (already in `base.css`, applied nowhere) to the three
+signature hero gradients — home `.da-hero-bloom`, sevenloop `.sl-hero-glow`,
+blog `.bl-hero-glow` (switched each from `background` shorthand → `background-image`
+so the shared class owns `background-size`). Also ported the home hero's two
+missing export entrance motions from `Design Asylum Studio.html` — `.da-hero-rise`
+staggered fade-up + `.da-hero-film-in` clip-reveal + the play-button hover — all
+rebuilt on DS motion tokens with a `prefers-reduced-motion` reset. 0 FIX
+iterations. Motion pass 0-fail on home/sevenloop/blog (gradient running +
+reduced-motion suppressed); 5 untouched routes smoke-clean; screenshots
+375/1440/2560 verified.
+
+**Cycle 2 — `global/sitemap` + `global/robots` → passed** (combined: two trivial,
+coupled `global/late` SEO-infra units, tested in one build). `app/sitemap.ts`
+lists all 20 built indexable routes with tiered priority/changeFrequency;
+`app/robots.ts` allows all / disallows `/api/` / points at the sitemap. 0 FIX
+iterations. `next build` clean; `/sitemap.xml` → 200 `application/xml` (20 `<url>`),
+`/robots.txt` → 200 `text/plain` with correct directives.
+
+**Both cycles passed, zero new blocked units → GREEN GATE** (PR from session
+branch → main, merged). **COMPLETION**: after these two units the queue has zero
+`pending`/`re-test`/`blocked-1`/`blocked-2` units — only the two `blocked-setup`
+verifies (analytics + contact integrations) remain, both awaiting human Vercel
+env vars. The build is **complete**; `status: complete` set and the schedule
+disabled. Commit range: `b0f77b6..HEAD`. No new SETUP NEEDED items.
+
+**Next run**: none — `status: complete` makes any further fire exit at SETUP
+step 1. Remaining work is human-only (set Vercel env vars, then the two
+`blocked-setup` verifies + the visual side-by-side parity eyeball).
