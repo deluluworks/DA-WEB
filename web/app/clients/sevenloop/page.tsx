@@ -75,7 +75,7 @@ export default function SevenloopClientHub() {
 
       {/* ============ SECTION 1 — CLIENT HEADER ============ */}
       <header className="sl-hero">
-        <div aria-hidden className="sl-hero-glow" />
+        <div aria-hidden className="sl-hero-glow gradient-loop" />
         <div className="da-wrap" style={{ position: "relative" }}>
           <Breadcrumb
             trail={[

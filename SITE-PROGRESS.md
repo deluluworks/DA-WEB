@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 6b3dacb902f96d0b5d865705002004e874360be1
 skip: []
-cursor: { unit: global/motion-retrofit, phase: pending }
+cursor: { unit: global/motion-retrofit, phase: testing }
 ---
 
 # SITE-PROGRESS

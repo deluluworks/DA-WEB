@@ -70,7 +70,8 @@
 .bl-hero-glow {
   position: absolute;
   inset: 0;
-  background:
+  /* background-image so the shared `.gradient-loop` primitive owns the drift. */
+  background-image:
     radial-gradient(80% 130% at 20% 22%, rgba(239, 108, 46, 0.34), transparent 52%),
     radial-gradient(80% 130% at 84% 84%, rgba(81, 111, 234, 0.46), transparent 52%),
     radial-gradient(60% 100% at 62% 32%, rgba(150, 235, 235, 0.18), transparent 56%);

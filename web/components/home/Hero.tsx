@@ -11,24 +11,24 @@ const underline: React.CSSProperties = {
 export function Hero() {
   return (
     <header className="da-hero-section">
-      <div aria-hidden="true" className="da-hero-bloom" />
+      <div aria-hidden="true" className="da-hero-bloom gradient-loop" />
       <div className="da-hero-grid">
         <div className="da-hero-copy">
-          <h1 className="da-hero-h1">
+          <h1 className="da-hero-h1 da-hero-rise">
             <span style={underline}>Strategic rebranding</span>
             <br />
             &amp; <span style={underline}>digital build</span>
             <br />
             for brands with nerve
           </h1>
-          <p className="da-hero-lede">
+          <p className="da-hero-lede da-hero-rise da-hero-rise-2">
             Brand work that&rsquo;s more than a logo,{" "}
             <em style={{ color: "var(--color-obsidian-ink)" }}>
               the kind that shifts how investors, talent and markets read your business.
             </em>{" "}
             That shift is the whole game.
           </p>
-          <div className="da-hero-actions">
+          <div className="da-hero-actions da-hero-rise da-hero-rise-3">
             <Button variant="primary" size="lg" iconRight={<span aria-hidden>&rarr;</span>}>
               Start a project
             </Button>

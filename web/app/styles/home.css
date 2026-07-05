@@ -9,7 +9,9 @@
   position: absolute;
   inset: -8% -20% auto -20%;
   height: 620px;
-  background: var(--gradient-solar-bloom);
+  /* background-image (not the `background` shorthand) so the shared
+     `.gradient-loop` primitive can own `background-size` for the drift. */
+  background-image: var(--gradient-solar-bloom);
   opacity: 0.42;
   filter: blur(10px);
   pointer-events: none;
@@ -59,6 +61,47 @@
   overflow: hidden;
   min-height: clamp(360px, 56vh, 660px);
   background: var(--color-deep-teal);
+  /* Clip + lift reveal on load (ported from the export's `.da-hero-film`
+     entrance). DS motion tokens; suppressed under reduced motion below. */
+  opacity: 0;
+  transform: translateY(28px);
+  clip-path: inset(0 0 14% 0);
+  animation: da-hero-film-in calc(var(--motion-reveal) + 160ms) var(--ease-out)
+    0.15s both;
+}
+@keyframes da-hero-film-in {
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+/* Staggered entrance for the hero copy (ported from the export's `.da-rise`). */
+.da-hero-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: da-hero-rise var(--motion-reveal) var(--ease-out) both;
+}
+.da-hero-rise-2 {
+  animation-delay: 0.12s;
+}
+.da-hero-rise-3 {
+  animation-delay: 0.22s;
+}
+@keyframes da-hero-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .da-hero-film,
+  .da-hero-rise {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    animation: none !important;
+  }
 }
 .da-hero-film-glow {
   position: absolute;
@@ -108,6 +151,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:
+    transform var(--motion-base) var(--ease-soft),
+    background-color var(--motion-base) var(--ease-soft);
+}
+.da-hero-film:hover .da-hero-play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background-color: var(--color-iris-voltage);
 }
 .da-hero-play-tri {
   color: #fff;
