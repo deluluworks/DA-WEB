@@ -89,7 +89,7 @@ export default function SevenloopBlogArticle() {
           )}
         </div>
         <div className="bl-hero reveal-up">
-          <div aria-hidden className="bl-hero-glow" />
+          <div aria-hidden className="bl-hero-glow gradient-loop" />
           <span className="bl-hero-cap">{frontmatter.heroCaption ?? frontmatter.title}</span>
         </div>
       </header>

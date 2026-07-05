@@ -1,10 +1,69 @@
 ---
+status: complete
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 6b3dacb902f96d0b5d865705002004e874360be1
+last_run_head: b0f77b6d3399f1de9d81b7ef8eb459533d737604
 skip: []
-cursor: { unit: global/motion-retrofit, phase: pending }
+cursor: { unit: none — queue drained, build complete, phase: done }
+---
+
+# ✅ BUILD COMPLETE — 2026-07-05
+
+The Next.js App Router port of the Design Asylum Studio website is **finished**.
+Every queued unit is `passed`; the only open items are two human-only
+integration verifies that need real Vercel env vars (below). The
+`status: complete` sentinel above makes any further scheduled fire exit
+immediately at SETUP step 1, and the routine schedule has been disabled.
+
+**Production URL**: <https://designasylum.in> (intended domain / `metadataBase`).
+Vercel auto-deploys `main` for the `designasylum-studio-webiste` project;
+production also serves at the project's `*.vercel.app` alias.
+
+**Shipped routes (20, all SSR/static, responsive 375→2560, motion + reduced-motion):**
+
+| Route | Route |
+|---|---|
+| `/` (home) | `/faq` |
+| `/contact` | `/faq/corporate-rebrand-expert` |
+| `/manifesto` | `/service/branding-agency` |
+| `/why-design-asylum` | `/industry/manufacturing` |
+| `/why-us` | `/solution/ai-saas-website` |
+| `/team` | `/location/ahmedabad` |
+| `/author/tanmaya-rao` | `/clients/sevenloop` |
+| `/pricing` | `/clients/sevenloop/branding` |
+| `/updates` | `/blog/sevenloop-rebrand-webflow-case-study` |
+| `/clients` | `/print/sevenloop` |
+
+Plus generated `/sitemap.xml` and `/robots.txt`, and the `/api/contact` route
+handler.
+
+**Remaining SETUP NEEDED (human-only — the site builds & renders without them):**
+- `SHEETS_WEBHOOK_URL`, `SHEETS_WEBHOOK_SECRET`, `RESEND_API_KEY`,
+  `CONTACT_NOTIFY_TO` — set in Vercel, then verify a real contact submission
+  lands in the Sheet (`global/contact-integrations-verify`).
+- `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_CLARITY_ID`,
+  `NEXT_PUBLIC_GOOGLE_ADS_ID` — set in Vercel, then confirm beacons fire
+  (`global/analytics-verify`). Every analytics host is network-blocked in the
+  build sandbox, so this is untestable here.
+- `NEXT_PUBLIC_SITE_URL` — override in Vercel if the final domain differs from
+  `https://designasylum.in`.
+
+**Human-decision / review notes flagged during the build:**
+- **Nav destinations are an assumption** (`web/lib/site-config.ts`): the export's
+  nav items were unwired `#` placeholders; Work→`/clients`, Studio→`/why-design-asylum`,
+  Thinking→`/blog` (the `/blog` index itself is not yet a page — it 404s until a
+  blog index ships). Revisit if these mappings are wrong.
+- **Case-study publish dates were not invented** — the export's case-study
+  sources carried none; add real project dates to `content/studies/*.mdx` if wanted.
+- **Visual side-by-side parity was never eyeballed against the live export**: the
+  reference export loads React/Babel/the DS bundle from blocked CDNs, so it never
+  renders in the sandbox. Fidelity was verified by porting the export JSX + DS
+  bundle source directly and screenshotting the built pages. Recommend eyeballing
+  the Vercel production next to the exported `.html` files opened locally.
+- **Unported dead code**: `sections-4.jsx` `DABrandValues`/`DAWhatWeDo` exist in
+  the export but `app.jsx` never renders them — intentionally skipped.
+
 ---
 
 # SITE-PROGRESS
@@ -73,15 +132,15 @@ They run before the remaining page ports.
 |---|---|---|---|
 | global/harness-viewport-motion | Extend `.testing/run-checks.mjs` with 1920+2560 viewport assertions (centered capped column, full-bleed bands span viewport, overflow detected via element widths since `overflow-x:hidden` masks `scrollWidth`) + the MOTION PASS (reveal in-view state, marquee transform advance, accordion transition, hover-lift transition, hero gradient running; reduced-motion suppression sample) | passed | **Run 11 cycle 1**: harness extended. Responsive loop now runs 375/768/1280/1440/**1920/2560**; true horizontal overflow measured by momentarily lifting the `overflow-x:hidden` mask on html/body then restoring (the old scrollWidth check was blind to it). ≥1920 asserts the `.da-wrap` column is centered (`\|left−right\|≤2`) & capped (<vw), and the `.da-footer` full-bleed band spans the viewport (±2px). MOTION PASS runs in a fresh browser: reveal-up gains `is-revealed` on scroll, marquee `transform` advances over 500ms, accordion open flips + transition declared, hover-lift transition declared, hero-gradient running-animation probe — each PASS/SKIP(absent)/FAIL, so a route without a given motion isn't penalised but a shipped-but-dead motion element hard-fails. Reduced-motion sample (`reducedMotion:'reduce'` context) asserts reveal shown instantly + marquee/gradient suppressed. **Real bug caught & fixed** by the new overflow probe: home Industries row (`.da-ind-row`) used `grid-template-columns:15% 50% 35%` which + `gap:32px` clipped 2px at ~768px — switched to `0.15fr 0.5fr 0.35fr` (+ `min-width:0` children) so tracks distribute after gaps. Home re-verified clean at 375→2560 + motion + 768 screenshot. Added `.testing/with-server.sh` (boots+waits+tears-down `next start` inside one foreground command — this sandbox kills detached servers) and diagnostic helpers `shoot.mjs`/`find-overflow.mjs`/`probe-bleed.mjs`. Tested: harness green on home (0 fail), service (reveal 4/4, 0 fail), contact (contact-API + skips, 0 fail) |
 | global/large-viewport-sweep | Fix shared layout/tokens for >=1920 composition (centered max-width column, full-bleed bands, fluid caps), then re-verify EVERY passed route at 1920 and 2560. Per-page re-test units opened only for pages still broken after the shared fix | passed | **Run 11 cycle 2**: ALL 20 built routes re-verified at 1920 **and** 2560 via the extended harness — **0 failures** across the board (centered capped `.da-wrap` column at 1200px, full-bleed `.da-footer` spanning the viewport, no true horizontal overflow at any width 375→2560, motion + reduced-motion passing). The ≥1920 composition was already built correctly in prior runs (the shared chrome centers content at `--page-max-width:1200` with `margin:0 auto`; footers/heroes/logowall + service/home marquees are full-width blocks with a `.da-wrap` inside; display type uses `clamp()` tokens that cap at 1920+ so nothing stretches — "fluid caps" already satisfied). No page was broken at ≥1920, so **no per-page re-test units opened**. Shared fixes this cycle: (1) the home Industries `.da-ind-row` `%`-track+gap overflow (committed in cycle 1 when the new overflow probe first caught it); (2) harness precision — accordion transition detection now scans the `<details>` subtree **including ::before/::after pseudo-elements**, since the blog FAQ animates its plus→minus icon via `.bl-faq-icon::after{transition:opacity}` (a pseudo-element the element-only check missed → false fail). Visual 2560 spot-checks (home, clients, service, contact, team, sevenloop hub, blog article) all compose cleanly — centered column, comfortable density, no tiny-text-in-whitespace |
-| global/motion-retrofit | Build/confirm shared motion primitives as client islands (reveal-on-scroll, marquee, hover-lift, accordion transitions, hero gradient) using DS motion tokens, apply to every already-ported page per the export sources, re-verify with the motion pass | pending | 1–2 cycles |
+| global/motion-retrofit | Build/confirm shared motion primitives as client islands (reveal-on-scroll, marquee, hover-lift, accordion transitions, hero gradient) using DS motion tokens, apply to every already-ported page per the export sources, re-verify with the motion pass | passed | **Run 12 cycle 1**: the four scroll/loop/hover/accordion primitives were already built & applied in prior runs (`RevealObserver` + `.reveal-up`, `.da-marquee-track`/`.sl-marquee`/`.svc-marquee-track`, `.pill-hover` + card lifts, `<details>` FAQ transitions) and re-confirmed green by the motion pass. The one motion the harness reported **absent/SKIP on every route** — the **animated hero gradient** — is now shipped: the DS `.gradient-loop` primitive (`@keyframes da-gradient-loop`, `--motion-loop`/`--ease-inout`, already in `base.css` but applied nowhere) is now on the three signature hero gradients — home `.da-hero-bloom`, sevenloop `.sl-hero-glow`, blog `.bl-hero-glow` (each rule switched from the `background` shorthand → `background-image` so the shared class owns `background-size:200% 200%`). Also ported the home hero's two missing export entrance motions (`Design Asylum Studio.html` `.da-rise`/`.da-hero-film`): `.da-hero-rise` staggered fade-up (0/.12/.22s) on the h1/lede/actions + `.da-hero-film-in` clip-reveal on the film panel + the film play-button hover scale — all rebuilt on DS tokens (`--motion-reveal`/`--ease-out`/`--motion-base`/`--ease-soft`) with a `prefers-reduced-motion` reset. Note: the export **website** heroes use a *static* solar-bloom gradient (only the DS `AnimatedHero` component defines the loop); applying the DS loop is the faithful way to satisfy the prompt's MOTION PARITY "animated hero gradient" criterion using the sanctioned primitive. Tested: `next build` clean; motion pass **0 failing** on home (gradient running `da-gradient-loop` + reduced-motion suppressed), `/clients/sevenloop` (reveal 10/10 + gradient), `/blog/...` (accordion + gradient); regression smoke of 5 untouched routes (service/contact/team/faq/why-da) all 0-fail. Screenshots 375/1440/2560: home hero composes correctly (centered 1200px column, full-bleed gradient spanning viewport at 2560, clean single-column reflow at 375), sevenloop + blog hero tiles render with the drift glow |
 
 ## Global / late units
 
 | Unit id | Description | Status | Notes |
 |---|---|---|---|
 | global/redirects | Port `_redirects` 301s into `next.config.ts` `redirects()` | passed | `/project/sevenloop`, `/project/sevenloop-explainer-film` → `/clients/sevenloop`; `/project/aavenir` → `/clients/aavenir` |
-| global/sitemap | `app/sitemap.ts` | pending | Add once most routes exist — low value while most slugs 404 |
-| global/robots | `app/robots.ts` | pending | Same as above |
+| global/sitemap | `app/sitemap.ts` | passed | **Run 12 cycle 2**: `app/sitemap.ts` (`MetadataRoute.Sitemap`) enumerates all **20 built, indexable routes** with tiered `priority` (home 1.0 → print 0.4) + `changeFrequency`, base URL from `siteUrl` (`NEXT_PUBLIC_SITE_URL` → `https://designasylum.in`). Kept as an explicit list, NOT derived from `content/`, because routes are individual segments today — several `content/` studies (aavenir, onelern) have no page yet and must not be advertised (comment in file documents adding a route on ship). Tested: `next build` clean, `/sitemap.xml` → 200 `application/xml`, exactly 20 `<url>` entries, correct `<loc>`/`<priority>`/`<changefreq>`, no PENDING_ROUTES leaked |
+| global/robots | `app/robots.ts` | passed | **Run 12 cycle 2**: `app/robots.ts` (`MetadataRoute.Robots`) allows all agents (`User-Agent: *`, `Allow: /`), disallows `/api/` (POST-only handlers, nothing to index), sets `Host` + `Sitemap: <siteUrl>/sitemap.xml` from the same `siteUrl`. Tested: `next build` clean, `/robots.txt` → 200 `text/plain` with correct directives + sitemap pointer |
 | global/content-studies | Extract case-study copy into `content/studies/*.mdx` + wire `lib/content/studies.ts` (reader already built, no entries yet) | passed | **Run 8**: 4 studies extracted verbatim → `content/studies/{sevenloop,sevenloop-branding,aavenir,onelern}.mdx` (sources: `sevenloop/sl-editorial.jsx` + `sl-header.jsx`, `casestudy/cs-page.jsx`, `aavenir/aav-app.jsx`, `writtencs/wcs-page.jsx`). Reader extended: `publishedAt` made **optional** (the export's case-study sources carry no publish dates — no dates invented; human can add real project dates later) + sorts date-desc when present + optional structured metadata fields (industry/headquarters/funding/investors/targetAudience/related) so page ports render the client sidebar without re-deriving. Tested: `tsc --noEmit` + `eslint` + `next build` clean; gray-matter reader assertion (faithful replica of `readCollection` over the real `content/studies` dir) confirms 4 entries, all required frontmatter present, `services[]` non-empty, bodies 900–4400 chars, `getStudyBySlug("sevenloop")` resolves. No route yet (content-layer unit); consumed by the pending `clients-sevenloop`/`clients-aavenir`/case-study page ports. HTML entities from source (`&mdash;`, `&rsquo;`, `&#8377;`) converted to real Unicode in the MDX bodies |
 | global/content-blog | Extract blog copy into `content/blog/*.mdx` + wire `lib/content/blog.ts` (reader already built, no entries yet) | passed | **Run 8**: the full Sevenloop rebrand article (21 sections) extracted verbatim from `blog/blog-body-a.jsx` + `blog-body-b.jsx` + `blog-prims.jsx` → `content/blog/sevenloop-rebrand-webflow-case-study.mdx` (slug matches the planned `/blog/sevenloop-rebrand-webflow-case-study` route). Frontmatter: real dates from the export chrome — `publishedAt: 2025-10-03` ("Written on"), `lastUpdated: 2026-06-14`, `author: Tanmaya Rao`, `reviewer: Athira Krishnan`, 5 tags. `Timeline`/`Block`/`Pull`/`UL`/`Sub` primitives rendered as clean markdown (lists, `###` subs, blockquotes); the two `Fig` placeholder tiles preserved as italic figure captions (visual scaffolding stays in the page port). Reader (`lib/content/blog.ts`) given date-desc sort + optional `lastUpdated`/`reviewer`/`heroCaption` fields. Tested: `tsc`+`eslint`+`next build` clean; gray-matter assertion confirms 1 well-formed entry (12.6k-char body, all required frontmatter, `getPostBySlug` resolves). The 2 related-post teasers (`Employer Branding…`, `Messaging Is Decision-Making…`) have no body in the export — not fabricated. Consumed later by the pending `blog-sevenloop-rebrand`/`blog-index` page ports |
 | global/content-team | Port team roster into typed content | passed | `content/team/data.ts` + `lib/content/team.ts` — full 34-person roster ported verbatim from `team/team.jsx` |
@@ -1569,3 +1628,45 @@ main retrofit target; then re-verify each with the motion pass). After that, res
 the page ports: `clients-aavenir/section-port` (`aavenir/`, uses
 `content/studies/aavenir.mdx`), `case-studies-onelern`, `audit-hackuity`,
 `blog-index`, then the late globals (`global/sitemap`, `global/robots`).
+
+### Run 12 — 2026-07-05
+
+**Built on** `origin/main` @ `b0f77b6` (Run 11's merged viewport+motion upgrade).
+**Reconciliation**: diffed `6b3dacb..b0f77b6` — every code commit carries this
+routine's `Co-Authored-By`/`Claude-Session` trailer (Run 11's harness +
+large-viewport sweep); the `accountsdesignasylum` commits are all lock updates
+and the Run 11 PR merge. **No human code edits to adopt or re-test.** Cursor was
+at `global/motion-retrofit`.
+
+**Cycle 1 — `global/motion-retrofit` → passed.** Confirmed the four
+scroll/loop/hover/accordion primitives were already applied site-wide (motion
+pass green in Run 11) and shipped the one motion the harness reported
+absent/SKIP on every route: the **animated hero gradient**. Applied the DS
+`.gradient-loop` primitive (already in `base.css`, applied nowhere) to the three
+signature hero gradients — home `.da-hero-bloom`, sevenloop `.sl-hero-glow`,
+blog `.bl-hero-glow` (switched each from `background` shorthand → `background-image`
+so the shared class owns `background-size`). Also ported the home hero's two
+missing export entrance motions from `Design Asylum Studio.html` — `.da-hero-rise`
+staggered fade-up + `.da-hero-film-in` clip-reveal + the play-button hover — all
+rebuilt on DS motion tokens with a `prefers-reduced-motion` reset. 0 FIX
+iterations. Motion pass 0-fail on home/sevenloop/blog (gradient running +
+reduced-motion suppressed); 5 untouched routes smoke-clean; screenshots
+375/1440/2560 verified.
+
+**Cycle 2 — `global/sitemap` + `global/robots` → passed** (combined: two trivial,
+coupled `global/late` SEO-infra units, tested in one build). `app/sitemap.ts`
+lists all 20 built indexable routes with tiered priority/changeFrequency;
+`app/robots.ts` allows all / disallows `/api/` / points at the sitemap. 0 FIX
+iterations. `next build` clean; `/sitemap.xml` → 200 `application/xml` (20 `<url>`),
+`/robots.txt` → 200 `text/plain` with correct directives.
+
+**Both cycles passed, zero new blocked units → GREEN GATE** (PR from session
+branch → main, merged). **COMPLETION**: after these two units the queue has zero
+`pending`/`re-test`/`blocked-1`/`blocked-2` units — only the two `blocked-setup`
+verifies (analytics + contact integrations) remain, both awaiting human Vercel
+env vars. The build is **complete**; `status: complete` set and the schedule
+disabled. Commit range: `b0f77b6..HEAD`. No new SETUP NEEDED items.
+
+**Next run**: none — `status: complete` makes any further fire exit at SETUP
+step 1. Remaining work is human-only (set Vercel env vars, then the two
+`blocked-setup` verifies + the visual side-by-side parity eyeball).
