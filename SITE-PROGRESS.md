@@ -2,9 +2,9 @@
 quota_per_run: 2
 fix_cap: 3
 wallclock_cap_min: 75
-last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
+last_run_head: 411cfa311b738878dad04a6a5608b42e210e2d7e
 skip: []
-cursor: { unit: global/content-studies, phase: pending }
+cursor: { unit: clients-sevenloop/section-port, phase: pending }
 ---
 
 # SITE-PROGRESS
@@ -69,8 +69,8 @@ export: `Design Asylum Studio website (1)/` (read-only — never edit).
 | global/redirects | Port `_redirects` 301s into `next.config.ts` `redirects()` | passed | `/project/sevenloop`, `/project/sevenloop-explainer-film` → `/clients/sevenloop`; `/project/aavenir` → `/clients/aavenir` |
 | global/sitemap | `app/sitemap.ts` | pending | Add once most routes exist — low value while most slugs 404 |
 | global/robots | `app/robots.ts` | pending | Same as above |
-| global/content-studies | Extract case-study copy into `content/studies/*.mdx` + wire `lib/content/studies.ts` (reader already built, no entries yet) | pending | Real copy source: `sevenloop/sl-editorial.jsx`, `casestudy/`, `aavenir/`, `writtencs/` |
-| global/content-blog | Extract blog copy into `content/blog/*.mdx` + wire `lib/content/blog.ts` (reader already built, no entries yet) | pending | Source: `blog/` (Sevenloop rebrand article) |
+| global/content-studies | Extract case-study copy into `content/studies/*.mdx` + wire `lib/content/studies.ts` (reader already built, no entries yet) | passed | **Run 8**: 4 studies extracted verbatim → `content/studies/{sevenloop,sevenloop-branding,aavenir,onelern}.mdx` (sources: `sevenloop/sl-editorial.jsx` + `sl-header.jsx`, `casestudy/cs-page.jsx`, `aavenir/aav-app.jsx`, `writtencs/wcs-page.jsx`). Reader extended: `publishedAt` made **optional** (the export's case-study sources carry no publish dates — no dates invented; human can add real project dates later) + sorts date-desc when present + optional structured metadata fields (industry/headquarters/funding/investors/targetAudience/related) so page ports render the client sidebar without re-deriving. Tested: `tsc --noEmit` + `eslint` + `next build` clean; gray-matter reader assertion (faithful replica of `readCollection` over the real `content/studies` dir) confirms 4 entries, all required frontmatter present, `services[]` non-empty, bodies 900–4400 chars, `getStudyBySlug("sevenloop")` resolves. No route yet (content-layer unit); consumed by the pending `clients-sevenloop`/`clients-aavenir`/case-study page ports. HTML entities from source (`&mdash;`, `&rsquo;`, `&#8377;`) converted to real Unicode in the MDX bodies |
+| global/content-blog | Extract blog copy into `content/blog/*.mdx` + wire `lib/content/blog.ts` (reader already built, no entries yet) | passed | **Run 8**: the full Sevenloop rebrand article (21 sections) extracted verbatim from `blog/blog-body-a.jsx` + `blog-body-b.jsx` + `blog-prims.jsx` → `content/blog/sevenloop-rebrand-webflow-case-study.mdx` (slug matches the planned `/blog/sevenloop-rebrand-webflow-case-study` route). Frontmatter: real dates from the export chrome — `publishedAt: 2025-10-03` ("Written on"), `lastUpdated: 2026-06-14`, `author: Tanmaya Rao`, `reviewer: Athira Krishnan`, 5 tags. `Timeline`/`Block`/`Pull`/`UL`/`Sub` primitives rendered as clean markdown (lists, `###` subs, blockquotes); the two `Fig` placeholder tiles preserved as italic figure captions (visual scaffolding stays in the page port). Reader (`lib/content/blog.ts`) given date-desc sort + optional `lastUpdated`/`reviewer`/`heroCaption` fields. Tested: `tsc`+`eslint`+`next build` clean; gray-matter assertion confirms 1 well-formed entry (12.6k-char body, all required frontmatter, `getPostBySlug` resolves). The 2 related-post teasers (`Employer Branding…`, `Messaging Is Decision-Making…`) have no body in the export — not fabricated. Consumed later by the pending `blog-sevenloop-rebrand`/`blog-index` page ports |
 | global/content-team | Port team roster into typed content | passed | `content/team/data.ts` + `lib/content/team.ts` — full 34-person roster ported verbatim from `team/team.jsx` |
 | global/analytics-verify | Verify analytics beacons fire on real IDs | blocked-setup | See SETUP NEEDED |
 | global/contact-integrations-verify | Verify Sheets append + Resend email on real env vars | blocked-setup | See SETUP NEEDED |
@@ -457,9 +457,9 @@ matches before assuming a 1:1 fit.
 | Industry — Manufacturing | `/industry/manufacturing` | `industry/` | industry-manufacturing/section-port | **passed (Run 6)** — see page section below |
 | Solution — AI SaaS Website | `/solution/ai-saas-website` | `solution/` | solution-ai-saas-website/section-port | **passed (Run 6)** — see page section below |
 | Location — Ahmedabad | `/location/ahmedabad` | `location/` | location-ahmedabad/section-port | **passed (Run 7)** — see page section above |
-| Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — needs global/content-studies first |
+| Sevenloop — Client Hub (canonical) | `/clients/sevenloop` | `sevenloop/` | clients-sevenloop/section-port | pending — content unblocked (Run 8: `content/studies/sevenloop.mdx` ready) |
 | Sevenloop — Branding Case Study | `/clients/sevenloop/branding` | `casestudy/` | clients-sevenloop-branding/section-port | pending |
-| Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — needs global/content-blog first |
+| Sevenloop — Blog Article | `/blog/sevenloop-rebrand-webflow-case-study` | `blog/` | blog-sevenloop-rebrand/section-port | pending — content unblocked (Run 8: `content/blog/sevenloop-rebrand-webflow-case-study.mdx` ready) |
 | Sevenloop — Print Showcase | `/print/sevenloop` | `print/` | print-sevenloop/section-port | pending |
 | Aavenir — Client Hub | `/clients/aavenir` | `aavenir/` | clients-aavenir/section-port | pending |
 | OneLern — Written Case Study | `/case-studies/onelern` | `writtencs/` | case-studies-onelern/section-port | pending |
@@ -1129,4 +1129,86 @@ into `content/studies/*.mdx` + wire `lib/content/studies.ts`) — it unblocks
 Sevenloop branding case study. Then continue down the client-hub/case-study
 queue (Aavenir hub, OneLern written case study, Hackuity audit, Sevenloop
 print/blog — the last needs `global/content-blog`), plus the late global units
+(`global/sitemap`, `global/robots`) once most routes exist.
+
+### Run 8 — 2026-07-05 (fresh branch restarted from production tip; quota 2)
+
+**Reconciliation**: this session was assigned branch `claude/dazzling-cray-u146k5`,
+reset to `origin/main` (`411cfa3`, the PR #9 merge). Diffed `last_run_head`
+(`631486c`, Run 7's base) through `411cfa3`: only Run 7's own `wip`/`feat`/
+`chore: progress` commits (`0ca0b4c`, `f418ab7`, `eef9bbd`, `5b46dbc` — all
+`Claude`-authored, this routine's trailer) plus the PR #9 merge commit
+(`accountsdesignasylum`). **No human edits to reconcile, no re-test needed.**
+Cursor was at `global/content-studies`; honored it rather than the raw
+table-order first-pending (`global/sitemap`/`global/robots` remain deliberately
+deferred by their own notes — "add once most routes exist", ~10 page routes
+still pending). Front matter already normalized (quota 2, wallclock 75, no stale
+branch keys); only `last_run_head` bumped to `411cfa3`.
+
+**Environment preflight**: same as all prior runs — no env vars set in this
+sandbox (`SHEETS_WEBHOOK_URL`, `RESEND_API_KEY`, analytics IDs). Build/tests do
+not depend on them; no new SETUP NEEDED items.
+
+**Build & serve**: `npm ci` clean, `next build` clean throughout. Both units
+this run are **content-layer units with no route to serve** — so no `next start`
+/ screenshot / `run-checks.mjs --url` step applies; verification was
+`tsc --noEmit` + `eslint` + `next build` (regression) plus a faithful
+gray-matter reader assertion (a `readCollection` replica run over the real
+`content/{studies,blog}` dirs, using the project's own `gray-matter` dep) that
+confirms each file's frontmatter + body parse the way `lib/content/*` will read
+them at build time. This mirrors how `global/content-team` was verified.
+
+**WORK LOOP** (2 of 2 quota used, 0 FIX-loop iterations, both first-pass):
+
+1. **`global/content-studies`** — 4 studies extracted verbatim into
+   `content/studies/{sevenloop,sevenloop-branding,aavenir,onelern}.mdx` from
+   `sevenloop/sl-editorial.jsx`+`sl-header.jsx`, `casestudy/cs-page.jsx`,
+   `aavenir/aav-app.jsx`, `writtencs/wcs-page.jsx`. Extended
+   `lib/content/studies.ts`: `publishedAt` → **optional** (the case-study
+   sources carry no publish dates — none invented, per the verbatim-copy /
+   flag-don't-fabricate policy; a human can add real project dates later),
+   date-desc sort, and optional structured metadata
+   (industry/headquarters/funding/investors/targetAudience/related) so the
+   pending client-hub page ports render the client sidebar without re-deriving
+   it. Reader assertion: 4 entries, all required frontmatter, `services[]`
+   non-empty, bodies 900–4400 chars, `getStudyBySlug("sevenloop")` resolves.
+2. **`global/content-blog`** — the full 21-section Sevenloop rebrand article
+   extracted verbatim into `content/blog/sevenloop-rebrand-webflow-case-study.mdx`
+   (slug matches the planned `/blog/…` route). Real dates from the export chrome
+   (`publishedAt: 2025-10-03`, `lastUpdated: 2026-06-14`, author Tanmaya Rao,
+   reviewer Athira Krishnan, 5 tags). `Timeline`/`Block`/`Pull`/`UL`/`Sub`
+   primitives → clean markdown; the 2 `Fig` placeholder tiles preserved as
+   italic captions (visual scaffolding stays in the page port). `lib/content/
+   blog.ts` given date-desc sort + optional `lastUpdated`/`reviewer`/
+   `heroCaption`. Reader assertion: 1 well-formed entry (12.6k-char body),
+   `getPostBySlug` resolves. The 2 related-post teasers have no body in the
+   export → not fabricated.
+
+Both units unblock the pending client-hub / case-study / blog page ports.
+HTML entities from source (`&mdash;`, `&rsquo;`, `&ldquo;/&rdquo;`, `&#8377;`,
+`&amp;`) converted to real Unicode in the MDX bodies (same care as Run 2's
+`&rsquo;`-in-attribute lesson).
+
+**Bugs found and fixed**: none. **Typos found, NOT corrected**: none new this
+run beyond those already flagged for the Author/Pricing pages.
+
+**Blocked/parked**: none new. `global/analytics-verify`,
+`global/contact-integrations-verify` remain `blocked-setup` (unchanged).
+
+**Commit range**: `e5e7f64` (content-studies feat) through this run's final
+commits on `claude/dazzling-cray-u146k5`; base `411cfa3` is production's merged
+tip. All commits carry this routine's trailer.
+
+**Green gate**: both cycles passed with zero new blocked units → PR opened from
+`claude/dazzling-cray-u146k5` to `main` and merged. Vercel deploys `main`
+automatically.
+
+**Next run should**: pick up `clients-sevenloop/section-port` (the canonical
+Sevenloop client hub, `sevenloop/sl-*.jsx`) — now content-unblocked; render the
+hub chrome from `content/studies/sevenloop.mdx` (metadata sidebar) and the
+editorial body, plus the page-specific hero / deliverables / before-after /
+team-services sections. Then `clients-sevenloop-branding` (`casestudy/`, uses
+`content/studies/sevenloop-branding.mdx`), `blog-sevenloop-rebrand`
+(`blog/`, uses `content/blog/sevenloop-rebrand-webflow-case-study.mdx`) and the
+rest of the client-hub/case-study queue, plus the late globals
 (`global/sitemap`, `global/robots`) once most routes exist.
