@@ -1,10 +1,7 @@
-/* Design Asylum — Services (animated cursor-follow hover reveal)
-   Adapted from a GSAP/Framer "services with animated hover modal" pattern,
-   rebuilt natively for the Design Asylum system: Blinker 400 titles, Fraunces
-   meta, hairline rows, DS colour-block previews + Iris-Voltage VIEW cursor. */
-const { useState: useStateSvc, useEffect: useEffectSvc, useRef: useRefSvc } = React;
+/* Design Asylum homepage — Services with animated cursor-follow hover reveal */
+import { useState, useEffect, useRef } from 'react';
 
-function DAServices() {
+export function DAServices() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const services = [
     { title: 'Brand strategy',      meta: 'Positioning · Naming · Narrative',  bg: 'var(--color-block-iris)',   fg: '#ffffff' },
@@ -15,15 +12,15 @@ function DAServices() {
     { title: 'Brand campaigns',     meta: 'Launch · Go-to-market',             bg: 'var(--color-block-ink)',    fg: '#ffffff' },
   ];
 
-  const [modal, setModal] = useStateSvc({ active: false, index: 0 });
-  const modalWrap = useRefSvc(null);
-  const cursorWrap = useRefSvc(null);
-  const target = useRefSvc({ x: 0, y: 0 });
-  const mp = useRefSvc({ x: 0, y: 0 });
-  const cp = useRefSvc({ x: 0, y: 0 });
-  const started = useRefSvc(false);
+  const [modal, setModal] = useState({ active: false, index: 0 });
+  const modalWrap  = useRef(null);
+  const cursorWrap = useRef(null);
+  const target  = useRef({ x: 0, y: 0 });
+  const mp      = useRef({ x: 0, y: 0 });
+  const cp      = useRef({ x: 0, y: 0 });
+  const started = useRef(false);
 
-  useEffectSvc(() => {
+  useEffect(() => {
     const onMove = (e) => {
       target.current.x = e.clientX;
       target.current.y = e.clientY;
@@ -41,7 +38,7 @@ function DAServices() {
       mp.current.y = lerp(mp.current.y, target.current.y, 0.12);
       cp.current.x = lerp(cp.current.x, target.current.x, 0.22);
       cp.current.y = lerp(cp.current.y, target.current.y, 0.22);
-      if (modalWrap.current) modalWrap.current.style.transform = `translate(${mp.current.x}px, ${mp.current.y}px)`;
+      if (modalWrap.current)  modalWrap.current.style.transform  = `translate(${mp.current.x}px, ${mp.current.y}px)`;
       if (cursorWrap.current) cursorWrap.current.style.transform = `translate(${cp.current.x}px, ${cp.current.y}px)`;
       raf = requestAnimationFrame(tick);
     };
@@ -60,7 +57,6 @@ function DAServices() {
             Brand-first, end to end — strategy through launch, built to be impossible to ignore.
           </p>
         </div>
-
         <div className="da-svc-list" onMouseLeave={() => setModal((m) => ({ ...m, active: false }))}>
           {services.map((s, i) => (
             <div key={s.title} className="da-svc-row" onMouseEnter={() => setModal({ active: true, index: i })}>
@@ -71,7 +67,6 @@ function DAServices() {
         </div>
       </div>
 
-      {/* floating preview — fine-pointer only */}
       <div className="da-svc-modalwrap" ref={modalWrap} aria-hidden="true">
         <div className="da-svc-modal" data-active={active ? 'true' : 'false'}>
           <div className="da-svc-stack" style={{ top: `${index * -100}%` }}>
@@ -89,5 +84,3 @@ function DAServices() {
     </section>
   );
 }
-
-Object.assign(window, { DAServices });
