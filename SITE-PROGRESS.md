@@ -4,7 +4,7 @@ fix_cap: 3
 wallclock_cap_min: 75
 last_run_head: 631486c353325c85b87e3e04ef8cdaa86c0914d1
 skip: []
-cursor: { unit: global/content-studies, phase: pending }
+cursor: { unit: global/content-blog, phase: testing }
 ---
 
 # SITE-PROGRESS
@@ -69,7 +69,7 @@ export: `Design Asylum Studio website (1)/` (read-only — never edit).
 | global/redirects | Port `_redirects` 301s into `next.config.ts` `redirects()` | passed | `/project/sevenloop`, `/project/sevenloop-explainer-film` → `/clients/sevenloop`; `/project/aavenir` → `/clients/aavenir` |
 | global/sitemap | `app/sitemap.ts` | pending | Add once most routes exist — low value while most slugs 404 |
 | global/robots | `app/robots.ts` | pending | Same as above |
-| global/content-studies | Extract case-study copy into `content/studies/*.mdx` + wire `lib/content/studies.ts` (reader already built, no entries yet) | pending | Real copy source: `sevenloop/sl-editorial.jsx`, `casestudy/`, `aavenir/`, `writtencs/` |
+| global/content-studies | Extract case-study copy into `content/studies/*.mdx` + wire `lib/content/studies.ts` (reader already built, no entries yet) | passed | **Run 8**: 4 studies extracted verbatim → `content/studies/{sevenloop,sevenloop-branding,aavenir,onelern}.mdx` (sources: `sevenloop/sl-editorial.jsx` + `sl-header.jsx`, `casestudy/cs-page.jsx`, `aavenir/aav-app.jsx`, `writtencs/wcs-page.jsx`). Reader extended: `publishedAt` made **optional** (the export's case-study sources carry no publish dates — no dates invented; human can add real project dates later) + sorts date-desc when present + optional structured metadata fields (industry/headquarters/funding/investors/targetAudience/related) so page ports render the client sidebar without re-deriving. Tested: `tsc --noEmit` + `eslint` + `next build` clean; gray-matter reader assertion (faithful replica of `readCollection` over the real `content/studies` dir) confirms 4 entries, all required frontmatter present, `services[]` non-empty, bodies 900–4400 chars, `getStudyBySlug("sevenloop")` resolves. No route yet (content-layer unit); consumed by the pending `clients-sevenloop`/`clients-aavenir`/case-study page ports. HTML entities from source (`&mdash;`, `&rsquo;`, `&#8377;`) converted to real Unicode in the MDX bodies |
 | global/content-blog | Extract blog copy into `content/blog/*.mdx` + wire `lib/content/blog.ts` (reader already built, no entries yet) | pending | Source: `blog/` (Sevenloop rebrand article) |
 | global/content-team | Port team roster into typed content | passed | `content/team/data.ts` + `lib/content/team.ts` — full 34-person roster ported verbatim from `team/team.jsx` |
 | global/analytics-verify | Verify analytics beacons fire on real IDs | blocked-setup | See SETUP NEEDED |
