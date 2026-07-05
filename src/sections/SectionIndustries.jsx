@@ -1,9 +1,8 @@
-/* Design Asylum homepage - sections 9-12
-   Why us / brand promise · Diverse industries · Testimonials · Capabilities */
+/* Design Asylum homepage — Why us · Industries · Testimonials */
+import { Eyebrow } from './shared';
 
-/* ============ SECTION 9 - WHY US / BRAND PROMISE ============ */
+/* ============ SECTION 9 - WHY US ============ */
 function MazeGraphic() {
-  // abstract monochrome grid "maze" - mostly ink hairlines, a couple of accent cells
   const accents = { '4': 'var(--color-iris-voltage)', '11': 'var(--color-solar-bloom)', '18': 'var(--color-deep-teal)', '27': 'var(--color-iris-voltage)' };
   const cells = Array.from({ length: 36 });
   return (
@@ -18,7 +17,7 @@ function MazeGraphic() {
   );
 }
 
-function DAWhyUs() {
+export function DAWhyUs() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const points = [
     'A strategy-led studio with real depth in deeptech, fintech and enterprise SaaS. Known for a structured process that helps technical companies pin down positioning, identity and digital experience.',
@@ -45,15 +44,15 @@ function DAWhyUs() {
   );
 }
 
-/* ============ SECTION 10 - DIVERSE INDUSTRIES ============ */
+/* ============ SECTION 10 - INDUSTRIES ============ */
 function IndustryRow({ name, desc, services, ctas, onDark }) {
   const { Tag } = window.DesignAsylumDesignSystem_594314;
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const nameColor = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
   const descColor = onDark ? 'rgba(255,255,255,0.72)' : 'var(--color-graphite)';
-  const border = onDark ? '1px solid rgba(255,255,255,0.16)' : '1px solid var(--color-fog)';
-  const ctaColor = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
-  const tagStyle = onDark ? { color: 'var(--color-paper-white)', borderColor: 'rgba(255,255,255,0.32)' } : undefined;
+  const border    = onDark ? '1px solid rgba(255,255,255,0.16)' : '1px solid var(--color-fog)';
+  const ctaColor  = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
+  const tagStyle  = onDark ? { color: 'var(--color-paper-white)', borderColor: 'rgba(255,255,255,0.32)' } : undefined;
   return (
     <div className={onDark ? 'da-row da-row-dark' : 'da-row'} style={{ display: 'grid', gridTemplateColumns: '15% 50% 35%', gap: 32, alignItems: 'center', padding: '34px 16px', borderTop: border }}>
       <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '-0.01em', fontSize: 22, color: nameColor }}>{name}</span>
@@ -74,17 +73,16 @@ function IndustryRow({ name, desc, services, ctas, onDark }) {
   );
 }
 
-function DAIndustries() {
-  const S = 'var(--font-serif)';
+export function DAIndustries() {
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-deep-teal)', color: 'var(--color-paper-white)' }}>
       <div className="da-wrap">
         <h2 style={{ margin: 0, textAlign: 'center', fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-section)', lineHeight: 1.0, letterSpacing: '-0.02em', color: 'var(--color-paper-white)', maxWidth: 760, marginInline: 'auto' }}>Worked with companies from a stubbornly diverse set of industries</h2>
         <div style={{ marginTop: 56 }}>
           <IndustryRow onDark name="Cloudphys" desc="Visual branding and website design for an AI-powered platform that sharpens critical-care monitoring." services={['Website strategy', 'Website design', 'Explainer film', 'Webflow build']} ctas={['View website']} />
-          <IndustryRow onDark name="Lumen" desc="Branding and website design for a cybersecurity outfit built for growing businesses." services={['Webflow build', 'Website design', 'Logo design', 'Landing pages']} ctas={['View website']} />
-          <IndustryRow onDark name="Vantage" desc="Rebrand and website design for a technology-led digital media and adtech consultancy." services={['Brand identity', 'Brand refresh', 'Logo design', 'Lottie animation']} ctas={['View case study', 'View website']} />
-          <IndustryRow onDark name="Foundry" desc="Brand identity and website design for an end-to-end custom manufacturing platform." services={['Website design', 'Webflow build', 'Brand identity', 'Lottie animation']} ctas={['View case study', 'View website']} />
+          <IndustryRow onDark name="Lumen"     desc="Branding and website design for a cybersecurity outfit built for growing businesses."                    services={['Webflow build', 'Website design', 'Logo design', 'Landing pages']}    ctas={['View website']} />
+          <IndustryRow onDark name="Vantage"   desc="Rebrand and website design for a technology-led digital media and adtech consultancy."                    services={['Brand identity', 'Brand refresh', 'Logo design', 'Lottie animation']}   ctas={['View case study', 'View website']} />
+          <IndustryRow onDark name="Foundry"   desc="Brand identity and website design for an end-to-end custom manufacturing platform."                       services={['Website design', 'Webflow build', 'Brand identity', 'Lottie animation']} ctas={['View case study', 'View website']} />
         </div>
         <div style={{ marginTop: 56, display: 'flex', justifyContent: 'center', borderTop: '1px solid rgba(255,255,255,0.16)', paddingTop: 56 }}>
           <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, textDecoration: 'none', background: 'var(--color-paper-white)', color: 'var(--color-obsidian-ink)', padding: '20px 38px', borderRadius: 999, fontFamily: 'var(--font-display)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 15, whiteSpace: 'nowrap' }}>
@@ -100,8 +98,8 @@ function DAIndustries() {
 function TestimonialCard({ name, title, quote, highlight, cover, initials, onDark }) {
   const { Avatar } = window.DesignAsylumDesignSystem_594314;
   const D = 'var(--font-display)', S = 'var(--font-serif)';
-  const parts = highlight ? quote.split(highlight) : [quote];
-  const nameColor = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
+  const parts      = highlight ? quote.split(highlight) : [quote];
+  const nameColor  = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
   const titleColor = onDark ? 'rgba(255,255,255,0.6)' : 'var(--color-ash)';
   const quoteColor = onDark ? 'var(--color-paper-white)' : 'var(--color-obsidian-ink)';
   return (
@@ -124,21 +122,17 @@ function TestimonialCard({ name, title, quote, highlight, cover, initials, onDar
   );
 }
 
-function DATestimonials() {
+export function DATestimonials() {
   const D = 'var(--font-display)';
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-deep-teal)', color: 'var(--color-paper-white)' }}>
       <div className="da-wrap" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
         <h2 style={{ margin: 0, position: 'sticky', top: 120, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.02, fontSize: 'clamp(30px,3.2vw,46px)', color: 'var(--color-paper-white)' }}>Client words, backing the brand-strategy results</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
-          <TestimonialCard onDark name="Dr. Mallesh B." initials="Mallesh B" title="Co-founder, i3systems" cover="var(--color-block-iris)" quote="It was a genuinely successful branding project, and, more to the point, fun to work with the team." />
-          <TestimonialCard onDark name="Sharan Urubail" initials="Sharan U" title="CEO & co-founder, Ximkart" cover="var(--color-block-maroon)" quote="From concept to final branding the whole thing was glitch-free. Conversations with our own clients are so much easier now." highlight="glitch-free" />
+          <TestimonialCard onDark name="Dr. Mallesh B." initials="Mallesh B" title="Co-founder, i3systems"          cover="var(--color-block-iris)"   quote="It was a genuinely successful branding project, and, more to the point, fun to work with the team." />
+          <TestimonialCard onDark name="Sharan Urubail" initials="Sharan U"  title="CEO & co-founder, Ximkart"      cover="var(--color-block-maroon)" quote="From concept to final branding the whole thing was glitch-free. Conversations with our own clients are so much easier now." highlight="glitch-free" />
         </div>
       </div>
     </section>
   );
 }
-
-/* SECTION 12 - CAPABILITIES ("Now the brand's sorted...") removed per request */
-
-Object.assign(window, { DAWhyUs, DAIndustries, DATestimonials });

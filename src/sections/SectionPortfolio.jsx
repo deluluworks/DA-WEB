@@ -1,12 +1,10 @@
-/* Design Asylum homepage - sections 5-8
-   Showreel + teaser · Sticky portfolio · Pain points · Retention stats */
+/* Design Asylum homepage — Showreel · Portfolio · Pain points · Retention stats */
 
 /* ============ SECTION 5 - SHOWREEL + TEASER ============ */
-function DAShowreel() {
+export function DAShowreel() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)' }}>
-      {/* A - full-width film block */}
       <div className="da-wrap">
         <div style={{ position: 'relative', borderRadius: 'var(--radius-cards)', overflow: 'hidden', aspectRatio: '16 / 8', background: 'var(--color-obsidian-ink)' }}>
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'radial-gradient(80% 120% at 15% 20%, rgba(255,194,64,0.45), transparent 50%), radial-gradient(80% 120% at 85% 80%, rgba(81,111,234,0.5), transparent 50%), radial-gradient(60% 90% at 60% 30%, rgba(150,235,235,0.3), transparent 55%)' }} />
@@ -19,7 +17,6 @@ function DAShowreel() {
           </button>
         </div>
       </div>
-      {/* B - dry teaser band (was: comic strip) */}
       <div className="da-wrap" style={{ marginTop: 24 }}>
         <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-cards)', background: 'var(--color-solar-bloom)', padding: '40px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 40 }}>
           <div style={{ maxWidth: 720 }}>
@@ -59,14 +56,14 @@ function PortfolioCard({ name, cover, wordColor, service, meta }) {
   );
 }
 
-function DAPortfolio() {
+export function DAPortfolio() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const cards = [
-    { name: 'Botim', cover: 'var(--color-deep-teal)', wordColor: 'var(--color-solar-bloom)', service: 'Web design & Webflow development', meta: 'Fintech' },
-    { name: 'Ximkart', cover: 'var(--color-block-iris)', wordColor: 'var(--color-paper-white)', service: 'Branding', meta: 'Series A' },
-    { name: 'Stellar', cover: 'var(--color-block-maroon)', wordColor: 'var(--color-paper-white)', service: 'Website design', meta: 'Venture capital' },
-    { name: 'Relanto', cover: 'var(--color-block-ink)', wordColor: 'var(--color-solar-bloom)', service: 'Website design & build', meta: 'IT services' },
-    { name: 'Verdant', cover: 'var(--color-block-solar)', wordColor: 'var(--color-obsidian-ink)', service: 'Brand identity', meta: 'Multimedia portal' },
+    { name: 'Botim',   cover: 'var(--color-deep-teal)',    wordColor: 'var(--color-solar-bloom)',  service: 'Web design & Webflow development', meta: 'Fintech' },
+    { name: 'Ximkart', cover: 'var(--color-block-iris)',   wordColor: 'var(--color-paper-white)',  service: 'Branding',                        meta: 'Series A' },
+    { name: 'Stellar', cover: 'var(--color-block-maroon)', wordColor: 'var(--color-paper-white)',  service: 'Website design',                  meta: 'Venture capital' },
+    { name: 'Relanto', cover: 'var(--color-block-ink)',    wordColor: 'var(--color-solar-bloom)',  service: 'Website design & build',          meta: 'IT services' },
+    { name: 'Verdant', cover: 'var(--color-block-solar)',  wordColor: 'var(--color-obsidian-ink)', service: 'Brand identity',                  meta: 'Multimedia portal' },
   ];
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
@@ -116,7 +113,7 @@ function QuoteCard({ quote, who, resolution, client }) {
   );
 }
 
-function DAPainPoints() {
+export function DAPainPoints() {
   const D = 'var(--font-display)';
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
@@ -134,17 +131,17 @@ function DAPainPoints() {
 }
 
 /* ============ SECTION 8 - RETENTION STATS ============ */
-function DAStats() {
+export function DAStats() {
   const D = 'var(--font-display)', S = 'var(--font-serif)';
   const rows = [
-    ['Tredence', '4 and counting'],
-    ['Fortuna Group', '5 branding projects & counting'],
-    ['Progcap', '18+ and... we lost count, honestly'],
-    ['Grundr', '4 and counting'],
-    ['DWIH', 'Retainer, 4 years running'],
-    ['Manupatra', '9 and counting'],
-    ['Vertical Loop', '5 and counting'],
-    ['Noise', '5 and counting'],
+    ['Tredence',       '4 and counting'],
+    ['Fortuna Group',  '5 branding projects & counting'],
+    ['Progcap',        '18+ and... we lost count, honestly'],
+    ['Grundr',         '4 and counting'],
+    ['DWIH',           'Retainer, 4 years running'],
+    ['Manupatra',      '9 and counting'],
+    ['Vertical Loop',  '5 and counting'],
+    ['Noise',          '5 and counting'],
   ];
   return (
     <section style={{ background: 'var(--color-obsidian-ink)', color: 'var(--color-paper-white)', paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)' }}>
@@ -169,5 +166,3 @@ function DAStats() {
     </section>
   );
 }
-
-Object.assign(window, { DAShowreel, DAPortfolio, DAPainPoints, DAStats });
