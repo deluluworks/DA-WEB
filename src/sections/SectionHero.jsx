@@ -33,7 +33,7 @@ export function DAHero() {
   const ul = { backgroundImage: 'linear-gradient(var(--color-obsidian-ink), var(--color-obsidian-ink))', backgroundSize: '100% 4px', backgroundRepeat: 'no-repeat', backgroundPosition: 'left 92%' };
   const edge = 'max(var(--da-gutter), calc((100vw - var(--page-max-width)) / 2 + var(--da-gutter)))';
   return (
-    <header className="da-hero-header" style={{ position: 'relative', overflow: 'hidden', paddingTop: 168, paddingLeft: edge, paddingBottom: 104 }}>
+    <header className="da-hero-header" style={{ position: 'relative', overflow: 'hidden', paddingTop: 168, paddingLeft: edge, paddingRight: edge, paddingBottom: 104 }}>
       <div aria-hidden="true" style={{ position: 'absolute', inset: '-8% -20% auto -20%', height: 620, background: 'var(--gradient-solar-bloom)', opacity: 0.42, filter: 'blur(10px)', pointerEvents: 'none' }} />
       <div className="da-hero-grid" style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0, 560px) minmax(0, 1fr)', gap: 'clamp(40px, 5vw, 88px)', alignItems: 'stretch' }}>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 8, paddingBottom: 8 }}>

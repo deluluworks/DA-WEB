@@ -55,7 +55,7 @@ function IndustryRow({ name, desc, services, ctas, onDark }) {
   const tagStyle  = onDark ? { color: 'var(--color-paper-white)', borderColor: 'rgba(255,255,255,0.32)' } : undefined;
   return (
     <div className={onDark ? 'da-row da-row-dark' : 'da-row'} style={{ borderTop: border }}>
-      <div className="da-industry-row-inner" style={{ display: 'grid', gridTemplateColumns: '15% 50% 35%', gap: 32, alignItems: 'center', padding: '34px 16px' }}>
+      <div className="da-industry-row-inner" style={{ display: 'grid', gridTemplateColumns: '15fr 50fr 35fr', gap: 32, alignItems: 'center', padding: '34px 16px' }}>
       <span style={{ fontFamily: D, fontWeight: 400, textTransform: 'uppercase', letterSpacing: '-0.01em', fontSize: 22, color: nameColor }}>{name}</span>
       <div>
         <p style={{ margin: 0, fontFamily: S, fontSize: 18, lineHeight: 1.5, color: descColor }}>{desc}</p>

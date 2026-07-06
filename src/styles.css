@@ -19,11 +19,11 @@
   --radius-body-blocks: 0px;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   margin: 0;
   min-width: 320px;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--color-paper-white);
   color: var(--color-obsidian-ink);
   -webkit-font-smoothing: antialiased;
@@ -153,7 +153,6 @@ body {
 /* Tablet and mid-range desktop — hero stacks */
 @media (max-width: 1100px) {
   :root { --da-gutter: 32px; }
-  .da-hero-header { padding-right: var(--da-gutter) !important; }
   .da-hero-grid { grid-template-columns: 1fr !important; }
   .da-hero-film { min-height: 400px !important; }
   .da-feat-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
