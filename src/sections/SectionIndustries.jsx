@@ -129,7 +129,7 @@ export function DATestimonials() {
   return (
     <section style={{ paddingTop: 'var(--section-pad-y)', paddingBottom: 'var(--section-pad-y)', background: 'var(--color-deep-teal)', color: 'var(--color-paper-white)' }}>
       <div className="da-wrap da-testimonials-grid" style={{ display: 'grid', gridTemplateColumns: '30fr 70fr', gap: 64, alignItems: 'start' }}>
-        <h2 className="da-testimonials-sticky" style={{ margin: 0, position: 'sticky', top: 120, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.02, fontSize: 'clamp(30px,3.2vw,46px)', color: 'var(--color-paper-white)' }}>Client words, backing the brand-strategy results</h2>
+        <h2 style={{ margin: 0, fontFamily: D, fontWeight: 400, letterSpacing: '-0.02em', lineHeight: 1.02, fontSize: 'clamp(30px,3.2vw,46px)', color: 'var(--color-paper-white)' }}>Client words, backing the brand-strategy results</h2>
         <div className="da-testimonials-cards" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
           <TestimonialCard onDark name="Dr. Mallesh B." initials="Mallesh B" title="Co-founder, i3systems"          cover="var(--color-block-iris)"   quote="It was a genuinely successful branding project, and, more to the point, fun to work with the team." />
           <TestimonialCard onDark name="Sharan Urubail" initials="Sharan U"  title="CEO & co-founder, Ximkart"      cover="var(--color-block-maroon)" quote="From concept to final branding the whole thing was glitch-free. Conversations with our own clients are so much easier now." highlight="glitch-free" />

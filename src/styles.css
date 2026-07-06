@@ -169,7 +169,6 @@ body {
   .da-stats-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
   .da-whyus-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
   .da-testimonials-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-  .da-testimonials-sticky { position: static !important; }
   .da-testimonials-cards { grid-template-columns: 1fr !important; }
   .da-faq-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
   .da-faq-sticky { position: static !important; }
